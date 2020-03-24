@@ -12,17 +12,9 @@ var password = params.password;
 // run
 run();
 function run() {
-	let mySpec = {
-		force: 1,
-		hostName: '172.16.10.30',
-		userName: 'root',
-		password: 'VMware1!',
-		port: 443
-	};
-
-	// add host to cluster
+	// destroy host
 	vspSession(hostname, username, password).then((client) => {
-		client.deleteHost('host-43').then((task) => {
+		client.deleteHost('host-44').then((task) => {
 			console.log('removeHost Success!!!');
 		}).catch((err) => {
 			console.log('FAIL... ');
