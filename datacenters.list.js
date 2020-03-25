@@ -33,15 +33,17 @@ vsphere.vimService(hostname).then((service) => {
 					})
 				}),
 				propSet: vim.PropertySpec({
-					type: "Datacenter",
-					pathSet: ["name"]
+					type: 'Datacenter',
+					pathSet: ['hostFolder']
+					//all: true
 				})
 			})
 		], vim.RetrieveOptions());
 	}).then((result) => {
-		result.objects.forEach((item) => {
-			console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
-		});
+		//result.objects.forEach((item) => {
+		//	console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+		//});
+		console.log(JSON.stringify(result, null, "\t"));
 		return vimPort.logout(sessionManager);
 	});
 }).catch(function(err) {

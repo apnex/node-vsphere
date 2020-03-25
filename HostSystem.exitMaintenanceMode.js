@@ -10,16 +10,32 @@ var hostname = params.hostname;
 var username = params.username;
 var password = params.password;
 
+// colours
+const chalk = require('chalk');
+const red = chalk.bold.red;
+const orange = chalk.keyword('orange');
+const green = chalk.green;
+const blue = chalk.blueBright;
+
+// called from shell
+const args = process.argv;
+if(args[1].match(/HostSystem/g)) {
+	if(args[2]) {
+		run(args[2]);
+	} else {
+		console.log('[' + red('ERROR') + ']: usage ' + blue('HostSystem.enterMaintenanceMode <host.id>'));
+	}
+}
+
 // run
-run();
-function run() {
+function run(hostId) {
 	let taskSpec = {
 		timeout: 10 // seconds
 	};
 
 	// host maintenance mode
 	vspSession(hostname, username, password).then((client) => {
-		client.getHostSystem('host-43').then((host) => {
+		client.getHostSystem(hostId).then((host) => {
 			host.exitMaintenanceMode(taskSpec).then((response) => {
 				console.log('exit maintenance success!!!');
 			});

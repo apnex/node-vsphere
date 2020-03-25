@@ -4,6 +4,7 @@
    "main": "dist/vsphere.js",
    "types": "dist/vsphere.d.ts",
    "dependencies": {
+      "chalk": "^3.0.0",
       "es6-shim": "0.35.1",
       "node-localstorage": "1.3.0",
       "xmldom": "0.1.27",
