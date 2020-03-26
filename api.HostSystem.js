@@ -2,15 +2,15 @@
 const vsphere = require('./dist/vsphere');
 
 // constructor
-function apiClusterComputeResource(service) {
+function apiHostSystem(service) {
 	this.service = service;
 	this.getEntity = getEntity;
-	this.getCluster = function(value) {
-		return this.getEntity({value, type: 'ClusterComputeResource'});
+	this.getHost = function(value) {
+		return this.getEntity({value, type: 'HostSystem'});
 	};
-	this.createCluster = createCluster;
+	//this.createHost = createHost;
 }
-module.exports = apiClusterComputeResource;
+module.exports = apiHostSystem;
 
 // client.getEntity
 function getEntity(spec) {
@@ -24,7 +24,7 @@ function getEntity(spec) {
 	});
 }
 
-// ClusterComputeResource.destroy
+// entity.destroy
 function destroy() {
 	return new Promise((resolve, reject) => {
 		let service = this.service;
@@ -36,17 +36,15 @@ function destroy() {
 	});
 }
 
-// ClusterComputeResource.create
-function createCluster(clusterName, folderId, spec = {}) {
+// Datacenter.create
+/*
+function createHost(datacenterName) {
 	return new Promise((resolve, reject) => {
 		let service = this.service;
-		let taskSpec = service.vim.ClusterConfigSpecEx(spec);
-		let entity = service.vim.ManagedObjectReference({
-			value: folderId,
-			type: "Folder"
-		});
-		service.vimPort.createClusterEx(entity, clusterName, taskSpec).then((task) => {
+		let rootFolder = service.serviceContent.rootFolder;
+		service.vimPort.createDatacenter(rootFolder, datacenterName).then((task) => {
 			resolve(task);
 		});
 	});
 }
+*/

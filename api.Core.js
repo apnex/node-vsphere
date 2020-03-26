@@ -1,12 +1,32 @@
 #!/usr/bin/env node
+const vsphere = require('./dist/vsphere');
 
 // constructor
 function apiCore(opts) {
 	this.options =  Object.assign({}, opts);
+	this.vspLogin = vspLogin;
 	this.getObjects = getObjects;
 }
 module.exports = apiCore;
 
+// login
+function vspLogin(hostname, username, password) {
+	return new Promise((resolve, reject) => {
+		vsphere.vimService(hostname).then((service) => {
+			let sessionManager = service.serviceContent.sessionManager;
+			let vimPort = service.vimPort;
+			vimPort.login(sessionManager, username, password).then(() => {
+				resolve(service);
+			}).catch(function(err) {
+				reject(err);
+			});
+		}).catch(function(err) {
+			reject(err);
+		});
+	});
+};
+
+// getObjects
 function getObjects(service, propertySpec) {
 	let propertyCollector = service.serviceContent.propertyCollector;
 	let rootFolder = service.serviceContent.rootFolder;

@@ -19,11 +19,6 @@ const blue = chalk.blueBright;
 // called from shell
 const args = process.argv;
 if(args[1].match(/Datacenter/g)) {
-	/*if(args[2] && args[3]) {
-		run(args[2], args[3]);
-	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('ClusterComputeResource.create <datacenter.id> <cluster.name>'));
-	}*/
 	run();
 }
 
@@ -39,7 +34,6 @@ function run() {
 			result.objects.forEach((item) => {
 				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
 			});
-			console.log('Create Finale Success!!!');
 		}).catch((err) => {
 			console.log('FAIL... ');
 		});

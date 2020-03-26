@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const apiHostSystem = require('./api.HostSystem');
+const apiDatacenter = require('./api.Datacenter');
 const apiCore = require('./api.Core');
 const params = require('./params.json');
 
@@ -18,23 +18,23 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/HostSystem/g)) {
+if(args[1].match(/Datacenter/g)) {
 	if(args[2]) {
 		run(args[2]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('HostSystem.destroy <host.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('Datacenter.create <datacenter.name>'));
 	}
 }
 
 // run
-function run(hostId) {
-	let core = new apiCore();
-	core.vspLogin(hostname, username, password).then((service) => {
-		let hosts = new apiHostSystem(service);
-		hosts.getHost(hostId).then((entity) => {
-			entity.destroy();
-		}).catch((err) => {
-			console.log('FAIL... ');
+function run(datacenterName) {
+	let ccra = new apiDatacenter();
+	let capi = new apiCore();
+	ccra.vspSession(hostname, username, password).then((client) => {
+		client.createDatacenter(datacenterName).then((task) => {
+			console.log('Create Finale Success!!!');
 		});
+	}).catch((err) => {
+		console.log('FAIL... ');
 	});
 }
