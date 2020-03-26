@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 // constructor
-function CoreApi(opts) {
+function apiCore(opts) {
 	this.options =  Object.assign({}, opts);
 	this.getObjects = getObjects;
 }
-module.exports = CoreApi;
+module.exports = apiCore;
 
 function getObjects(service, propertySpec) {
 	let propertyCollector = service.serviceContent.propertyCollector;

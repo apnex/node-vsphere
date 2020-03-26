@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const vsphere = require('./dist/vsphere');
+const apiClusterComputeResource = require('./api.ClusterComputeResource');
+const apiCore = require('./api.Core');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -8,42 +9,39 @@ var hostname = params.hostname;
 var username = params.username;
 var password = params.password;
 
-function run() {
+// colours
+const chalk = require('chalk');
+const red = chalk.bold.red;
+const orange = chalk.keyword('orange');
+const green = chalk.green;
+const blue = chalk.blueBright;
+
+// called from shell
+const args = process.argv;
+if(args[1].match(/ClusterComputeResource/g)) {
+	/*if(args[2] && args[3]) {
+		run(args[2], args[3]);
+	} else {
+		console.log('[' + red('ERROR') + ']: usage ' + blue('ClusterComputeResource.create <datacenter.id> <cluster.name>'));
+	}*/
+	run();
 }
 
-vsphere.vimService(hostname).then((service) => {
-	let propertyCollector = service.serviceContent.propertyCollector;
-	let rootFolder = service.serviceContent.rootFolder;
-        let sessionManager = service.serviceContent.sessionManager;
-        let viewManager = service.serviceContent.viewManager;
-        let vim = service.vim;
-        let vimPort = service.vimPort;
-
-	return vimPort.login(sessionManager, username, password).then(() => {
-		return vimPort.createContainerView(viewManager, rootFolder, ["ManagedEntity"], true);
-	}).then((containerView) => {
-		return vimPort.retrievePropertiesEx(propertyCollector, [
-			vim.PropertyFilterSpec({
-				objectSet: vim.ObjectSpec({
-					obj: containerView,
-					skip: true,
-					selectSet: vim.TraversalSpec({
-						path: "view",
-						type: "ContainerView"
-					})
-				}),
-				propSet: vim.PropertySpec({
-					type: "ClusterComputeResource",
-					pathSet: ["name"]
-				})
-			})
-		], vim.RetrieveOptions());
-	}).then((result) => {
-		result.objects.forEach((item) => {
-			console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+// run
+function run() {
+	let ccra = new apiClusterComputeResource(); // add auth into constructor?
+	let capi = new apiCore();
+	ccra.vspSession(hostname, username, password).then((client) => {
+		capi.getObjects(client.service, {
+			type: 'ClusterComputeResource',
+			pathSet: ['name']
+		}).then((result) => {
+			result.objects.forEach((item) => {
+				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+			});
+			console.log('Create Finale Success!!!');
+		}).catch((err) => {
+			console.log('FAIL... ');
 		});
-		return vimPort.logout(sessionManager);
 	});
-}).catch(function(err) {
-	console.log('MOOOO: ' + err.message);
-});
+}

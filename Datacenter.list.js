@@ -18,30 +18,28 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/ClusterComputeResource/g)) {
-	if(args[2] && args[3]) {
+if(args[1].match(/Datacenter/g)) {
+	/*if(args[2] && args[3]) {
 		run(args[2], args[3]);
 	} else {
 		console.log('[' + red('ERROR') + ']: usage ' + blue('ClusterComputeResource.create <datacenter.id> <cluster.name>'));
-	}
+	}*/
+	run();
 }
 
 // run
-function run(datacenterId, clusterName) {
-	let ccra = new apiClusterComputeResource();
+function run() {
+	let ccra = new apiClusterComputeResource(); // add auth into constructor?
 	let capi = new apiCore();
 	ccra.vspSession(hostname, username, password).then((client) => {
 		capi.getObjects(client.service, {
 			type: 'Datacenter',
-			pathSet: ['hostFolder']
+			pathSet: ['name']
 		}).then((result) => {
-			let myDc = result.objects.filter((item) => {
-				return (item.obj.value == datacenterId);
-			})[0];
-			let hostFolder = myDc.propSet[0].val.value;
-			client.createCluster(clusterName, hostFolder).then((task) => {
-				console.log('Create Finale Success!!!');
+			result.objects.forEach((item) => {
+				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
 			});
+			console.log('Create Finale Success!!!');
 		}).catch((err) => {
 			console.log('FAIL... ');
 		});

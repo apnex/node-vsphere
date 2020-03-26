@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const apiClusterComputeResource = require('./api.ClusterComputeResource');
+const apiDatacenter = require('./api.Datacenter');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -17,20 +17,20 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/ClusterComputeResource/g)) {
+if(args[1].match(/Datacenter/g)) {
 	if(args[2]) {
 		run(args[2]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('ClusterComputeResource.destroy <cluster.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('Datacenter.destroy <datacenter.id>'));
 	}
 }
 
 // run
-function run(clusterId) {
-	let ccra = new apiClusterComputeResource(); // add auth into constructor?
+function run(datacenterId) {
+	let ccra = new apiDatacenter();
 	ccra.vspSession(hostname, username, password).then((client) => {
-		client.getCluster(clusterId).then((cluster) => {
-			cluster.destroy();
+		client.getDatacenter(datacenterId).then((entity) => {
+			entity.destroy();
 			console.log('Finale Success!!!');
 		}).catch((err) => {
 			console.log('FAIL... ');
