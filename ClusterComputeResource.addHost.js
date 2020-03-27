@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const vsphere = require('./dist/vsphere');
+const apiClusterComputeResource = require('./api.ClusterComputeResource');
+const apiCore = require('./api.Core');
 const params = require('./params.json');
 var util = require('util');
 
@@ -37,86 +38,18 @@ function run(clusterId, hostIp) {
 	};
 
 	// add host to cluster
-	vspSession(hostname, username, password).then((client) => {
-		client.getFolder(clusterId).then((cluster) => {
-			cluster.addHost(mySpec).then((response) => {
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		let clusters = new apiClusterComputeResource(service);
+		console.log('login success');
+		clusters.getCluster(clusterId).then((entity) => {
+			entity.addHost(mySpec).then((response) => {
 				console.log('addHost Success!!!');
+				core.getTasks(service, response.value, clusterId);
+				console.log(response);
 			});
 		}).catch((err) => {
 			console.log('FAIL... ');
-		});
-	});
-}
-
-// session
-function vspSession(hostname, username, password) {
-	return vspLogin(hostname, username, password).then((service) => {
-		return {
-			service,
-			getFolder
-		};
-	});
-}
-
-// login
-function vspLogin(hostname, username, password) {
-	return new Promise((resolve, reject) => {
-		vsphere.vimService(hostname).then((service) => {
-			let sessionManager = service.serviceContent.sessionManager;
-			let vimPort = service.vimPort;
-			vimPort.login(sessionManager, username, password).then(() => {
-				resolve(service);
-			}).catch(function(err) {
-				reject(err);
-			});
-		}).catch(function(err) {
-			reject(err);
-		});
-	});
-};
-
-// client.getFolder
-function getFolder(value) {
-	return new Promise((resolve, reject) => {
-		let service = this.service;
-		let type = 'ClusterComputeResource';
-		resolve({
-			service,
-			entity: service.vim.ManagedObjectReference({
-				value,
-				type
-			}),
-			addHost
-		});
-	});
-}
-
-// ClusterComputeResource.addHost
-function addHost(spec) {
-	return new Promise((resolve, reject) => {
-		let service = this.service;
-		let cluster = this.entity;
-		console.log(cluster);
-		let mySpec = service.vim.HostConnectSpec(spec)
-		service.vimPort.addHostTask(cluster, mySpec, 1).then((task) => {
-			resolve(task);
-		});
-	});
-}
-
-function checkThumbprint(service, datacenter, spec) {
-	return new Promise((resolve, reject) => {
-		service.vimPort.queryConnectionInfoViaSpec(datacenter, spec, 1).then((result) => {
-			console.log(JSON.stringify(result, null, "\t"));
-			resolve(result)
-		}).catch((err) => {
-			console.log(err);
-			if(err.info.thumbprint) {
-				console.log('YAY Thumbprint: [' + err.info.thumbprint + ']');
-				resolve(err.info.thumbprint);
-			} else {
-				reject(err);
-			};
 		});
 	});
 }

@@ -32,6 +32,7 @@ function run(datacenterName) {
 	core.vspLogin(hostname, username, password).then((service) => {
 		let datacenters = new apiDatacenter(service);
 		datacenters.createDatacenter(datacenterName).then((task) => {
+			console.log(task);
 			console.log('Create Finale Success!!!');
 		});
 	}).catch((err) => {

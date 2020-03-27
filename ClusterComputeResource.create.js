@@ -41,6 +41,7 @@ function run(datacenterId, clusterName) {
 			let hostFolder = myDc.propSet[0].val.value;
 			clusters.createCluster(clusterName, hostFolder).then((task) => {
 				console.log('Create Finale Success!!!');
+				console.log(task);
 			});
 		}).catch((err) => {
 			console.log('FAIL... ');

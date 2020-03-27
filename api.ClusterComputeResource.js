@@ -19,7 +19,8 @@ function getEntity(spec) {
 		resolve({
 			service,
 			entity: service.vim.ManagedObjectReference(spec),
-			destroy
+			destroy,
+			addHost
 		});
 	});
 }
@@ -34,6 +35,19 @@ function destroy() {
 			resolve(task);
 		}).catch((err) => {
 			reject(err);
+		});
+	});
+}
+
+// ClusterComputeResource.addHost
+function addHost(spec) {
+	return new Promise((resolve, reject) => {
+		let service = this.service;
+		let cluster = this.entity;
+		console.log(cluster);
+		let mySpec = service.vim.HostConnectSpec(spec)
+		service.vimPort.addHostTask(cluster, mySpec, 1).then((task) => {
+			resolve(task);
 		});
 	});
 }
@@ -55,3 +69,4 @@ function createCluster(clusterName, folderId, spec = {}) {
 		});
 	});
 }
+

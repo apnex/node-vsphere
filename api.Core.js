@@ -6,6 +6,7 @@ function apiCore(opts) {
 	this.options =  Object.assign({}, opts);
 	this.vspLogin = vspLogin;
 	this.getObjects = getObjects;
+	this.getTasks = getTasks;
 }
 module.exports = apiCore;
 
@@ -25,6 +26,31 @@ function vspLogin(hostname, username, password) {
 		});
 	});
 };
+
+// getTask
+function getTasks(service, taskId, clusterId) {
+	let taskManager = service.serviceContent.taskManager;
+        let vimPort = service.vimPort;
+        let vim = service.vim;
+
+	console.log(clusterId + 'moo');
+	let taskFilter = vim.TaskFilterSpec({
+		/*entity: vim.TaskFilterSpecByEntity({
+			entity: vim.ManagedObjectReference({
+				value: clusterId,
+				type: "ClusterComputeResource"
+			}),
+			recursion: 'self'
+		})*/
+		state: 'running'
+	});
+	vimPort.createCollectorForTasks(taskManager, taskFilter).then((collector) => {
+		let cRef = vim.ManagedObjectReference(collector);
+		vimPort.readNextTasks(cRef, 10).then((tasks) => {
+			console.log(tasks);
+		});
+	});
+}
 
 // getObjects
 function getObjects(service, propertySpec) {
