@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const apiDatacenter = require('./api.Datacenter');
+const apiCore = require('./api.Core');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -27,11 +28,11 @@ if(args[1].match(/Datacenter/g)) {
 
 // run
 function run(datacenterId) {
-	let ccra = new apiDatacenter();
-	ccra.vspSession(hostname, username, password).then((client) => {
-		client.getDatacenter(datacenterId).then((entity) => {
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		let datacenters = new apiDatacenter(service);
+		datacenters.getDatacenter(datacenterId).then((entity) => {
 			entity.destroy();
-			console.log('Finale Success!!!');
 		}).catch((err) => {
 			console.log('FAIL... ');
 		});

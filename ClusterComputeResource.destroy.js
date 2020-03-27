@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const apiClusterComputeResource = require('./api.ClusterComputeResource');
+const apiCore = require('./api.Core');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -27,13 +28,13 @@ if(args[1].match(/ClusterComputeResource/g)) {
 
 // run
 function run(clusterId) {
-	let ccra = new apiClusterComputeResource(); // add auth into constructor?
-	ccra.vspSession(hostname, username, password).then((client) => {
-		client.getCluster(clusterId).then((cluster) => {
-			cluster.destroy();
-			console.log('Finale Success!!!');
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		let clusters = new apiClusterComputeResource(service);
+		clusters.getCluster(clusterId).then((entity) => {
+			return entity.destroy();
 		}).catch((err) => {
-			console.log('FAIL... ');
+			console.log('[ERROR]: ' + err.message);
 		});
 	});
 }

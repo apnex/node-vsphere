@@ -30,13 +30,14 @@ function destroy() {
 		let service = this.service;
 		let entity = this.entity;
 		service.vimPort.destroyTask(entity).then((task) => {
-			console.log('Entity[' + entity.value + '] deleted');
 			resolve(task);
+		}).catch((err) => {
+			reject(err);
 		});
 	});
 }
 
-// Datacenter.create
+// HostSystem.create
 /*
 function createHost(datacenterName) {
 	return new Promise((resolve, reject) => {

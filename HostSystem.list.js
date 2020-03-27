@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const vsphere = require('./dist/vsphere');
+const apiCore = require('./api.Core');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -8,43 +8,33 @@ var hostname = params.hostname;
 var username = params.username;
 var password = params.password;
 
-function run() {
+// colours
+const chalk = require('chalk');
+const red = chalk.bold.red;
+const orange = chalk.keyword('orange');
+const green = chalk.green;
+const blue = chalk.blueBright;
+
+// called from shell
+const args = process.argv;
+if(args[1].match(/HostSystem/g)) {
+	run();
 }
 
-vsphere.vimService(hostname).then((service) => {
-	let propertyCollector = service.serviceContent.propertyCollector;
-	let rootFolder = service.serviceContent.rootFolder;
-        let sessionManager = service.serviceContent.sessionManager;
-        let viewManager = service.serviceContent.viewManager;
-        let vim = service.vim;
-        let vimPort = service.vimPort;
-
-	return vimPort.login(sessionManager, username, password).then(() => {
-		return vimPort.createContainerView(viewManager, rootFolder, ["ManagedEntity"], true);
-	}).then((containerView) => {
-		//console.log(JSON.stringify(rootFolder, null, "\t"));
-		return vimPort.retrievePropertiesEx(propertyCollector, [
-			vim.PropertyFilterSpec({
-				objectSet: vim.ObjectSpec({
-					obj: containerView,
-					skip: true,
-					selectSet: vim.TraversalSpec({
-						path: "view",
-						type: "ContainerView"
-					})
-				}),
-				propSet: vim.PropertySpec({
-					type: "HostSystem",
-					pathSet: ["name"]
-				})
-			})
-		], vim.RetrieveOptions());
-	}).then((result) => {
-		result.objects.forEach((item) => {
-			console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+// run
+function run() {
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		core.getObjects(service, {
+			type: 'HostSystem',
+			pathSet: ['name']
+		}).then((result) => {
+			result.objects.forEach((item) => {
+				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+			});
+		}).catch((err) => {
+			console.log('[FAIL]... ');
+			console.log(err.message);
 		});
-		return vimPort.logout(sessionManager);
 	});
-}).catch(function(err) {
-	console.log('MOOOO: ' + err.message);
-});
+}

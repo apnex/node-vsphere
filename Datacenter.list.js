@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const apiClusterComputeResource = require('./api.ClusterComputeResource');
 const apiCore = require('./api.Core');
 const params = require('./params.json');
 
@@ -24,10 +23,9 @@ if(args[1].match(/Datacenter/g)) {
 
 // run
 function run() {
-	let ccra = new apiClusterComputeResource(); // add auth into constructor?
-	let capi = new apiCore();
-	ccra.vspSession(hostname, username, password).then((client) => {
-		capi.getObjects(client.service, {
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		core.getObjects(service, {
 			type: 'Datacenter',
 			pathSet: ['name']
 		}).then((result) => {
@@ -35,7 +33,8 @@ function run() {
 				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
 			});
 		}).catch((err) => {
-			console.log('FAIL... ');
+			console.log('[FAIL]... ');
+			console.log(err.message);
 		});
 	});
 }

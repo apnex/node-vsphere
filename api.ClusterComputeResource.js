@@ -32,6 +32,8 @@ function destroy() {
 		service.vimPort.destroyTask(entity).then((task) => {
 			console.log('Entity[' + entity.value + '] deleted');
 			resolve(task);
+		}).catch((err) => {
+			reject(err);
 		});
 	});
 }
@@ -46,7 +48,10 @@ function createCluster(clusterName, folderId, spec = {}) {
 			type: "Folder"
 		});
 		service.vimPort.createClusterEx(entity, clusterName, taskSpec).then((task) => {
+			// await task completion
 			resolve(task);
+		}).catch((err) => {
+			reject(err);
 		});
 	});
 }

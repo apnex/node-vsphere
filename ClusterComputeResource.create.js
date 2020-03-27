@@ -28,10 +28,10 @@ if(args[1].match(/ClusterComputeResource/g)) {
 
 // run
 function run(datacenterId, clusterName) {
-	let ccra = new apiClusterComputeResource();
-	let capi = new apiCore();
-	ccra.vspSession(hostname, username, password).then((client) => {
-		capi.getObjects(client.service, {
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		let clusters = new apiClusterComputeResource(service);
+		core.getObjects(service, {
 			type: 'Datacenter',
 			pathSet: ['hostFolder']
 		}).then((result) => {
@@ -39,7 +39,7 @@ function run(datacenterId, clusterName) {
 				return (item.obj.value == datacenterId);
 			})[0];
 			let hostFolder = myDc.propSet[0].val.value;
-			client.createCluster(clusterName, hostFolder).then((task) => {
+			clusters.createCluster(clusterName, hostFolder).then((task) => {
 				console.log('Create Finale Success!!!');
 			});
 		}).catch((err) => {

@@ -28,10 +28,10 @@ if(args[1].match(/Datacenter/g)) {
 
 // run
 function run(datacenterName) {
-	let ccra = new apiDatacenter();
-	let capi = new apiCore();
-	ccra.vspSession(hostname, username, password).then((client) => {
-		client.createDatacenter(datacenterName).then((task) => {
+	let core = new apiCore();
+	core.vspLogin(hostname, username, password).then((service) => {
+		let datacenters = new apiDatacenter(service);
+		datacenters.createDatacenter(datacenterName).then((task) => {
 			console.log('Create Finale Success!!!');
 		});
 	}).catch((err) => {
