@@ -44,7 +44,6 @@ function addHost(spec) {
 	return new Promise((resolve, reject) => {
 		let service = this.service;
 		let cluster = this.entity;
-		console.log(cluster);
 		let mySpec = service.vim.HostConnectSpec(spec)
 		service.vimPort.addHostTask(cluster, mySpec, 1).then((task) => {
 			resolve(task);

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 const vsphere = require('./dist/vsphere');
 
+// Core to have knowledge of all Managed Entity sub-types, so that they can be returned as method-bound objects
+
 // constructor
 function apiCore(opts) {
 	this.options =  Object.assign({}, opts);
 	this.vspLogin = vspLogin;
 	this.getObjects = getObjects;
-	this.getTasks = getTasks;
+	this.getTaskInfo = getTaskInfo;
+	this.waitForTask = waitForTask;
 }
 module.exports = apiCore;
 
@@ -27,28 +30,44 @@ function vspLogin(hostname, username, password) {
 	});
 };
 
-// getTask
-function getTasks(service, taskId, clusterId) {
-	let taskManager = service.serviceContent.taskManager;
-        let vimPort = service.vimPort;
-        let vim = service.vim;
-
-	console.log(clusterId + 'moo');
-	let taskFilter = vim.TaskFilterSpec({
-		/*entity: vim.TaskFilterSpecByEntity({
-			entity: vim.ManagedObjectReference({
-				value: clusterId,
-				type: "ClusterComputeResource"
-			}),
-			recursion: 'self'
-		})*/
-		state: 'running'
-	});
-	vimPort.createCollectorForTasks(taskManager, taskFilter).then((collector) => {
-		let cRef = vim.ManagedObjectReference(collector);
-		vimPort.readNextTasks(cRef, 10).then((tasks) => {
-			console.log(tasks);
+// getTaskInfo
+function getTaskInfo(service, task) {
+	return new Promise((resolve, reject) => {
+		let propertyCollector = service.serviceContent.propertyCollector;
+		let vimPort = service.vimPort;
+		let vim = service.vim;
+		let taskObj = vim.ManagedObjectReference(task);
+		vimPort.retrievePropertiesEx(propertyCollector, [
+			vim.PropertyFilterSpec({
+				objectSet: vim.ObjectSpec({
+					obj: taskObj,
+					skip: false
+				}),
+				propSet: vim.PropertySpec({
+					type: 'Task',
+					pathSet: ['info']
+				})
+			})
+		], vim.RetrieveOptions()).then((result) => {
+			resolve(result.objects[0].propSet[0].val);
+		}).catch((err) => {
+			reject(err);
 		});
+	});
+}
+
+// waitForTask
+function waitForTask(service, task) {
+	return new Promise((resolve, reject) => {
+		let loop = setInterval(() => {
+			getTaskInfo(service, task).then((taskInfo) => {
+				console.log('task[' + taskInfo.key + '] -- state[' + taskInfo.state + '] -- progress[' + taskInfo.progress + ']');
+				if(taskInfo.state != 'running') {
+					clearInterval(loop);
+					resolve(taskInfo);
+				}
+			});
+		}, 1000);
 	});
 }
 

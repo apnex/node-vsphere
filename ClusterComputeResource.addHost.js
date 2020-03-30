@@ -41,12 +41,11 @@ function run(clusterId, hostIp) {
 	let core = new apiCore();
 	core.vspLogin(hostname, username, password).then((service) => {
 		let clusters = new apiClusterComputeResource(service);
-		console.log('login success');
 		clusters.getCluster(clusterId).then((entity) => {
-			entity.addHost(mySpec).then((response) => {
-				console.log('addHost Success!!!');
-				core.getTasks(service, response.value, clusterId);
-				console.log(response);
+			entity.addHost(mySpec).then((task) => {
+				core.waitForTask(service, task).then((info) => {
+					console.log(JSON.stringify(info.result, null, "\t"));
+				});
 			});
 		}).catch((err) => {
 			console.log('FAIL... ');
