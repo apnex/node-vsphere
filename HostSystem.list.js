@@ -30,6 +30,7 @@ function run() {
 			pathSet: ['name']
 		}).then((result) => {
 			result.objects.forEach((item) => {
+				core.getEntity(item.obj.value);
 				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
 			});
 		}).catch((err) => {

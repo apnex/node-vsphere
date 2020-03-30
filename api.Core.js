@@ -7,6 +7,7 @@ const vsphere = require('./dist/vsphere');
 function apiCore(opts) {
 	this.options =  Object.assign({}, opts);
 	this.vspLogin = vspLogin;
+	this.getEntity = getEntity;
 	this.getObjects = getObjects;
 	this.getTaskInfo = getTaskInfo;
 	this.waitForTask = waitForTask;
@@ -93,4 +94,27 @@ function getObjects(service, propertySpec) {
 			})
 		], vim.RetrieveOptions());
 	});
+}
+
+function getEntity(id) {
+	switch(true) {
+		case /^domain-c/.test(id):
+			console.log(id + ' is a ClusterComputeResource');
+		break;
+		case /^vm-/.test(id):
+			console.log(id + ' is a VirtualMachine');
+		break;
+		case /^host-/.test(id):
+			console.log(id + ' is a HostSystem');
+		break;
+		case /^group-/.test(id):
+			console.log(id + ' is a Folder');
+		break;
+		case /^datacenter-/.test(id):
+			console.log(id + ' is a Datacenter');
+		break;
+		default:
+			console.log(id + ' is no idea?');
+		break;
+	}
 }
