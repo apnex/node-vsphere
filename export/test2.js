@@ -11,12 +11,14 @@ var password = params.password;
 
 let client = new apiClient();
 client.vspLogin(hostname, username, password).then((service) => {
-	let host = client.getManagedEntity('host-188'); // returns HostSystem
-	host.exitMaintenanceMode({timeout: 10}).then((success) => {
-		return host.enterMaintenanceMode({timeout: 10});
+	let cluster = client.getManagedEntity('domain-c137');
+	cluster.addHost({
+		force: 1,
+		hostName: '172.16.10.30',
+		userName: 'root',
+		password: 'VMware1!',
+		port: 443
 	}).then((success) => {
-		return host.exitMaintenanceMode({timeout: 10});
-	}).then((success) => {
-		return host.enterMaintenanceMode({timeout: 10});
+		console.log('success!!!!!');
 	});
 });

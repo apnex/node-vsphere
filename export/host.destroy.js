@@ -12,11 +12,7 @@ var password = params.password;
 let client = new apiClient();
 client.vspLogin(hostname, username, password).then((service) => {
 	let host = client.getManagedEntity('host-188'); // returns HostSystem
-	host.exitMaintenanceMode({timeout: 10}).then((success) => {
-		return host.enterMaintenanceMode({timeout: 10});
-	}).then((success) => {
-		return host.exitMaintenanceMode({timeout: 10});
-	}).then((success) => {
-		return host.enterMaintenanceMode({timeout: 10});
+	host.enterMaintenanceMode({timeout: 10}).then((success) => {
+		return host.destroy();
 	});
 });

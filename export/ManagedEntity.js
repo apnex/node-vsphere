@@ -63,7 +63,7 @@ module.exports = class ManagedEntity {
 					if(typeof(taskInfo.progress) != 'undefined') {
 						progress = taskInfo.progress;
 					}
-					console.log('task[' + taskInfo.key + '] -- state[' + taskInfo.state + '] -- progress[' + progress + ']');
+					console.log('task[' + taskInfo.key + '] -- state[' + taskInfo.state + '] -- progress[' + progress + '] -- description[' + taskInfo.descriptionId + ']');
 					if(taskInfo.state != 'running') {
 						clearInterval(loop);
 						resolve(taskInfo);

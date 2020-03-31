@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const vsphere = require('../dist/vsphere');
 const HostSystem = require('./HostSystem');
+const ClusterComputeResource = require('./ClusterComputeResource');
 // Core to have knowledge of all Managed Entity sub-types, so that they can be returned as method-bound objects
 
 // constructor
@@ -104,7 +105,7 @@ function getObjects(service, propertySpec) {
 function getManagedEntity(id) {
 	switch(true) {
 		case /^domain-c/.test(id):
-			console.log(id + ' is a ClusterComputeResource');
+			return(new ClusterComputeResource(this.service, id));
 		break;
 		case /^vm-/.test(id):
 			console.log(id + ' is a VirtualMachine');

@@ -14,9 +14,7 @@ module.exports = class HostSystem extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			service.vimPort.exitMaintenanceModeTask(entity, taskSpec.timeout).then((task) => {
-				// return a promise for waitForTask
 				resolve(super.waitForTask(task));
-				//resolve(task);
 			});
 		});
 	}
@@ -25,7 +23,6 @@ module.exports = class HostSystem extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			service.vimPort.enterMaintenanceModeTask(entity, taskSpec.timeout).then((task) => {
-				//return super.waitForTask(task);
 				resolve(super.waitForTask(task));
 			});
 		});
