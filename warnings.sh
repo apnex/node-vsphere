@@ -1,2 +1,2 @@
 #!/bin/bash
-export NODE_NO_WARNINGS=1
+export NODE_NO_WARNINGS=0

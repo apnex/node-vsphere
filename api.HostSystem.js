@@ -19,7 +19,9 @@ function getEntity(spec) {
 		resolve({
 			service,
 			entity: service.vim.ManagedObjectReference(spec),
-			destroy
+			destroy,
+			enterMaintenanceMode,
+			exitMaintenanceMode
 		});
 	});
 }
@@ -33,6 +35,28 @@ function destroy() {
 			resolve(task);
 		}).catch((err) => {
 			reject(err);
+		});
+	});
+}
+
+// HostSystem.exitMaintenanceMode
+function exitMaintenanceMode(taskSpec) {
+	return new Promise((resolve, reject) => {
+		let service = this.service;
+		let entity = this.entity;
+		service.vimPort.exitMaintenanceModeTask(entity, taskSpec.timeout).then((task) => {
+			resolve(task);
+		});
+	});
+}
+
+// HostSystem.enterMaintenanceMode
+function enterMaintenanceMode(taskSpec) {
+	return new Promise((resolve, reject) => {
+		let service = this.service;
+		let entity = this.entity;
+		service.vimPort.enterMaintenanceModeTask(entity, taskSpec.timeout).then((task) => {
+			resolve(task);
 		});
 	});
 }
