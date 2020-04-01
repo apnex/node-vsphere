@@ -18,7 +18,11 @@ client.vspLogin(hostname, username, password).then((service) => {
 		userName: 'root',
 		password: 'VMware1!',
 		port: 443
-	}).then((success) => {
-		console.log('success!!!!!');
+	}).then((info) => {
+		let host = client.getManagedEntity(info.result.value);
+		host.exitMaintenanceMode({timeout: 1}).then((info) => {
+			console.log(JSON.stringify(info, null, "\t"));
+			console.log('success!!!!!');
+		});;
 	});
 });

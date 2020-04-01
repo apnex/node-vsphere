@@ -9,20 +9,20 @@ module.exports = class HostSystem extends ManagedEntity {
 	sayHello() {
 		console.log('I have ID: ' + this.entity);
 	}
-	exitMaintenanceMode(taskSpec) {
+	exitMaintenanceMode({timeout = 60} = {}) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
 			let entity = this.entity;
-			service.vimPort.exitMaintenanceModeTask(entity, taskSpec.timeout).then((task) => {
+			service.vimPort.exitMaintenanceModeTask(entity, timeout).then((task) => {
 				resolve(super.waitForTask(task));
 			});
 		});
 	}
-	enterMaintenanceMode(taskSpec) {
+	enterMaintenanceMode({timeout = 60} = {}) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
 			let entity = this.entity;
-			service.vimPort.enterMaintenanceModeTask(entity, taskSpec.timeout).then((task) => {
+			service.vimPort.enterMaintenanceModeTask(entity, timeout).then((task) => {
 				resolve(super.waitForTask(task));
 			});
 		});

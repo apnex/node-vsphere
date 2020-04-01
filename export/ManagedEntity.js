@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 'use strict';
+const apiCore = require('./api.Core');
+const core = new apiCore();
 
 module.exports = class ManagedEntity {
 	constructor(service, id) {
@@ -32,44 +34,9 @@ module.exports = class ManagedEntity {
 		});
 	}
 	getTaskInfo(task) {
-		return new Promise((resolve, reject) => {
-			let service = this.service
-			let propertyCollector = service.serviceContent.propertyCollector;
-			let vim = service.vim;
-			let taskObj = vim.ManagedObjectReference(task);
-			service.vimPort.retrievePropertiesEx(propertyCollector, [
-				vim.PropertyFilterSpec({
-					objectSet: vim.ObjectSpec({
-						obj: taskObj,
-						skip: false
-					}),
-					propSet: vim.PropertySpec({
-						type: 'Task',
-						pathSet: ['info']
-					})
-				})
-			], vim.RetrieveOptions()).then((result) => {
-				resolve(result.objects[0].propSet[0].val);
-			}).catch((err) => {
-				reject(err);
-			});
-		});
+		return core.getTaskInfo(this.service, task);
 	}
 	waitForTask(task) {
-		return new Promise((resolve, reject) => {
-			let loop = setInterval(() => {
-				this.getTaskInfo(task).then((taskInfo) => {
-					let progress = '--';
-					if(typeof(taskInfo.progress) != 'undefined') {
-						progress = taskInfo.progress;
-					}
-					console.log('task[' + taskInfo.key + '] -- state[' + taskInfo.state + '] -- progress[' + progress + '] -- description[' + taskInfo.descriptionId + ']');
-					if(taskInfo.state != 'running') {
-						clearInterval(loop);
-						resolve(taskInfo);
-					}
-				});
-			}, 1000);
-		});
+		return core.waitForTask(this.service, task);
 	}
 };
