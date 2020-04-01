@@ -9,10 +9,30 @@ var hostname = params.hostname;
 var username = params.username;
 var password = params.password;
 
-let client = new apiClient();
-client.vspLogin(hostname, username, password).then((service) => {
-	let host = client.getManagedEntity('host-188'); // returns HostSystem
-	host.enterMaintenanceMode({timeout: 10}).then((success) => {
-		return host.destroy();
+// colours
+const chalk = require('chalk');
+const red = chalk.bold.red;
+const orange = chalk.keyword('orange');
+const green = chalk.green;
+const blue = chalk.blueBright;
+
+// called from shell
+const args = process.argv;
+if(args[1].match(/host/g)) {
+	if(args[2]) {
+		main(args[2]);
+	} else {
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.destroy <host.id>'));
+	}
+}
+
+// main
+function main(id) {
+	let client = new apiClient(); // add auth?
+	client.vspLogin(hostname, username, password).then((service) => {
+		let host = client.get(id);
+		host.enterMaintenanceMode().then((success) => {
+			return host.destroy();
+		});
 	});
-});
+}

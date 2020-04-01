@@ -11,7 +11,7 @@ var password = params.password;
 
 let client = new apiClient();
 client.vspLogin(hostname, username, password).then((service) => {
-	let cluster = client.getManagedEntity('domain-c137');
+	let cluster = client.getManagedEntity('domain-c13');
 	cluster.addHost({
 		force: 1,
 		hostName: '172.16.10.30',
