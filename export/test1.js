@@ -11,7 +11,7 @@ var password = params.password;
 
 let client = new apiClient();
 client.vspLogin(hostname, username, password).then((service) => {
-	let host = client.getManagedEntity('host-1010'); // returns HostSystem entity
+	let host = client.getManagedEntity('host-1095'); // returns HostSystem entity
 	host.exitMaintenanceMode().then((info) => {
 		console.log('TASK1 Finish');
 		return host.enterMaintenanceMode();

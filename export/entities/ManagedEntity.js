@@ -5,13 +5,10 @@ const core = new apiCore();
 
 module.exports = class ManagedEntity {
 	constructor(service, id) {
-		console.log('construct id[' + id + ']');
                 this.id = id;
 		this.service = service;
-
-		// discover from id??
 		this.entity = service.vim.ManagedObjectReference({
-			type: 'HostSystem',
+			type: core.getEntityType(id),
 			value: id
 		});
 	}

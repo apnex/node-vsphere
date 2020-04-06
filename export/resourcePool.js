@@ -11,12 +11,14 @@ var password = params.password;
 
 let client = new apiClient();
 client.vspLogin(hostname, username, password).then((service) => {
-	let host = client.getManagedEntity('host-1107');
-	host.enterMaintenanceMode().then((info) => {
-		console.log('TASK1 Finish');
-		return host.destroy();
-	}).then((info) => {
-		console.log(JSON.stringify(info, null, "\t"));
-		console.log('TASK2 Finish');
+	let spec = {
+		cpuAllocation: {},
+		memoryAllocation: {}
+	};
+
+	let rootPool = client.getManagedEntity('resgroup-14');
+	console.log(JSON.stringify(rootPool, null, "\t"));
+	rootPool.createResourcePool('mynewpool').then((info) => {
+		console.log('end of operations');
 	});
 });

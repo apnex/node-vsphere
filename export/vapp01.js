@@ -11,6 +11,11 @@ var password = params.password;
 
 let client = new apiClient();
 client.vspLogin(hostname, username, password).then((service) => {
+	let ResourceConfigSpec = {
+		cpuAllocation: {},
+		memoryAllocation: {}
+	};
+
 	let dc = client.getManagedEntity('datacenter-3');
 	dc.createCluster('cluster16').then((info) => {
 		let cluster = client.getManagedEntity(info.value);

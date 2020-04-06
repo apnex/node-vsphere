@@ -2,10 +2,9 @@
 const vsphere = require('../dist/vsphere');
 const ora = require('ora');
 
-// Core to have knowledge of all Managed Entity sub-types, so that they can be returned as method-bound objects
-
 // constructor
 function apiCore() {
+	this.getEntityType = getEntityType;
 	this.getObjects = getObjects;
 	this.getTaskInfo = getTaskInfo;
 	this.waitForTask = waitForTask;
@@ -43,19 +42,17 @@ function waitForTask(service, task) {
 	return new Promise((resolve, reject) => {
 		const spinner = ora({spinner: 'bouncingBall'});
 		let loop = setInterval(() => {
-			this.getTaskInfo(service, task).then((taskInfo) => {
+			this.getTaskInfo(service, task).then((info) => {
 				if(!spinner.isSpinning) {
-					spinner.start(taskInfo.key.padEnd(30, '.') + taskInfo.name.padEnd(30, '.') + taskInfo.state.padEnd(30, '.'));
+					spinner.start(info.key.padEnd(20, ' ') + info.name.padEnd(30, ' ') + info.entityName.padEnd(20, ' ') + info.state.padEnd(20, ' '));
+					//console.log(JSON.stringify(taskInfo, null, "\t"));
+				} else {
+					spinner.text = info.key.padEnd(20, ' ') + info.name.padEnd(30, ' ') + info.entityName.padEnd(20, ' ') + info.state.padEnd(20, ' ');
 				}
-				/*let progress = '--';
-				if(typeof(taskInfo.progress) != 'undefined') {
-					progress = taskInfo.progress;
-				}*/
-				if(taskInfo.state != 'running') {
+				if(info.state != 'running') {
 					clearInterval(loop);
 					spinner.succeed();
-					//spinner.stop();
-					resolve(taskInfo);
+					resolve(info);
 				}
 			});
 		}, 1000);
@@ -84,4 +81,31 @@ function getObjects(service, propertySpec) {
 			})
 		], vim.RetrieveOptions());
 	});
+}
+
+// getEntityType
+function getEntityType(id) {
+	switch(true) {
+		case /^datacenter-/.test(id):
+			return('Datacenter');
+		break;
+		case /^domain-c/.test(id):
+			return('ClusterComputeResource');
+		break;
+		case /^host-/.test(id):
+			return('HostSystem');
+		break;
+		case /^resgroup-/.test(id):
+			return('ResourcePool');
+		break;
+		case /^vm-/.test(id):
+			return('VirtualMachine');
+		break;
+		case /^group-/.test(id):
+			return('Folder');
+		break;
+		default:
+			console.log('No ides what [' + id + ']');
+		break;
+	}
 }

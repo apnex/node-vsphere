@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 const vsphere = require('./dist/vsphere');
+const apiCore = require('./entities/api.Core');
 const ClusterComputeResource = require('./entities/ClusterComputeResource');
 const HostSystem = require('./entities/HostSystem');
 const Datacenter = require('./entities/Datacenter');
+const ResourcePool = require('./entities/ResourcePool');
+const core = new apiCore();
 /*
 	Client to perform 2 functions:
 	- provide stateful session authentication and handling of state
@@ -36,24 +39,16 @@ function vspLogin(hostname, username, password) {
 };
 
 function getManagedEntity(id) {
-	switch(true) {
-		case /^datacenter-/.test(id):
-			return(new Datacenter(this.service, id));
-		break;
-		case /^domain-c/.test(id):
-			return(new ClusterComputeResource(this.service, id));
-		break;
-		case /^host-/.test(id):
-			return(new HostSystem(this.service, id));
-		break;
-		case /^vm-/.test(id):
-			console.log(id + ' is a VirtualMachine');
-		break;
-		case /^group-/.test(id):
-			console.log(id + ' is a Folder');
-		break;
-		default:
-			console.log(id + ' is no idea?');
-		break;
+	let type = [
+		'Datacenter',
+		'ClusterComputeResource',
+		'HostSystem',
+		'ResourcePool'
+	].filter((item) => {
+		return item == core.getEntityType(id);
+	})[0];
+	if(typeof(type) !== 'undefined') {
+		const entityClass = require('./entities/' + type);
+		return(new entityClass(this.service, id));
 	}
 }

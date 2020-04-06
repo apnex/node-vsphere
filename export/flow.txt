@@ -1,0 +1,46 @@
+Goal
+Programmatic deployment of unattended iPXE booted nested ESX VMs
+
+Entrypoint
+- vSphere 6.7 Cluster with minimum 1 Host
+- Physical Host with ESX 6.7+
+- vCenter
+
+Spec
+{
+	name: 'lab01
+	prefix: 'esx'
+	number: 3
+	network: {
+		uplink: {
+			portgroup: 'dvportgroup-23',
+			ipPrefix: '172.16.100.45/23',
+			gateway: '172.16.100.1'
+		},
+		segments: [
+			{
+				name: 'pg-mgmt'			
+			}
+		]
+	}
+}
+
+Workflow
+- Check access to vCenter
+- Check if ResourcePool 'lab01' exists
+-- If RESOURCEPOOL Exist
+--- If ROUTER exists
+----
+- Create
+- Build ESX VMs
+- Assemble into Clusters
+
+###
+Create Resource Pool
+Create Distributed Switch
+Create ROUTER
+
+
+### notes!!
+ClusterComputeResource -> ResourcePool -> Child-ResourcePool
+# Select Cluster, create child ResourcePool

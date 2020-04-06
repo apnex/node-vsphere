@@ -4,7 +4,6 @@ const ManagedEntity = require('./ManagedEntity');
 
 module.exports = class Datacenter extends ManagedEntity {
 	constructor(service, id) {
-		console.log('construct id[' + id + ']');
 		super(service, id);
 	}
 	createCluster(clusterName, spec = {}) {

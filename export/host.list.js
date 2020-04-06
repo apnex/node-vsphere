@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const apiCore = require('./api.Core');
+'use strict';
+const apiClient = require('./api.Client');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -17,27 +18,22 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/HostSystem/g)) {
-	run();
+if(args[1].match(/host/g)) {
+	main();
 }
 
-// run
-function run() {
-	let core = new apiCore();
-	core.vspLogin(hostname, username, password).then((service) => {
-		core.getObjects(service, {
-			//type: 'HostSystem',
-			//pathSet: ['name']
-			type: 'ManagedEntity',
+// main
+function main(id) {
+	let client = new apiClient(); // add auth?
+	client.vspLogin(hostname, username, password).then((service) => {
+		client.getObjects(service, {
+			type: 'HostSystem',
 			pathSet: ['name']
 		}).then((result) => {
 			result.objects.forEach((item) => {
-				//core.getEntity(item.obj.value);
+				client.getEntity(item.obj.value);
 				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
 			});
-		}).catch((err) => {
-			console.log('[FAIL]... ');
-			console.log(err.message);
 		});
 	});
 }
