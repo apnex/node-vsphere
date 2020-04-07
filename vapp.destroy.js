@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 const apiClient = require('./api.Client');
-const apiCore = require('./entities/api.Core');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -19,24 +18,19 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/datacenter/g)) {
-	main();
+if(args[1].match(/vapp/g)) {
+	if(args[2]) {
+		main(args[2]);
+	} else {
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vapp.destroy <vapp.id>'));
+	}
 }
 
 // main
 function main(id) {
-	let core = new apiCore();
 	let client = new apiClient(); // add auth?
 	client.vspLogin(hostname, username, password).then((root) => {
-		root.getObjects({
-			type: 'Datacenter',
-			pathSet: ['name']
-		}).then((result) => {
-			if(result) {
-				result.objects.forEach((item) => {
-					console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
-				});
-			}
-		});
+		let entity = root.get(id);
+		return entity.destroy();
 	});
 }

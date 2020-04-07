@@ -1,0 +1,25 @@
+$name = 'lab02'
+$resSpec = New-Object VMware.Vim.ResourceConfigSpec
+$resSpec.MemoryAllocation = New-Object VMware.Vim.ResourceAllocationInfo
+$resSpec.MemoryAllocation.Shares = New-Object VMware.Vim.SharesInfo
+$resSpec.MemoryAllocation.Shares.Shares = 163840
+$resSpec.MemoryAllocation.Shares.Level = 'normal'
+$resSpec.MemoryAllocation.Limit = -1
+$resSpec.MemoryAllocation.Reservation = 0
+$resSpec.MemoryAllocation.ExpandableReservation = $true
+$resSpec.ScaleDescendantsShares = 'disabled'
+$resSpec.CpuAllocation = New-Object VMware.Vim.ResourceAllocationInfo
+$resSpec.CpuAllocation.Shares = New-Object VMware.Vim.SharesInfo
+$resSpec.CpuAllocation.Shares.Shares = 4000
+$resSpec.CpuAllocation.Shares.Level = 'normal'
+$resSpec.CpuAllocation.Limit = -1
+$resSpec.CpuAllocation.Reservation = 0
+$resSpec.CpuAllocation.ExpandableReservation = $true
+$configSpec = New-Object VMware.Vim.VAppConfigSpec
+$configSpec.EntityConfig = New-Object VMware.Vim.VAppEntityConfigInfo[] (0)
+$configSpec.Property = New-Object VMware.Vim.VAppPropertySpec[] (0)
+$vmFolder = New-Object VMware.Vim.ManagedObjectReference
+$vmFolder.Type = 'Folder'
+$vmFolder.Value = 'group-v4'
+$_this = Get-View -Id 'ResourcePool-resgroup-14'
+$_this.CreateVApp($name, $resSpec, $configSpec, $vmFolder)

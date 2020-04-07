@@ -19,7 +19,7 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/datacenter/g)) {
+if(args[1].match(/vapp/g)) {
 	main();
 }
 
@@ -29,7 +29,7 @@ function main(id) {
 	let client = new apiClient(); // add auth?
 	client.vspLogin(hostname, username, password).then((root) => {
 		root.getObjects({
-			type: 'Datacenter',
+			type: 'VirtualApp',
 			pathSet: ['name']
 		}).then((result) => {
 			if(result) {

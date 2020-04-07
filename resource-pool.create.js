@@ -29,12 +29,8 @@ if(args[1].match(/resource-pool/g)) {
 // main
 function main(id, name) {
 	let client = new apiClient();
-	client.vspLogin(hostname, username, password).then((service) => {
-		let spec = {
-			cpuAllocation: {},
-			memoryAllocation: {}
-		};
-		let cluster = client.getManagedEntity(id);
+	client.vspLogin(hostname, username, password).then((root) => {
+		let cluster = root.get(id);
 		cluster.createResourcePool(name).then((info) => {
 			console.log('end of operations');
 		});

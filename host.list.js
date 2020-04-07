@@ -32,9 +32,11 @@ function main(id) {
 			type: 'HostSystem',
 			pathSet: ['name']
 		}).then((result) => {
-			result.objects.forEach((item) => {
-				console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
-			});
+			if(result) {
+				result.objects.forEach((item) => {
+					console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+				});
+			}
 		});
 	});
 }

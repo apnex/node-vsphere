@@ -34,10 +34,37 @@ module.exports = class ResourcePool extends ManagedEntity {
 					memoryAllocation: service.vim.ResourceAllocationInfo(memoryAllocation)
 			});
 			return service.vimPort.createResourcePool(entity, name, spec);
-			/*.then((info) => {
-				resolve(info);
-			})*/
-			console.log(JSON.stringify(spec, null, "\t"));
+		});
+	}
+	createVApp(name, {
+		resSpec = this.service.vim.ResourceConfigSpec({
+			cpuAllocation: this.service.vim.ResourceAllocationInfo({
+				expandableReservation: true,
+				reservation: 0,
+				limit: -1,
+				shares: this.service.vim.SharesInfo({
+					level: 'normal',
+					shares: 4000
+				})
+			}),
+			memoryAllocation: this.service.vim.ResourceAllocationInfo({
+				expandableReservation: true,
+				reservation: 0,
+				limit: -1,
+				shares: this.service.vim.SharesInfo({
+					level: 'normal',
+					shares: 163480
+				})
+			})
+		}),
+		configSpec = this.service.vim.VAppConfigSpec({})
+	} = {}) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			let vmFolder = super.getEntity('group-v4'); // remove static entry!!!
+			console.log(JSON.stringify(vmFolder, null, "\t"));
+			return service.vimPort.createVApp(entity, name, resSpec, configSpec, vmFolder.entity);
 		});
 	}
 };
