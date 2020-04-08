@@ -1,0 +1,107 @@
+{
+	"name": "router",
+	"memoryMB": 2048,
+	"firmware": "bios",
+	"guestId": "centos7_64Guest",
+	"numCPUs": 2,
+	"numCoresPerSocket": 2,
+	"files": {
+		"vmPathName": "[ds-esx03]"
+	},
+	"deviceChange": [
+		{
+			"device": {
+				"discriminator": "ParaVirtualSCSIController",
+				"key": -101,
+				"busNumber": 0,
+				"sharedBus": "noSharing",
+				"deviceInfo": {
+					"summary": "New SCSI Controller",
+					"label": "New SCSI Controller"
+				}
+			},
+			"operation": "add"
+		},
+		{
+			"device": {
+				"discriminator": "VirtualDisk",
+				"key": -102,
+				"unitNumber": 0,
+				"controllerKey": -101,
+				"capacityInKB": 16777216,
+				"backing": {
+					"fileName": "[ds-esx03]",
+					"thinProvisioned": true,
+					"diskMode": "persistent"
+				},
+				"deviceInfo": {
+					"summary": "New Hard disk",
+					"label": "sda"
+				}
+			},
+			"operation": "add",
+			"fileOperation": "create"
+		},
+		{
+			"device": {
+				"discriminator": "VirtualVmxnet3",
+				"key": -103,
+				"macAddress": "",
+				"addressType": "generated",
+				"connectable": {
+					"discriminator": "VirtualDeviceConnectInfo",
+					"connected": true,
+					"allowGuestControl": true,
+					"startConnected": true
+				},
+				"backing": {
+					"discriminator": "VirtualEthernetCardNetworkBackingInfo",
+					"deviceName": "vss-vmnet"
+				},
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New Network",
+					"label": "New Network"
+				}
+			},
+			"operation": "add"
+		},
+		{
+			"device": {
+				"discriminator": "VirtualAHCIController",
+				"key": -104,
+				"busNumber": 0,
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New SATA Controller",
+					"label": "New SATA Controller"
+				}
+			},
+			"operation": "add"
+		},
+		{
+			"device": {
+				"discriminator": "VirtualCdrom",
+				"key": -105,
+				"controllerKey": -104,
+				"unitNumber": 1,
+				"connectable": {
+					"discriminator": "VirtualDeviceConnectInfo",
+					"connected": true,
+					"allowGuestControl": true,
+					"startConnected": true
+				},
+				"backing": {
+					"discriminator": "VirtualCdromIsoBackingInfo",
+					"fileName": "[ds-esx03] /iso/centos.iso"
+				},
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New CDROM",
+					"label": "New CDROM"
+				}
+			},
+			"operation": "add"
+		}
+	]
+}

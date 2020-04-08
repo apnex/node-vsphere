@@ -63,8 +63,19 @@ module.exports = class ResourcePool extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			let vmFolder = super.getEntity('group-v4'); // remove static entry!!!
-			console.log(JSON.stringify(vmFolder, null, "\t"));
+			// domain-c13.parent = 'group-h5'
+			// group-h5.parent = 'datacenter-3'
+			// datacenter-3.vmFolder = 'group-v4'
 			return service.vimPort.createVApp(entity, name, resSpec, configSpec, vmFolder.entity);
+		});
+	}
+	createChildVM(vmSpec) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			service.vimPort.createChildVMTask(entity, vmSpec).then((task) => {
+				resolve(super.waitForTask(task));
+			});
 		});
 	}
 };

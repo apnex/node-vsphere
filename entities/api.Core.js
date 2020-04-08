@@ -106,6 +106,7 @@ function getObject(service, id) {
 		'ClusterComputeResource',
 		'HostSystem',
 		'ResourcePool',
+		'VirtualApp',
 		'VirtualMachine',
 		'DatacenterFolder',
 		'VmFolder',
@@ -132,6 +133,9 @@ function getObjectType(id) {
 		break;
 		case /^host-/.test(id):
 			return('HostSystem');
+		break;
+		case /^resgroup-v/.test(id):
+			return('VirtualApp');
 		break;
 		case /^resgroup-/.test(id):
 			return('ResourcePool');

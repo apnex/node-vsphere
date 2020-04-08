@@ -1,0 +1,29 @@
+{ // VirtualMachineConfigSpec
+	"name": "router",
+	"memoryMB": 2048,
+	"firmware": "bios",
+	"guestId": "centos7_64Guest",
+	"numCPUs": 2,
+	"numCoresPerSocket": 2,
+	"files": { // VirtualMachineFileInfo
+		"vmPathName": "[ds-esx03]"
+	},
+	"deviceChange": [
+		{ // VirtualDeviceConfigSpec
+			"operation": "add"
+			"fileOperation": "create",
+			"device": { // VirtualDevice
+				"capacityInBytes": 17179869184,
+				"backing": { // VirtualDiskFlatVer2BackingInfo
+					"fileName": "[ds-esx03]",
+					"thinProvisioned": true,
+					"diskMode": "persistent"
+				},
+				"deviceInfo": { // Description
+					"summary": "New Hard disk",
+					"label": "sda"
+				}
+			},
+		}
+	]
+}

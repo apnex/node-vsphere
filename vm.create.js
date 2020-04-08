@@ -18,23 +18,21 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/folder/g)) {
-	main();
+if(args[1].match(/vm/g)) {
+	if(args[2]) {
+		main(args[2]);
+	} else {
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.create <resource-pool.id>'));
+	}
 }
 
 // main
 function main(id) {
-	let client = new apiClient(); // add auth?
+	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		root.getObjects({
-			type: 'Folder',
-			pathSet: ['name']
-		}).then((result) => {
-			if(result) {
-				result.objects.forEach((item) => {
-					console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
-				});
-			}
+		let entity = root.get(id);
+		entity.createChildVM().then((info) => {
+			console.log('end of operations');
 		});
 	});
 }
