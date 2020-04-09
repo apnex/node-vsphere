@@ -18,23 +18,19 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/vapp/g)) {
-	if(args[2] && args[3]) {
-		main(args[2], args[3]);
+if(args[1].match(/vm/g)) {
+	if(args[2]) {
+		main(args[2]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('virtual-app.create <cluster.id> <virtual-app.name>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.poweroff <vm.id>'));
 	}
 }
 
 // main
-function main(id, name) {
+function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let cluster = root.get(id);
-		let rSpec = require('./spec/spec.ResourceConfigSpec.json');
-		let cSpec = require('./spec/spec.VAppConfigSpec.json');
-		cluster.createVApp(name, rSpec, cSpec).then((vapp) => {
-			console.log(JSON.stringify(vapp.entity, null, "\t"));
-		});
+		let entity = root.get(id);
+		entity.powerOff();
 	});
 }

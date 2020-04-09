@@ -1,4 +1,5 @@
 {
+	"discriminator": "VirtualMachineConfigSpec",
 	"name": "router",
 	"memoryMB": 2048,
 	"firmware": "bios",

@@ -32,8 +32,10 @@ function main(id) {
 	client.vspLogin(hostname, username, password).then((root) => {
 		let entity = root.get(id);
 		cluster.createVApp(name).then((entity) => {
-			let spec = require('./router.cdrom.json');
+			let spec = require('./spec/router.VirtualMachineConfigSpec.json');
 			entity.createChildVM(spec).then((info) => {
+				// get VirtualMachine
+				// turn on
 				console.log('end of operations');
 			})
 		});

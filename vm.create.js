@@ -30,10 +30,12 @@ if(args[1].match(/vm/g)) {
 function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		var spec = require('./router.cdrom.json');
 		let entity = root.get(id);
-		entity.createChildVM(spec).then((info) => {
-			console.log('end of operations');
+		var spec = require('./spec/router.VirtualMachineConfigSpec.json');
+		entity.createChildVM(spec).then((vm) => {
+			vm.powerOn().then((info) => {
+				console.log(JSON.stringify(info, null, "\t"));
+			});
 		})
 	});
 }

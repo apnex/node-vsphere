@@ -56,7 +56,9 @@ module.exports = class ResourcePool extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			service.vimPort.createChildVMTask(entity, super.buildSpec('VirtualMachineConfigSpec', spec)).then((task) => {
-				resolve(super.waitForTask(task));
+				super.waitForTask(task).then((info) => {
+					resolve(super.getObject(info.result.value));
+				});
 			});
 		});
 	}

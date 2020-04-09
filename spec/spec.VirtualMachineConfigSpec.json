@@ -1,0 +1,106 @@
+{
+	"discriminator": "VirtualMachineConfigSpec",
+	"name": "router",
+	"memoryMB": 2048,
+	"firmware": "bios",
+	"guestId": "centos7_64Guest",
+	"numCPUs": 2,
+	"numCoresPerSocket": 2,
+	"files": {
+		"discriminator": "VirtualMachineFileInfo",
+		"vmPathName": "[ds-sddc]"
+	},
+	"deviceChange": [
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"device": {
+				"discriminator": "VirtualAHCIController",
+				"key": -101,
+				"busNumber": 0,
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New SATA Controller",
+					"label": "New SATA Controller"
+				}
+			},
+			"operation": "add"
+		},
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"device": {
+				"discriminator": "VirtualDisk",
+				"key": -102,
+				"unitNumber": 0,
+				"controllerKey": -101,
+				"capacityInKB": 16777216,
+				"backing": {
+					"discriminator": "VirtualDiskFlatVer2BackingInfo",
+					"fileName": "[ds-sddc]",
+					"thinProvisioned": true,
+					"diskMode": "persistent"
+				},
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New Hard Disk",
+					"label": "New Hard Disk"
+				}
+			},
+			"operation": "add",
+			"fileOperation": "create"
+		},
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"device": {
+				"discriminator": "VirtualCdrom",
+				"key": -103,
+				"controllerKey": -101,
+				"unitNumber": 1,
+				"connectable": {
+					"discriminator": "VirtualDeviceConnectInfo",
+					"connected": true,
+					"allowGuestControl": true,
+					"startConnected": true
+				},
+				"backing": {
+					"discriminator": "VirtualCdromIsoBackingInfo",
+					"fileName": "[ds-ssd] /iso/centos.iso"
+				},
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New CDROM",
+					"label": "New CDROM"
+				}
+			},
+			"operation": "add"
+		},
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"device": {
+				"discriminator": "VirtualVmxnet3",
+				"key": -104,
+				"macAddress": "",
+				"addressType": "generated",
+				"connectable": {
+					"discriminator": "VirtualDeviceConnectInfo",
+					"connected": true,
+					"allowGuestControl": true,
+					"startConnected": true
+				},
+				"backing": {
+					"discriminator": "VirtualEthernetCardDistributedVirtualPortBackingInfo",
+					"port": {
+						"discriminator": "DistributedVirtualSwitchPortConnection",
+						"switchUuid": "50 33 9a 9b 94 db db 0c-b6 ce fd bc 8e b6 7e 0b",
+						"portgroupKey": "dvportgroup-22"
+					}
+				},
+				"deviceInfo": {
+					"discriminator": "Description",
+					"summary": "New Network",
+					"label": "New Network"
+				}
+			},
+			"operation": "add"
+		}
+	]
+}

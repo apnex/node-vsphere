@@ -31,8 +31,9 @@ function main(id, name) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let cluster = root.get(id);
-		cluster.createResourcePool(name).then((info) => {
-			console.log('end of operations');
+		let rSpec = require('./spec/spec.ResourceConfigSpec.json');
+		cluster.createResourcePool(name, rSpec).then((pool) => {
+			console.log(JSON.stringify(pool.entity, null, "\t"));
 		});
 	});
 }
