@@ -31,7 +31,10 @@ function main(id, name) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let cluster = root.get(id);
-		cluster.createVApp(name).then((info) => {
+		let rSpec = require('./spec/spec.ResourceConfigSpec.json');
+		let cSpec = require('./spec/spec.VAppConfigSpec.json');
+		console.log(JSON.stringify(cSpec, null, "\t"));
+		cluster.createVApp(name, rSpec, cSpec).then((info) => {
 			console.log('end of operations');
 		});
 	});

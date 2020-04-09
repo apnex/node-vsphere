@@ -20,6 +20,20 @@ module.exports = class ManagedEntity {
 		return this._name;
 	}
 	*/
+	parent() { // too inefficient - work out how to target specific MOB object
+		return new Promise((resolve, reject) => {
+			this.getObjects({
+				type: core.getEntityType(this.id),
+				pathSet: ['parent']
+			}).then((result) => {
+				let myItem = result.objects.filter((item) => {
+					return (item.obj.value == this.id);
+				})[0];
+				let entityId = myItem.propSet[0].val.value;
+				resolve(this.getEntity(entityId));
+			});
+		});
+	}
 	destroy() {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
@@ -35,6 +49,9 @@ module.exports = class ManagedEntity {
 	getEntity(id) {
 		return core.getEntity(this.service, id);
 	}
+	getObject(id) {
+		return core.getObject(this.service, id);
+	}
 	getObjects(spec) {
 		return core.getObjects(this.service, spec);
 	}
@@ -43,5 +60,8 @@ module.exports = class ManagedEntity {
 	}
 	waitForTask(task) {
 		return core.waitForTask(this.service, task);
+	}
+	buildSpec(type, spec) {
+		return core.buildSpec(this.service, type, spec);
 	}
 };

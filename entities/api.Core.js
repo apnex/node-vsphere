@@ -11,6 +11,7 @@ function apiCore() {
 	this.getObjects = getObjects;
 	this.getTaskInfo = getTaskInfo;
 	this.waitForTask = waitForTask;
+	this.buildSpec = buildSpec;
 }
 module.exports = apiCore;
 
@@ -48,14 +49,12 @@ function waitForTask(service, task) {
 			this.getTaskInfo(service, task).then((info) => {
 				if(!spinner.isSpinning) {
 					spinner.start(info.key.padEnd(20, ' ') + info.name.padEnd(30, ' ') + info.entityName.padEnd(20, ' ') + info.state.padEnd(15, ' '));
-					//console.log(JSON.stringify(taskInfo, null, "\t"));
 				} else {
 					spinner.text = info.key.padEnd(20, ' ') + info.name.padEnd(30, ' ') + info.entityName.padEnd(20, ' ') + info.state.padEnd(15, ' ');
 				}
 				switch(info.state) {
 					case 'error':
 						clearInterval(loop);
-						//console.log(JSON.stringify(info, null, "\t"));
 						spinner.text += info.error.localizedMessage;
 						if(info.error.fault.faultMessage.length > 0) {
 							spinner.text += (' ' + info.error.fault.faultMessage[0].message);
@@ -207,4 +206,32 @@ function getEntityType(id) {
 			console.log('No idea what is [' + id + ']');
 		break;
 	}
+}
+
+function buildSpec(service, type, spec) {
+	let body = {};
+	if(typeof(spec.discriminator) !== 'undefined') { // override
+		type = spec.discriminator;
+	}
+	Object.entries(spec).forEach((item) => {
+		if(item[0] != 'discriminator') {
+			if(typeof(item[1]) === 'object') {
+				let child = type.toString();
+				//if(typeof(defs[type]) !== 'undefined' && typeof(defs[type][item[0]]) !== 'undefined') {
+				//	child = defs[type][item[0]];
+				//}
+				if(Array.isArray(item[1])) { // Array
+					body[item[0]] = [];
+					item[1].forEach((value) => { // forEach item in array
+						body[item[0]].push(this.buildSpec(service, child, value));
+					});
+				} else { // Object
+					body[item[0]] = this.buildSpec(service, child, item[1]);
+				}
+			} else {
+				body[item[0]] = item[1];
+			}
+		}
+	});
+	return service.vim[type](body);
 }

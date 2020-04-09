@@ -31,17 +31,17 @@ module.exports = class ClusterComputeResource extends ManagedEntity {
 			});
 		});
 	}
-	createResourcePool(poolName, spec = {}) {
+	createResourcePool(poolName, rSpec) {
 		return new Promise((resolve, reject) => {
 			this.resourcePool().then((pool) => {
-				resolve(pool.createResourcePool(poolName));
+				resolve(pool.createResourcePool(poolName, rSpec));
 			});
 		});
 	}
-	createVApp(vappName, spec = {}) {
+	createVApp(vappName, rSpec, cSpec) {
 		return new Promise((resolve, reject) => {
 			this.resourcePool().then((pool) => {
-				resolve(pool.createVApp(vappName));
+				resolve(pool.createVApp(vappName, rSpec, cSpec));
 			});
 		});
 	}

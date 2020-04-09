@@ -1,0 +1,25 @@
+{
+	"discriminator": "ResourceConfigSpec",
+	"cpuAllocation": {
+		"discriminator": "ResourceAllocationInfo",
+		"expandableReservation": true,
+		"reservation": 0,
+		"limit": -1,
+		"shares": {
+			"discriminator": "SharesInfo",
+			"level": "normal",
+			"shares": 4000
+		}
+	},
+	"memoryAllocation": {
+		"discriminator": "ResourceAllocationInfo",
+		"expandableReservation": true,
+		"reservation": 0,
+		"limit": -1,
+		"shares": {
+			"discriminator": "SharesInfo",
+			"level": "normal",
+			"shares": 163480
+		}
+	}
+}

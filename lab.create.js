@@ -30,10 +30,12 @@ if(args[1].match(/vm/g)) {
 function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		var spec = require('./router.cdrom.json');
 		let entity = root.get(id);
-		entity.createChildVM(spec).then((info) => {
-			console.log('end of operations');
-		})
+		cluster.createVApp(name).then((entity) => {
+			let spec = require('./router.cdrom.json');
+			entity.createChildVM(spec).then((info) => {
+				console.log('end of operations');
+			})
+		});
 	});
 }

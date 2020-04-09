@@ -30,7 +30,7 @@
 				"controllerKey": -101,
 				"capacityInKB": 16777216,
 				"backing": {
-					"fileName": "[ds-esx03]",
+					"fileName": "[ds-sddc]",
 					"thinProvisioned": true,
 					"diskMode": "persistent"
 				},
@@ -65,43 +65,7 @@
 				}
 			},
 			"operation": "add"
-		},
-		{
-			"device": {
-				"discriminator": "VirtualAHCIController",
-				"key": -104,
-				"busNumber": 0,
-				"deviceInfo": {
-					"discriminator": "Description",
-					"summary": "New SATA Controller",
-					"label": "New SATA Controller"
-				}
-			},
-			"operation": "add"
-		},
-		{
-			"device": {
-				"discriminator": "VirtualCdrom",
-				"key": -105,
-				"controllerKey": -104,
-				"unitNumber": 1,
-				"connectable": {
-					"discriminator": "VirtualDeviceConnectInfo",
-					"connected": true,
-					"allowGuestControl": true,
-					"startConnected": true
-				},
-				"backing": {
-					"discriminator": "VirtualCdromIsoBackingInfo",
-					"fileName": "[ds-esx03] /iso/centos.iso"
-				},
-				"deviceInfo": {
-					"discriminator": "Description",
-					"summary": "New CDROM",
-					"label": "New CDROM"
-				}
-			},
-			"operation": "add"
 		}
+
 	]
 }

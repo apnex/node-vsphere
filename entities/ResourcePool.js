@@ -6,74 +6,56 @@ module.exports = class ResourcePool extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
-	createResourcePool(name, {
-		cpuAllocation = {
-			expandableReservation: true,
-			reservation: 0,
-			limit: -1,
-			shares: this.service.vim.SharesInfo({
-				level: 'normal',
-				shares: 4000
-			})
-		},
-		memoryAllocation = {
-			expandableReservation: true,
-			reservation: 0,
-			limit: -1,
-			shares: this.service.vim.SharesInfo({
-				level: 'normal',
-				shares: 163480
-			})
-		}
-	} = {}) {
+	owner() { // too inefficient - need to move to constructor to setup values once
 		return new Promise((resolve, reject) => {
-			let service = this.service;
-			let entity = this.entity;
-			let spec = service.vim.ResourceConfigSpec({
-					cpuAllocation: service.vim.ResourceAllocationInfo(cpuAllocation),
-					memoryAllocation: service.vim.ResourceAllocationInfo(memoryAllocation)
+			super.getObjects({
+				type: 'ResourcePool',
+				pathSet: ['owner']
+			}).then((result) => {
+				let myItem = result.objects.filter((item) => {
+					return (item.obj.value == this.id);
+				})[0];
+				let entityId = myItem.propSet[0].val.value;
+				resolve(super.getEntity(entityId));
 			});
-			return service.vimPort.createResourcePool(entity, name, spec);
 		});
 	}
-	createVApp(name, {
-		resSpec = this.service.vim.ResourceConfigSpec({
-			cpuAllocation: this.service.vim.ResourceAllocationInfo({
-				expandableReservation: true,
-				reservation: 0,
-				limit: -1,
-				shares: this.service.vim.SharesInfo({
-					level: 'normal',
-					shares: 4000
-				})
-			}),
-			memoryAllocation: this.service.vim.ResourceAllocationInfo({
-				expandableReservation: true,
-				reservation: 0,
-				limit: -1,
-				shares: this.service.vim.SharesInfo({
-					level: 'normal',
-					shares: 163480
-				})
-			})
-		}),
-		configSpec = this.service.vim.VAppConfigSpec({})
-	} = {}) {
+	createResourcePool(name, rSpec) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
 			let entity = this.entity;
-			let vmFolder = super.getEntity('group-v4'); // remove static entry!!!
-			// domain-c13.parent = 'group-h5'
-			// group-h5.parent = 'datacenter-3'
-			// datacenter-3.vmFolder = 'group-v4'
-			return service.vimPort.createVApp(entity, name, resSpec, configSpec, vmFolder.entity);
+			let resSpec = super.buildSpec('ResourceConfigSpec', rSpec);
+			service.vimPort.createResourcePool(entity, name, resSpec).then((entity) => {
+				resolve(super.getObject(entity.value));
+			});
 		});
 	}
-	createChildVM(vmSpec) {
+	createVApp(name, rSpec, cSpec) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
 			let entity = this.entity;
-			service.vimPort.createChildVMTask(entity, vmSpec).then((task) => {
+
+			// traverse mob tree and find 'group-v' folder
+			this.owner().then((cluster) => {
+				return cluster.parent();
+			}).then((hosts) => {
+				return hosts.parent();
+			}).then((dc) => {
+				return dc.vmFolder();
+			}).then((vmFolder) => {
+				let resSpec = super.buildSpec('ResourceConfigSpec', rSpec);
+				let configSpec = super.buildSpec('VAppConfigSpec', cSpec);
+				service.vimPort.createVApp(entity, name, resSpec, configSpec, vmFolder.entity).then((entity) => {
+					resolve(super.getObject(entity.value));
+				});
+			});
+		});
+	}
+	createChildVM(spec) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			service.vimPort.createChildVMTask(entity, super.buildSpec('VirtualMachineConfigSpec', spec)).then((task) => {
 				resolve(super.waitForTask(task));
 			});
 		});

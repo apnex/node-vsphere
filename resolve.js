@@ -39,7 +39,7 @@ client.vspLogin(hostname, username, password).then((root) => {
 	var spec = require('./router.cdrom.json');
 	var vmSpec = main(root.service, 'VirtualMachineConfigSpec', spec);
 	console.log(JSON.stringify(vmSpec, null, "\t"));
-	var entity = root.get('resgroup-v2023');
+	var entity = root.get('resgroup-v2044');
 	entity.createChildVM(vmSpec).then((info) => {
 		console.log('end of operations');
 	});
