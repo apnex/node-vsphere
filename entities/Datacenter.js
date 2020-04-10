@@ -6,32 +6,19 @@ module.exports = class Datacenter extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
-	vmFolder() { // too inefficient - need to move to constructor to setup values once
+	hostFolder() {
 		return new Promise((resolve, reject) => {
-			super.getObjects({
-				type: 'Datacenter',
-				pathSet: ['vmFolder']
-			}).then((result) => {
-				let myItem = result.objects.filter((item) => {
-					return (item.obj.value == this.id);
-				})[0];
-				let entityId = myItem.propSet[0].val.value;
-				resolve(super.getEntity(entityId));
-			});
+			resolve(this.getProperty('hostFolder'));
 		});
 	}
-	hostFolder() { // too inefficient - need to move to constructor to setup values once
+	networkFolder() {
 		return new Promise((resolve, reject) => {
-			super.getObjects({
-				type: 'Datacenter',
-				pathSet: ['hostFolder']
-			}).then((result) => {
-				let myItem = result.objects.filter((item) => {
-					return (item.obj.value == this.id);
-				})[0];
-				let entityId = myItem.propSet[0].val.value;
-				resolve(super.getEntity(entityId));
-			});
+			resolve(this.getProperty('networkFolder'));
+		});
+	}
+	vmFolder() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('vmFolder'));
 		});
 	}
 	createCluster(name, spec) {

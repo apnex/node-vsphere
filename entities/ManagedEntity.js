@@ -20,18 +20,23 @@ module.exports = class ManagedEntity {
 		return this._name;
 	}
 	*/
-	parent() { // too inefficient - work out how to target specific MOB object
+	getProperty(name) { // too inefficient - work out how to target specific MOB object
 		return new Promise((resolve, reject) => {
 			this.getObjects({
 				type: core.getEntityType(this.id),
-				pathSet: ['parent']
+				pathSet: [name]
 			}).then((result) => {
 				let myItem = result.objects.filter((item) => {
 					return (item.obj.value == this.id);
 				})[0];
 				let entityId = myItem.propSet[0].val.value;
-				resolve(this.getEntity(entityId));
+				resolve(super.getEntity(entityId));
 			});
+		});
+	}
+	parent() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('parent'));
 		});
 	}
 	destroy() {
