@@ -31,9 +31,11 @@ function main(id, name) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let dc = client.get(id);
-		//let nSpec = require('./spec/spec.ClusterConfigSpecEx.json');
-		dc.networkFolder().then((item) => {
-			console.log(JSON.stringify(item, null, "\t"));
+		let nSpec = require('./spec/spec.DVSCreateSpec.json');
+		dc.networkFolder().then((folder) => {
+			folder.createDVS(nSpec).then((dvs) => {
+				console.log('moota');
+			});
 		});
 	});
 }

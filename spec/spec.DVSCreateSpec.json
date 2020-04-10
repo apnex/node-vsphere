@@ -1,0 +1,22 @@
+{
+	"discriminator": "DVSCreateSpec",
+	"configSpec": {
+		"discriminator": "VmwareDVSConfigSpec",
+		"name": "lab01-fabric",
+		"productInfo": {
+			"discriminator": "DistributedVirtualSwitchProductSpec",
+			"version": "7.0.0"
+		},
+		"networkResourceControlVersion": "version3",
+		"uplinkPortPolicy": {
+			"discriminator": "DVSNameArrayUplinkPortPolicy",
+			"uplinkPortName": [
+				"Uplink 1",
+				"Uplink 2",
+				"Uplink 3",
+				"Uplink 4"
+			]
+		},
+		"lacpApiVersion": "multipleLab"
+	}
+}

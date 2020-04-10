@@ -1,0 +1,41 @@
+#----------------- Start of code capture -----------------
+
+// ----------queryAvailableDvsSpec----------
+var recommended = true;
+managedObject.queryAvailableDvsSpec(recommended);   // DistributedVirtualSwitchManager-DVSManager
+
+// ----------getNetworkFolder----------
+managedObject.getNetworkFolder();   // Datacenter-datacenter-3
+
+// ----------createDVS_Task----------
+var spec = new VcDVSCreateSpec();
+spec.configSpec = new VcVMwareDVSConfigSpec();
+spec.configSpec.networkResourceControlVersion = 'version3';
+spec.configSpec.uplinkPortPolicy = new VcDVSNameArrayUplinkPortPolicy();
+var uplinkPortName = new Array();
+uplinkPortName[0] = 'Uplink 1';
+uplinkPortName[1] = 'Uplink 2';
+uplinkPortName[2] = 'Uplink 3';
+uplinkPortName[3] = 'Uplink 4';
+spec.configSpec.uplinkPortPolicy.uplinkPortName = uplinkPortName;
+spec.configSpec.lacpApiVersion = 'multipleLag';
+spec.configSpec.name = 'lab01-fabric';
+spec.productInfo = new VcDistributedVirtualSwitchProductSpec();
+spec.productInfo.version = '7.0.0';
+managedObject.createDVS_Task(spec);   // Folder-group-n7
+
+// ----------enableNetworkResourceManagement----------
+var enable = true;
+managedObject.enableNetworkResourceManagement(enable);   // VmwareDistributedVirtualSwitch-dvs-77
+
+// ----------addDVPortgroup_Task----------
+var spec = new Array();
+spec[0] = new VcDVPortgroupConfigSpec();
+spec[0].name = 'DPortGroup';
+spec[0].numPorts = 8;
+spec[0].type = 'earlyBinding';
+spec[0].autoExpand = true;
+managedObject.addDVPortgroup_Task(spec);   // VmwareDistributedVirtualSwitch-dvs-77
+
+
+#----------------- End of code capture -----------------
