@@ -1,0 +1,7 @@
+{
+	"discriminator": "ClusterConfigSpecEx",
+	"drsConfig": {
+		"discriminator": "ClusterDrsConfigInfo",
+		"enabled": true
+	}
+}

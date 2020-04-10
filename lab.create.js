@@ -19,23 +19,26 @@ const blue = chalk.blueBright;
 // called from shell
 const args = process.argv;
 if(args[1].match(/vm/g)) {
-	if(args[2]) {
-		main(args[2]);
+	if(args[2] && args[3]) {
+		main(args[2], args[3]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.create <resource-pool.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('lab.create <cluster.id> <lab.name>'));
 	}
 }
 
 // main
-function main(id) {
+function main(id, labName) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let entity = root.get(id);
-		cluster.createVApp(name).then((entity) => {
-			let spec = require('./spec/router.VirtualMachineConfigSpec.json');
-			entity.createChildVM(spec).then((info) => {
+		let cluster = root.get(id);
+		let rSpec = require('./spec/spec.ResourceConfigSpec.json');
+		let cSpec = require('./spec/spec.VAppConfigSpec.json');
+		cluster.createVApp(labName, rSpec, cSpec).then((entity) => {
+			let vSpec = require('./spec/router.VirtualMachineConfigSpec.json');
+			entity.createChildVM(vSpec).then((vm) => {
 				// get VirtualMachine
 				// turn on
+				vm.powerOn();
 				console.log('end of operations');
 			})
 		});

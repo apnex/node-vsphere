@@ -34,17 +34,13 @@ module.exports = class Datacenter extends ManagedEntity {
 			});
 		});
 	}
-	createCluster(clusterName, spec = {}) {
+	createCluster(name, spec) {
 		return new Promise((resolve, reject) => {
 			this.hostFolder().then((folder) => {
 				let service = this.service;
-				let taskSpec = service.vim.ClusterConfigSpecEx({
-					drsConfig: service.vim.ClusterDrsConfigInfo({
-						enabled: true
-					})
-				});
-				service.vimPort.createClusterEx(folder.entity, clusterName, taskSpec).then((info) => {
-					resolve(info);
+				let cSpec = super.buildSpec('ClusterConfigSpecEx', spec);
+				service.vimPort.createClusterEx(folder.entity, name, cSpec).then((entity) => {
+					resolve(super.getObject(entity.value));
 				});
 			});
 		});

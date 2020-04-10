@@ -63,7 +63,7 @@
 				},
 				"backing": {
 					"discriminator": "VirtualCdromIsoBackingInfo",
-					"fileName": "[ds-ssd] /iso/centos.iso"
+					"fileName": "[ds-sddc] /iso/centos.iso"
 				},
 				"deviceInfo": {
 					"discriminator": "Description",

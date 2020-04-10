@@ -37,8 +37,6 @@ function main(id) {
 			userName: 'root',
 			password: 'VMware1!',
 			port: 443
-		}).then((info) => {
-			console.log(JSON.stringify(info, null, "\t"));
 		});
 	});
 }

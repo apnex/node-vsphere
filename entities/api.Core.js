@@ -60,7 +60,8 @@ function waitForTask(service, task) {
 							spinner.text += (' ' + info.error.fault.faultMessage[0].message);
 						}
 						spinner.fail();
-						resolve(info);
+						reject(info);
+						//resolve(info);
 					break;
 					case 'success':
 						clearInterval(loop);

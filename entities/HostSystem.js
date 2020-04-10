@@ -6,9 +6,6 @@ module.exports = class HostSystem extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
-	sayHello() {
-		console.log('I have ID: ' + this.entity);
-	}
 	exitMaintenanceMode({timeout = 60} = {}) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;

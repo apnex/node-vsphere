@@ -31,8 +31,9 @@ function main(id, name) {
 	let client = new apiClient(); // add auth?
 	client.vspLogin(hostname, username, password).then((root) => {
 		let dc = client.get(id);
-		dc.createCluster(name).then((info) => {
-			console.log(JSON.stringify(info, null, "\t"));
+		let cSpec = require('./spec/spec.ClusterConfigSpecEx.json');
+		dc.createCluster(name, cSpec).then((info) => {
+			//console.log(JSON.stringify(info, null, "\t"));
 		});
 	});
 }

@@ -27,7 +27,16 @@ module.exports = class ClusterComputeResource extends ManagedEntity {
 			let cluster = this.entity;
 			let mySpec = service.vim.HostConnectSpec(spec)
 			service.vimPort.addHostTask(cluster, mySpec, 1).then((task) => {
-				resolve(super.waitForTask(task));
+				super.waitForTask(task).then((info) => {
+					resolve(super.getObject(info.result.value));
+				}).catch((info) => { // check for SSL error and retry
+					if(info.error) {
+						if(info.error.fault.thumbprint) {
+							spec['sslThumbprint'] = info.error.fault.thumbprint;
+							resolve(this.addHost(spec));
+						}
+					}
+				});
 			});
 		});
 	}
