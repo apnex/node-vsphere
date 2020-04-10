@@ -12,14 +12,6 @@ module.exports = class ManagedEntity {
 			value: id
 		});
 	}
-	/*
-	set entity(entityId) {
-		this._entity = this._createEntityname = name.charAt(0).toUpperCase() + name.slice(1);
-	}
-	get name() {
-		return this._name;
-	}
-	*/
 	getProperty(name) { // too inefficient - work out how to target specific MOB object
 		return new Promise((resolve, reject) => {
 			this.getObjects({
@@ -30,7 +22,8 @@ module.exports = class ManagedEntity {
 					return (item.obj.value == this.id);
 				})[0];
 				let entityId = myItem.propSet[0].val.value;
-				resolve(super.getEntity(entityId));
+				//resolve(this.getEntity(entityId));
+				resolve(this.getObject(entityId));
 			});
 		});
 	}

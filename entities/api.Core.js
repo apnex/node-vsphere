@@ -224,7 +224,11 @@ function buildSpec(service, type, spec) {
 				if(Array.isArray(item[1])) { // Array
 					body[item[0]] = [];
 					item[1].forEach((value) => { // forEach item in array
-						body[item[0]].push(this.buildSpec(service, child, value));
+						if(Array.isArray(value)) { // Array
+							body[item[0]].push(this.buildSpec(service, child, value));
+						} else {
+							body[item[0]].push(value);
+						}
 					});
 				} else { // Object
 					body[item[0]] = this.buildSpec(service, child, item[1]);

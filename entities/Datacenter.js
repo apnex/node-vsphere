@@ -8,17 +8,17 @@ module.exports = class Datacenter extends ManagedEntity {
 	}
 	hostFolder() {
 		return new Promise((resolve, reject) => {
-			resolve(this.getProperty('hostFolder'));
+			resolve(super.getProperty('hostFolder'));
 		});
 	}
 	networkFolder() {
 		return new Promise((resolve, reject) => {
-			resolve(this.getProperty('networkFolder'));
+			resolve(super.getProperty('networkFolder'));
 		});
 	}
 	vmFolder() {
 		return new Promise((resolve, reject) => {
-			resolve(this.getProperty('vmFolder'));
+			resolve(super.getProperty('vmFolder'));
 		});
 	}
 	createCluster(name, spec) {

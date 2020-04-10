@@ -1,7 +1,7 @@
 {
 	"discriminator": "DVSCreateSpec",
 	"configSpec": {
-		"discriminator": "VmwareDVSConfigSpec",
+		"discriminator": "VMwareDVSConfigSpec",
 		"name": "lab01-fabric",
 		"productInfo": {
 			"discriminator": "DistributedVirtualSwitchProductSpec",

@@ -33,6 +33,8 @@ function main(id, name) {
 		let dc = client.get(id);
 		let nSpec = require('./spec/spec.DVSCreateSpec.json');
 		dc.networkFolder().then((folder) => {
+			//console.log(JSON.stringify(folder, null, "\t"));
+			console.log(folder);
 			folder.createDVS(nSpec).then((dvs) => {
 				console.log('moota');
 			});

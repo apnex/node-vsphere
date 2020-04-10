@@ -6,7 +6,7 @@ module.exports = class NetworkFolder extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
-	createDVS(name, spec) {
+	createDVS(spec) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
 			let entity = this.entity;
