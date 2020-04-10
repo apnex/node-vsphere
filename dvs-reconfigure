@@ -1,0 +1,11 @@
+#---------------ReconfigureDvs_Task---------------
+$spec = New-Object VMware.Vim.DVSConfigSpec
+$spec.ConfigVersion = '1'
+$spec.Host = New-Object VMware.Vim.DistributedVirtualSwitchHostMemberConfigSpec[] (1)
+$spec.Host[0] = New-Object VMware.Vim.DistributedVirtualSwitchHostMemberConfigSpec
+$spec.Host[0].Host = New-Object VMware.Vim.ManagedObjectReference
+$spec.Host[0].Host.Type = 'HostSystem'
+$spec.Host[0].Host.Value = 'host-92'
+$spec.Host[0].Operation = 'add'
+$_this = Get-View -Id 'VmwareDistributedVirtualSwitch-dvs-80'
+$_this.ReconfigureDvs_Task($spec)

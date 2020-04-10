@@ -11,6 +11,7 @@ module.exports = class NetworkFolder extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			let nSpec = super.buildSpec('DVSCreateSpec', spec);
+			console.log(JSON.stringify(nSpec, null, "\t"));
 			service.vimPort.createDVSTask(entity, nSpec).then((task) => {
 				resolve(super.waitForTask(task));
 			});

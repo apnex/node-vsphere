@@ -1,38 +1,42 @@
 #!/usr/bin/env node
-const vsphere = require("./dist/vsphere");
+'use strict';
+const apiClient = require('./api.Client');
+const params = require('./params.json');
 
 // ignore self-signed certificate
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-var hostname = "vcenter.lab";
-var username = "administrator@vsphere.local";
-var password = "ObiWan1!";
+var hostname = params.hostname;
+var username = params.username;
+var password = params.password;
 
-function run() {
+// colours
+const chalk = require('chalk');
+const red = chalk.bold.red;
+const orange = chalk.keyword('orange');
+const green = chalk.green;
+const blue = chalk.blueBright;
+
+// called from shell
+const args = process.argv;
+if(args[1].match(/vswitch/g)) {
+	if(args[2] && args[3]) {
+		main(args[2], args[3]);
+	} else {
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vswitch.create <datacenter.id> <switch.name>'));
+	}
 }
 
-vsphere.vimService(hostname).then((service) => {
-	let propertyCollector = service.serviceContent.propertyCollector;
-	let rootFolder = service.serviceContent.rootFolder;
-        let sessionManager = service.serviceContent.sessionManager;
-        let viewManager = service.serviceContent.viewManager;
-        let vim = service.vim;
-        let vimPort = service.vimPort;
-
-	let mySpec = vim.DVSCreateSpec({
-		configSpec: vim.DVSConfigSpec({
-			name: 'test-vds'
-		})
+// main
+function main(id, name) {
+	let client = new apiClient();
+	client.vspLogin(hostname, username, password).then((root) => {
+		let dc = client.get(id);
+		let nSpec = require('./spec/spec.DVSCreateSpec.json');
+		nSpec.configSpec.name = name;
+		dc.networkFolder().then((folder) => {
+			folder.createDVS(nSpec).then((dvs) => {
+				console.log('moota');
+			});
+		});
 	});
-	let myFolder = vim.ManagedObjectReference({
-		value: 'group-n186',
-		type: 'Folder'
-	});
-
-	return vimPort.login(sessionManager, username, password).then(() => {
-		return vimPort.createDVSTask(myFolder, mySpec);
-	}).then((result) => {
-		console.log(result);
-	});
-}).catch(function(err) {
-	console.log('MOOOO: ' + err.message);
-});
+}

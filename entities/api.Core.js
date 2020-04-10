@@ -224,9 +224,9 @@ function buildSpec(service, type, spec) {
 				if(Array.isArray(item[1])) { // Array
 					body[item[0]] = [];
 					item[1].forEach((value) => { // forEach item in array
-						if(Array.isArray(value)) { // Array
+						if(typeof(value) === 'object') { // object
 							body[item[0]].push(this.buildSpec(service, child, value));
-						} else {
+						} else { // string
 							body[item[0]].push(value);
 						}
 					});

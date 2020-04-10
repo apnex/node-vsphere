@@ -3,10 +3,7 @@
 	"configSpec": {
 		"discriminator": "VMwareDVSConfigSpec",
 		"name": "lab01-fabric",
-		"productInfo": {
-			"discriminator": "DistributedVirtualSwitchProductSpec",
-			"version": "7.0.0"
-		},
+		"maxMtu": 9190,
 		"networkResourceControlVersion": "version3",
 		"uplinkPortPolicy": {
 			"discriminator": "DVSNameArrayUplinkPortPolicy",
@@ -17,6 +14,6 @@
 				"Uplink 4"
 			]
 		},
-		"lacpApiVersion": "multipleLab"
+		"lacpApiVersion": "multipleLag"
 	}
 }
