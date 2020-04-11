@@ -108,6 +108,7 @@ function getObject(service, id) {
 		'ResourcePool',
 		'VirtualApp',
 		'VirtualMachine',
+		'VmwareDistributedVirtualSwitch',
 		'DatacenterFolder',
 		'VmFolder',
 		'HostFolder',
@@ -143,6 +144,9 @@ function getObjectType(id) {
 		case /^vm-/.test(id):
 			return('VirtualMachine');
 		break;
+		case /^dvs-/.test(id):
+			return('VmwareDistributedVirtualSwitch');
+		break;
 		case /^group-d/.test(id):
 			return('DatacenterFolder');
 		break;
@@ -159,7 +163,7 @@ function getObjectType(id) {
 			return('NetworkFolder');
 		break;
 		default:
-			console.log('No idea what [' + id + ']');
+			console.log('No idea what aa[' + id + ']');
 		break;
 	}
 }
@@ -171,6 +175,7 @@ function getEntity(service, id) {
 		'ClusterComputeResource',
 		'HostSystem',
 		'ResourcePool',
+		'VmwareDistributedVirtualSwitch',
 		'VirtualMachine',
 		'Folder'
 	].filter((item) => {
@@ -199,6 +204,9 @@ function getEntityType(id) {
 		break;
 		case /^vm-/.test(id):
 			return('VirtualMachine');
+		break;
+		case /^dvs-/.test(id):
+			return('VmwareDistributedVirtualSwitch');
 		break;
 		case /^group-/.test(id):
 			return('Folder');
@@ -238,5 +246,6 @@ function buildSpec(service, type, spec) {
 			}
 		}
 	});
+	console.log('TYPE: [' + type + ']');
 	return service.vim[type](body);
 }

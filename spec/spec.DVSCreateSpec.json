@@ -3,7 +3,7 @@
 	"configSpec": {
 		"discriminator": "VMwareDVSConfigSpec",
 		"name": "lab01-fabric",
-		"maxMtu": 9190,
+		"maxMtu": 9000,
 		"networkResourceControlVersion": "version3",
 		"uplinkPortPolicy": {
 			"discriminator": "DVSNameArrayUplinkPortPolicy",
