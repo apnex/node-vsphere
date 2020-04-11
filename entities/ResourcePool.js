@@ -6,17 +6,10 @@ module.exports = class ResourcePool extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
-	owner() { // too inefficient - need to move to constructor to setup values once
+	owner() {
 		return new Promise((resolve, reject) => {
-			super.getObjects({
-				type: 'ResourcePool',
-				pathSet: ['owner']
-			}).then((result) => {
-				let myItem = result.objects.filter((item) => {
-					return (item.obj.value == this.id);
-				})[0];
-				let entityId = myItem.propSet[0].val.value;
-				resolve(super.getEntity(entityId));
+			this.getProperty('owner').then((entity) => {
+				resolve(this.getObject(entity.value));
 			});
 		});
 	}

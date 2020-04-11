@@ -33,7 +33,7 @@ function main(id, name) {
 		let dc = client.get(id);
 		let cSpec = require('./spec/spec.ClusterConfigSpecEx.json');
 		dc.createCluster(name, cSpec).then((info) => {
-			//console.log(JSON.stringify(info, null, "\t"));
+			console.log(JSON.stringify(info.entity, null, "\t"));
 		});
 	});
 }

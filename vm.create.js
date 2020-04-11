@@ -31,7 +31,7 @@ function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let entity = root.get(id);
-		var spec = require('./spec/router.VirtualMachineConfigSpec.json');
+		var spec = require('./spec/nonic.VirtualMachineConfigSpec.json');
 		entity.createChildVM(spec).then((vm) => {
 			vm.powerOn().then((info) => {
 				console.log(JSON.stringify(info, null, "\t"));

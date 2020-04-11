@@ -35,6 +35,10 @@ function main(id, name) {
 		nSpec.configSpec.name = name;
 		dc.networkFolder().then((folder) => {
 			folder.createDVS(nSpec).then((dvs) => {
+				dvs.uuid().then((uuid) => {
+					console.log('UUID: ' + uuid);
+					// do something?
+				});
 				console.log('moota');
 			});
 		});

@@ -32,5 +32,7 @@ function main(id) {
 	client.vspLogin(hostname, username, password).then((service) => {
 		let cluster = client.get(id);
 		return cluster.destroy();
+	}).catch((err) => {
+		console.log('An error occured');
 	});
 }

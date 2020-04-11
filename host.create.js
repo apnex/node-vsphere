@@ -37,6 +37,8 @@ function main(id) {
 			userName: 'root',
 			password: 'VMware1!',
 			port: 443
+		}).then((host) => {
+			host.exitMaintenanceMode();
 		});
 	});
 }

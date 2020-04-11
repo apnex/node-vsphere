@@ -31,29 +31,29 @@ function main(id, hostId) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let vswitch = root.get(id);
-		// get switch
-		// obtain config version
-
 		let host = root.get(hostId);
-		let configVersion = 17;
-		let cSpec = {
-			"discriminator": "VMwareDVSConfigSpec",
-			"configVersion": configVersion,
-			"host": [
-				{
-					"discriminator": "DistributedVirtualSwitchHostMemberConfigSpec",
-					"host": {
-						"discriminator": "ManagedObjectReference",
-						"type": "HostSystem",
-						"value": hostId
-					},
-					"operation": "add"
-				}
-			]
-		};
-		vswitch.reconfigure(cSpec).then((info) => {
-			console.log('moota');
+		vswitch.config().then((config) => {
+			let configVersion = config.configVersion;
+			let cSpec = {
+				"discriminator": "VMwareDVSConfigSpec",
+				"configVersion": configVersion,
+				"host": [
+					{
+						"discriminator": "DistributedVirtualSwitchHostMemberConfigSpec",
+						"host": {
+							"discriminator": "ManagedObjectReference",
+							"type": "HostSystem",
+							"value": hostId
+						},
+						"operation": "add"
+					}
+				]
+			};
+			return vswitch.reconfigure(cSpec);
+		}).then((info) => {
 			console.log(JSON.stringify(info, null, "\t"));
+		}).catch((error) => {
+			console.log('An error occurred');
 		});
 	});
 }

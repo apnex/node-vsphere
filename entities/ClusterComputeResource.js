@@ -8,16 +8,8 @@ module.exports = class ClusterComputeResource extends ManagedEntity {
 	}
 	resourcePool() {
 		return new Promise((resolve, reject) => {
-			super.getObjects({
-				type: 'ClusterComputeResource',
-				pathSet: ['resourcePool']
-			}).then((result) => {
-				let myCluster = result.objects.filter((item) => {
-					return (item.obj.value == this.id);
-				})[0];
-				let poolId = myCluster.propSet[0].val.value;
-				let myPool = super.getEntity(poolId);
-				resolve(myPool);
+			this.getProperty('resourcePool').then((entity) => {
+				resolve(this.getObject(entity.value));
 			});
 		});
 	}

@@ -246,6 +246,5 @@ function buildSpec(service, type, spec) {
 			}
 		}
 	});
-	console.log('TYPE: [' + type + ']');
 	return service.vim[type](body);
 }

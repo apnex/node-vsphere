@@ -21,15 +21,15 @@ module.exports = class ManagedEntity {
 				let myItem = result.objects.filter((item) => {
 					return (item.obj.value == this.id);
 				})[0];
-				let entityId = myItem.propSet[0].val.value;
-				//resolve(this.getEntity(entityId));
-				resolve(this.getObject(entityId));
+				resolve(myItem.propSet[0].val);
 			});
 		});
 	}
 	parent() {
 		return new Promise((resolve, reject) => {
-			resolve(this.getProperty('parent'));
+			this.getProperty('parent').then((entity) => {
+				resolve(this.getObject(entity.value));
+			});
 		});
 	}
 	destroy() {
