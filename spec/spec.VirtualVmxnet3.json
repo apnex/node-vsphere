@@ -1,0 +1,25 @@
+{
+	"discriminator": "VirtualVmxnet3",
+	"key": -104,
+	"macAddress": "",
+	"addressType": "generated",
+	"connectable": {
+		"discriminator": "VirtualDeviceConnectInfo",
+		"connected": true,
+		"allowGuestControl": true,
+		"startConnected": true
+	},
+	"backing": {
+		"discriminator": "VirtualEthernetCardDistributedVirtualPortBackingInfo",
+		"port": {
+			"discriminator": "DistributedVirtualSwitchPortConnection",
+			"switchUuid": "50 33 9a 9b 94 db db 0c-b6 ce fd bc 8e b6 7e 0b",
+			"portgroupKey": "dvportgroup-22"
+		}
+	},
+	"deviceInfo": {
+		"discriminator": "Description",
+		"summary": "New Network",
+		"label": "New Network"
+	}
+}

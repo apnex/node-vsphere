@@ -31,11 +31,26 @@ function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let entity = root.get(id);
-		var spec = require('./spec/nonic.VirtualMachineConfigSpec.json');
+		var spec = require('./spec/base.VirtualMachineConfigSpec.json');
+		var nic = require('./spec/spec.VirtualVmxnet3.json');
+		nic.backing = {
+			"discriminator": "VirtualEthernetCardDistributedVirtualPortBackingInfo",
+			"port": {
+				"discriminator": "DistributedVirtualSwitchPortConnection",
+				"switchUuid": "50 24 5b 7d 67 65 6a 4f-35 79 02 31 a5 34 42 ff",
+				"portgroupKey": "dvportgroup-180"
+			}
+		};
+		spec.deviceChange.push({
+			"discriminator": "VirtualDeviceConfigSpec",
+			"operation": "add",
+			"device": nic
+		});
+		console.log(JSON.stringify(spec, null, "\t"));
 		entity.createChildVM(spec).then((vm) => {
-			vm.powerOn().then((info) => {
-				console.log(JSON.stringify(info, null, "\t"));
-			});
+			//vm.powerOn().then((info) => {
+			//	console.log(JSON.stringify(info, null, "\t"));
+			//});
 		})
 	});
 }

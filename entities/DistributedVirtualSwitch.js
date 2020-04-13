@@ -16,4 +16,13 @@ module.exports = class DistributedVirtualSwitch extends ManagedEntity {
 			resolve(super.getProperty('uuid'));
 		});
 	}
+	createPortgroup(spec) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let pgSpec = super.buildSpec('DVPortgroupConfigSpec', spec);
+			service.vimPort.createDVPortgroupTask(this.entity, pgSpec).then((task) => {
+				resolve(super.waitForTask(task));
+			});
+                });
+        }
 };

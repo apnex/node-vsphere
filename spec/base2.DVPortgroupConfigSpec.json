@@ -1,0 +1,41 @@
+{
+	"discriminator": "DVPortgroupConfigSpec",
+	"name": "pg-mgmt",
+	"numPorts": 8,
+	"type": "ephemeral",
+	"autoExpand": false,
+	"vmVnicNetworkResourcePoolKey": "-1",
+	"defaultPortConfig": {
+		"discriminator": "VMwareDVSPortSetting",
+		"macManagementPolicy": {
+			"discriminator": "DVSMacManagementPolicy",
+			"allowPromiscuous": false,
+			"forgedTransmits": true,
+			"macChanges": true,
+			"macLearningPolicy": {
+				"discriminator": "DVSMacLearningPolicy",
+				"enabled": true,
+				"allowUnicastFlooding": true,
+				"limit": 4096,
+				"limitPolicy": "allow",
+				"inherited": false
+			},
+			"inherited": false
+		}
+	},
+	"policy": {
+		"discriminator": "VMwareDVSPortgroupPolicy",
+		"blockOverrideAllowed": true,
+		"ipfixOverrideAllowed": true,
+		"livePortMovingAllowed": true,
+		"macManagementOverrideAllowed": true,
+		"networkResourcePoolOverrideAllowed": true,
+		"portConfigResetAtDisconnect": true,
+		"securityPolicyOverrideAllowed": true,
+		"shapingOverrideAllowed": true,
+		"trafficFilterOverrideAllowed": true,
+		"uplinkTeamingOverrideAllowed": true,
+		"vendorConfigOverrideAllowed": true,
+		"vlanOverrideAllowed": true
+	}
+}

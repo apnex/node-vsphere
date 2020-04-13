@@ -1,0 +1,26 @@
+{
+	"discriminator": "DVPortgroupConfigSpec",
+	"name": "pg-mgmt",
+	"numPorts": 8,
+	"type": "ephemeral",
+	"autoExpand": false,
+	"vmVnicNetworkResourcePoolKey": "-1",
+	"defaultPortConfig": {
+		"discriminator": "VMwareDVSPortSetting",
+		"macManagementPolicy": {
+			"discriminator": "DVSMacManagementPolicy",
+			"allowPromiscuous": false,
+			"forgedTransmits": true,
+			"macChanges": true,
+			"macLearningPolicy": {
+				"discriminator": "DVSMacLearningPolicy",
+				"enabled": true,
+				"allowUnicastFlooding": true,
+				"limit": 1024,
+				"limitPolicy": "ALLOW",
+				"inherited": false
+			},
+			"inherited": false
+		}
+	}
+}

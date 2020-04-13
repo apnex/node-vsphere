@@ -1,0 +1,8 @@
+{
+	"discriminator": "DVPortgroupConfigSpec",
+	"name": "pg-mgmt",
+	"numPorts": 8,
+	"type": "earlyBinding",
+	"autoExpand": true,
+	"vmVnicNetworkResourcePoolKey": "-1"
+}

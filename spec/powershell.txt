@@ -1,0 +1,1 @@
+https://github.com/lamw/vghetto-scripts/blob/master/powershell/MacLearn.ps1

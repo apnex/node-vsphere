@@ -1,5 +1,5 @@
 {
-	"hostname": "vcenter7.lab",
+	"hostname": "vcenter.lab",
 	"username": "administrator@vsphere.local",
 	"password": "ObiWan1!"
 }

@@ -109,6 +109,7 @@ function getObject(service, id) {
 		'VirtualApp',
 		'VirtualMachine',
 		'VmwareDistributedVirtualSwitch',
+		'DistributedVirtualPortgroup',
 		'DatacenterFolder',
 		'VmFolder',
 		'HostFolder',
@@ -147,6 +148,9 @@ function getObjectType(id) {
 		case /^dvs-/.test(id):
 			return('VmwareDistributedVirtualSwitch');
 		break;
+		case /^dvportgroup-/.test(id):
+			return('DistributedVirtualPortgroup');
+		break;
 		case /^group-d/.test(id):
 			return('DatacenterFolder');
 		break;
@@ -176,6 +180,7 @@ function getEntity(service, id) {
 		'HostSystem',
 		'ResourcePool',
 		'VmwareDistributedVirtualSwitch',
+		'DistributedVirtualPortgroup',
 		'VirtualMachine',
 		'Folder'
 	].filter((item) => {
@@ -207,6 +212,9 @@ function getEntityType(id) {
 		break;
 		case /^dvs-/.test(id):
 			return('VmwareDistributedVirtualSwitch');
+		break;
+		case /^dvportgroup-/.test(id):
+			return('DistributedVirtualPortgroup');
 		break;
 		case /^group-/.test(id):
 			return('Folder');
