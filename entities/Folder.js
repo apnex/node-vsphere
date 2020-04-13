@@ -6,4 +6,11 @@ module.exports = class Folder extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
+	childEntity() {
+		return new Promise((resolve, reject) => {
+			this.getProperty('childEntity').then((entity) => {
+				resolve(entity);
+			});
+		});
+	}
 };

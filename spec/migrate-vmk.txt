@@ -1,0 +1,22 @@
+#----------------- Start of code capture -----------------
+
+// ----------addPortGroup----------
+var portgrp = new VcHostPortGroupSpec();
+portgrp.vswitchName = 'vSwitch0';
+portgrp.vlanId = 0;
+portgrp.name = 'vmk0';
+portgrp.policy = new VcHostNetworkPolicy();
+managedObject.addPortGroup(portgrp);   // HostNetworkSystem-networkSystem-172
+
+// ----------updateVirtualNic----------
+var device = 'vmk0';
+var nic = new VcHostVirtualNicSpec();
+nic.portgroup = 'vmk0';
+managedObject.updateVirtualNic(device, nic);   // HostNetworkSystem-networkSystem-172
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.uplinkPort = true;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-175
+
+#----------------- End of code capture -----------------

@@ -1,0 +1,7 @@
+QueryDvsByUuid(querySwitchByUuid)
+
+
+NAME	TYPE	DESCRIPTION
+_this	ManagedObjectReference	A reference to the DistributedVirtualSwitchManager used to make the method call.
+uuid	xsd:string	
+

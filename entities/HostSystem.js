@@ -6,6 +6,13 @@ module.exports = class HostSystem extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
+	config() {
+		return new Promise((resolve, reject) => {
+			this.getProperty('config').then((value) => {
+				resolve(value);
+			});
+		});
+	}
 	exitMaintenanceMode({timeout = 60} = {}) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
-const ManagedEntity = require('./ManagedEntity');
+const Folder = require('./Folder');
 
-module.exports = class NetworkFolder extends ManagedEntity {
+module.exports = class NetworkFolder extends Folder {
 	constructor(service, id) {
 		super(service, id);
 	}

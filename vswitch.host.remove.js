@@ -50,10 +50,6 @@ function main(id, hostId) {
 				]
 			};
 			return vswitch.reconfigure(cSpec);
-		}).then((info) => {
-			console.log(JSON.stringify(info, null, "\t"));
-		}).catch((error) => {
-			console.log('An error occurred');
-		});
+		}).then(()=>{}).catch(()=>{});
 	});
 }
