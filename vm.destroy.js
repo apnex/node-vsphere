@@ -18,25 +18,19 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv;
-if(args[1].match(/vswitch/g)) {
-	if(args[2] && args[3]) {
-		main(args[2], args[3]);
+if(args[1].match(/vm/g)) {
+	if(args[2]) {
+		main(args[2]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vswitch.addpg <vswitch.id> <portgroup.name>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.destroy <vm.id>'));
 	}
 }
 
 // main
-function main(id, pgName) {
+function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let vswitch = root.get(id);
-		let pgSpec = require('./spec/trunk.DVPortgroupConfigSpec.json');
-		//let pgSpec = require('./spec/learning.DVPortgroupConfigSpec.json');
-		pgSpec.name = pgName;
-		console.log(JSON.stringify(pgSpec, null, "\t"));
-		vswitch.createPortgroup(pgSpec).then((pg) => {
-			console.log('finished...');
-		});
+		let vm = root.get(id);
+		vm.destroy();
 	});
 }

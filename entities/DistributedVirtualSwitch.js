@@ -21,7 +21,9 @@ module.exports = class DistributedVirtualSwitch extends ManagedEntity {
 			let service = this.service;
 			let pgSpec = super.buildSpec('DVPortgroupConfigSpec', spec);
 			service.vimPort.createDVPortgroupTask(this.entity, pgSpec).then((task) => {
-				resolve(super.waitForTask(task));
+				super.waitForTask(task).then((info) => {
+					resolve(super.getObject(info.result.value));
+				});
 			});
                 });
         }
