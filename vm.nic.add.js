@@ -22,7 +22,7 @@ if(args[1].match(/vm/g)) {
 	if(args[2] && args[3]) {
 		main(args[2], args[3]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.create <resource-pool.id> <portgroup.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.nic.add <vm.id> <portgroup.id>'));
 	}
 }
 
@@ -30,13 +30,39 @@ if(args[1].match(/vm/g)) {
 function main(id, pgid) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let entity = root.get(id);
-		var spec = require('./spec/blank.VirtualMachineConfigSpec.json');
+		let vm = root.get(id);
+		//var spec = require('./spec/blank.VirtualMachineConfigSpec.json');
 		//var spec = require('./spec/base.VirtualMachineConfigSpec.json');
-		var nic = require('./spec/base.VirtualVmxnet3.json');
-		let portgroup = root.get(pgid);
+		//var nic = require('./spec/base.VirtualVmxnet3.json');
+		//let portgroup = root.get(pgid);
 
-		entity.createChildVM(spec).then((vm) => {
+		let spec = {
+			"discriminator": "VirtualMachineConfigSpec",
+			"deviceChange": [
+				{
+					"discriminator": "VirtualDeviceConfigSpec",
+					"operation": "add",
+					"device": {
+						"discriminator": "VirtualVmxnet3",
+						"key": -101,
+						"macAddress": "",
+						"addressType": "generated",
+						"connectable": {
+							"discriminator": "VirtualDeviceConnectInfo",
+							"connected": true,
+							"allowGuestControl": true,
+							"startConnected": true
+						},
+						"backing": {
+							"discriminator": "VirtualEthernetCardNetworkBackingInfo",
+							"deviceName": ""
+						}
+					}
+				}
+			]
+		}
+
+		vm.reconfigure(spec).then((vm) => {
 			console.log(JSON.stringify(vm.entity, null, "\t"));
 			//vm.powerOn().then((info) => {
 			//});

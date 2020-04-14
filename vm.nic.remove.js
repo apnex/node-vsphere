@@ -22,21 +22,30 @@ if(args[1].match(/vm/g)) {
 	if(args[2] && args[3]) {
 		main(args[2], args[3]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.create <resource-pool.id> <portgroup.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.nic.remove <vm.id> <device.id>'));
 	}
 }
 
 // main
-function main(id, pgid) {
+function main(id, deviceId) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let entity = root.get(id);
-		var spec = require('./spec/blank.VirtualMachineConfigSpec.json');
-		//var spec = require('./spec/base.VirtualMachineConfigSpec.json');
-		var nic = require('./spec/base.VirtualVmxnet3.json');
-		let portgroup = root.get(pgid);
+		let vm = root.get(id);
+		let spec = {
+			"discriminator": "VirtualMachineConfigSpec",
+			"deviceChange": [
+				{
+					"discriminator": "VirtualDeviceConfigSpec",
+					"operation": "remove",
+					"device": {
+						"discriminator": "VirtualVmxnet3",
+						"key": deviceId
+					}
+				}
+			]
+		}
 
-		entity.createChildVM(spec).then((vm) => {
+		vm.reconfigure(spec).then((vm) => {
 			console.log(JSON.stringify(vm.entity, null, "\t"));
 			//vm.powerOn().then((info) => {
 			//});

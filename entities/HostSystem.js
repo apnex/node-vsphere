@@ -8,9 +8,7 @@ module.exports = class HostSystem extends ManagedEntity {
 	}
 	config() {
 		return new Promise((resolve, reject) => {
-			this.getProperty('config').then((value) => {
-				resolve(value);
-			});
+			resolve(this.getProperty('config'));
 		});
 	}
 	getDvsList() {

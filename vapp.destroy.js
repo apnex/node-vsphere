@@ -32,5 +32,5 @@ function main(id) {
 	client.vspLogin(hostname, username, password).then((root) => {
 		let entity = root.get(id);
 		return entity.destroy();
-	});
+	}).then(()=>{}).catch(()=>{});
 }

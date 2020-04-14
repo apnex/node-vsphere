@@ -1,0 +1,22 @@
+// ----------reconfigVM_Task----------
+var spec = new VcVirtualMachineConfigSpec();
+var deviceChange = new Array();
+deviceChange[0] = new VcVirtualDeviceConfigSpec();
+deviceChange[0].device = new VcVirtualVmxnet3();
+deviceChange[0].device.macAddress = '';
+deviceChange[0].device.connectable = new VcVirtualDeviceConnectInfo();
+deviceChange[0].device.connectable.connected = true;
+deviceChange[0].device.connectable.allowGuestControl = true;
+deviceChange[0].device.connectable.startConnected = true;
+deviceChange[0].device.backing = new VcVirtualEthernetCardNetworkBackingInfo();
+deviceChange[0].device.backing.deviceName = '';
+deviceChange[0].device.addressType = 'generated';
+deviceChange[0].device.deviceInfo = new VcDescription();
+deviceChange[0].device.deviceInfo.summary = 'New Network';
+deviceChange[0].device.deviceInfo.label = 'New Network';
+deviceChange[0].device.key = -101;
+deviceChange[0].operation = VcVirtualDeviceConfigSpecOperation.add;
+spec.deviceChange = deviceChange;
+var cpuFeatureMask = new Array();
+spec.cpuFeatureMask = cpuFeatureMask;
+managedObject.reconfigVM_Task(spec);   // VirtualMachine-vm-217

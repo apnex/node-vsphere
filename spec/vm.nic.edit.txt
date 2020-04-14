@@ -1,0 +1,30 @@
+// ----------reconfigVM_Task----------
+var spec = new VcVirtualMachineConfigSpec();
+var deviceChange = new Array();
+deviceChange[0] = new VcVirtualDeviceConfigSpec();
+deviceChange[0].device = new VcVirtualVmxnet3();
+deviceChange[0].device.macAddress = '00:50:56:a4:2d:57';
+deviceChange[0].device.resourceAllocation = new VcVirtualEthernetCardResourceAllocation();
+deviceChange[0].device.resourceAllocation.limit = -1;
+deviceChange[0].device.resourceAllocation.reservation = 0;
+deviceChange[0].device.resourceAllocation.share = new VcSharesInfo();
+deviceChange[0].device.resourceAllocation.share.shares = 50;
+deviceChange[0].device.resourceAllocation.share.level = VcSharesLevel.normal;
+deviceChange[0].device.backing = new VcVirtualEthernetCardDistributedVirtualPortBackingInfo();
+deviceChange[0].device.backing.port = new VcDistributedVirtualSwitchPortConnection();
+deviceChange[0].device.backing.port.switchUuid = '50 24 5b 7d 67 65 6a 4f-35 79 02 31 a5 34 42 ff';
+deviceChange[0].device.backing.port.portgroupKey = 'dvportgroup-189';
+deviceChange[0].device.addressType = 'assigned';
+deviceChange[0].device.controllerKey = 100;
+deviceChange[0].device.unitNumber = 7;
+deviceChange[0].device.wakeOnLanEnabled = true;
+deviceChange[0].device.uptCompatibilityEnabled = true;
+deviceChange[0].device.deviceInfo = new VcDescription();
+deviceChange[0].device.deviceInfo.summary = '';
+deviceChange[0].device.deviceInfo.label = 'Network adapter 1';
+deviceChange[0].device.key = 4000;
+deviceChange[0].operation = VcVirtualDeviceConfigSpecOperation.edit;
+spec.deviceChange = deviceChange;
+var cpuFeatureMask = new Array();
+spec.cpuFeatureMask = cpuFeatureMask;
+managedObject.reconfigVM_Task(spec);   // VirtualMachine-vm-217

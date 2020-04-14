@@ -36,11 +36,8 @@ Workflow
 - Assemble into Clusters
 
 ###
-Create Resource Pool
+Create VAPP
 Create Distributed Switch
-Create ROUTER
-
-
-### notes!!
-ClusterComputeResource -> ResourcePool -> Child-ResourcePool
-# Select Cluster, create child ResourcePool
+Create ROUTER VM
+-- Attach to Outside
+-- Attach to Inside
