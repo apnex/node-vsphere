@@ -36,5 +36,9 @@ function main(id) {
 				});
 			}
 		});
+		let vm = root.get('vm-217');
+		vm.property('configStatus').then((value) => {
+			console.log('name: ' + value);
+		});
 	});
 }

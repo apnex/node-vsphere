@@ -11,6 +11,7 @@ function apiCore() {
 	this.getObjectType = getObjectType; // temp have for folder subtypes
 	this.getObjects = getObjects;
 	this.getTaskInfo = getTaskInfo;
+	this.getView = getView;
 	this.waitForTask = waitForTask;
 	this.buildSpec = buildSpec;
 }
@@ -104,6 +105,29 @@ function getObjects(service, propertySpec) {
 						path: "view",
 						type: "ContainerView"
 					})
+				}),
+				propSet: vim.PropertySpec(propertySpec)
+			})
+		], vim.RetrieveOptions());
+	});
+}
+
+// getView
+function getView(service, entityList, propertySpec) {
+	let propertyCollector = service.serviceContent.propertyCollector;
+        let viewManager = service.serviceContent.viewManager;
+        let vimPort = service.vimPort;
+        let vim = service.vim;
+	return vimPort.createListView(viewManager, entityList).then((listView) => {
+		return vimPort.retrievePropertiesEx(propertyCollector, [
+			vim.PropertyFilterSpec({
+				objectSet: vim.ObjectSpec({
+					obj: listView,
+					selectSet: vim.TraversalSpec({
+						path: "view",
+						type: "ListView"
+					}),
+					skip: true
 				}),
 				propSet: vim.PropertySpec(propertySpec)
 			})
