@@ -22,24 +22,18 @@ if(args[1].match(/host/g)) {
 	if(args[2]) {
 		main(args[2]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('host.create <cluster.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.vswitch.list <host.id>'));
 	}
 }
 
 // main
 function main(id) {
-	let client = new apiClient(); // add auth?
-	client.vspLogin(hostname, username, password).then((service) => {
-		let cluster = client.get(id);
-		cluster.addHost({
-			force: 1,
-			hostName: '172.16.10.30',
-			userName: 'root',
-			password: 'VMware1!',
-			port: 443
-		}).then((host) => {
-			host.exitMaintenanceMode().then((info) => {
-				console.log(JSON.stringify(host.entity, null, "\t"));
+	let client = new apiClient();
+	client.vspLogin(hostname, username, password).then((root) => {
+		let host = root.get(id);
+		host.getDvsList().then((result) => {
+			result.forEach((dvs) => {
+				console.log(dvs.entity.value + ' : ' + dvs.entity.type);
 			});
 		});
 	});

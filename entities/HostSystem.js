@@ -13,6 +13,14 @@ module.exports = class HostSystem extends ManagedEntity {
 			});
 		});
 	}
+	getDvsList() {
+		return this.config().then(async(config) => {
+			let switches = config.network.proxySwitch;
+			return Promise.all(switches.map((dvs) => {
+				return this.getDvsByUuid(dvs.dvsUuid);
+			}));
+		});
+	}
 	exitMaintenanceMode({timeout = 60} = {}) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
