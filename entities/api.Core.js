@@ -4,6 +4,7 @@ const ora = require('ora');
 
 // constructor
 function apiCore() {
+	this.getDvsByUuid = getDvsByUuid;
 	this.getEntity = getEntity;
 	this.getEntityType = getEntityType;
 	this.getObject = getObject; // temp hack for folder subtypes
@@ -14,6 +15,18 @@ function apiCore() {
 	this.buildSpec = buildSpec;
 }
 module.exports = apiCore;
+
+// getDvsByUuid
+function getDvsByUuid(service, uuid) {
+	return new Promise((resolve, reject) => {
+		let dvSwitchManager = service.serviceContent.dvSwitchManager;
+		service.vimPort.queryDvsByUuid(dvSwitchManager, uuid).then((entity) => {
+			resolve(this.getObject(service, entity.value));
+		}).catch((err) => {
+			reject(err);
+		});
+	});
+}
 
 // getTaskInfo
 function getTaskInfo(service, task) {

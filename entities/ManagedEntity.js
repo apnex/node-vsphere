@@ -41,6 +41,9 @@ module.exports = class ManagedEntity {
 			});
 		});
 	}
+	getDvsByUuid(uuid) {
+		return core.getDvsByUuid(this.service, uuid);
+	}
 	get(id) {
 		return core.getObject(this.service, id);
 	}

@@ -31,23 +31,17 @@ function main(id) {
 	let client = new apiClient(); // add auth?
 	client.vspLogin(hostname, username, password).then((root) => {
 		let host = root.get(id);
-		host.config().then((config) => {
-			console.log(JSON.stringify(config.network.proxySwitch, null, "\t"));
-			console.log('end');
-		});
-
-		host.parent().then((cluster) => {
-			return cluster.parent();
-		}).then((group) => {
-			return group.parent();
-		}).then((dc) => {
-			return dc.networkFolder();
-		}).then((folder) => {
-			console.log(JSON.stringify(folder.entity, null, "\t"));
-			folder.childEntity().then((result) => {
-				console.log(JSON.stringify(result, null, "\t"));
+		host.config().then(async(config) => {
+			let switches = config.network.proxySwitch;
+			return Promise.all(switches.map((dvs) => {
+				return root.getDvsByUuid(dvs.dvsUuid);
+			}));
+		}).then((result) => {
+			result.forEach((dvs) => {
+				console.log(JSON.stringify(dvs.entity, null, "\t"));
 			});
 		});
+
 		// host.parent //domain-c167
 		// domain-c167.parent //group-h146
 		// group-h146.parent // datacenter-144
