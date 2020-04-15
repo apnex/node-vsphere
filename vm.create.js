@@ -33,13 +33,11 @@ function main(id, pgid) {
 		let entity = root.get(id);
 		var spec = require('./spec/blank.VirtualMachineConfigSpec.json');
 		//var spec = require('./spec/base.VirtualMachineConfigSpec.json');
-		var nic = require('./spec/base.VirtualVmxnet3.json');
-		let portgroup = root.get(pgid);
+		//var nic = require('./spec/base.VirtualVmxnet3.json');
+		//let portgroup = root.get(pgid);
 
 		entity.createChildVM(spec).then((vm) => {
 			console.log(JSON.stringify(vm.entity, null, "\t"));
-			//vm.powerOn().then((info) => {
-			//});
 		});
 		/*makeBacking(portgroup).then((backing) => {
 			spec.deviceChange.push({

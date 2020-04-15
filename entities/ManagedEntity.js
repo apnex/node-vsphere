@@ -12,7 +12,7 @@ module.exports = class ManagedEntity {
 			value: id
 		});
 	}
-	getProperty(name) { // too inefficient - work out how to target specific MOB object
+	/*getProperty(name) { // too inefficient - work out how to target specific MOB object
 		return new Promise((resolve, reject) => {
 			this.getObjects({
 				type: this.entity.type,
@@ -24,10 +24,10 @@ module.exports = class ManagedEntity {
 				resolve(myItem.propSet[0].val);
 			});
 		});
-	}
-	property(name) {
+	}*/
+	getProperty(name) {
 		return new Promise((resolve, reject) => {
-			this.getView({
+			this.getConfig({
 				type: this.entity.type,
 				pathSet: [name]
 			}).then((result) => {
@@ -54,8 +54,8 @@ module.exports = class ManagedEntity {
 	getDvsByUuid(uuid) {
 		return core.getDvsByUuid(this.service, uuid);
 	}
-	getView(propertySpec) {
-		return core.getView(this.service, [this.entity], propertySpec);
+	getConfig(propertySpec) {
+		return core.getConfig(this.service, [this.entity], propertySpec);
 	}
 	get(id) {
 		return core.getObject(this.service, id);

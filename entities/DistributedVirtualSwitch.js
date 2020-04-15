@@ -8,12 +8,12 @@ module.exports = class DistributedVirtualSwitch extends ManagedEntity {
 	}
 	config() {
 		return new Promise((resolve, reject) => {
-			resolve(super.getProperty('config'));
+			resolve(this.getProperty('config'));
 		});
 	}
 	uuid() {
 		return new Promise((resolve, reject) => {
-			resolve(super.getProperty('uuid'));
+			resolve(this.getProperty('uuid'));
 		});
 	}
 	createPortgroup(spec) {

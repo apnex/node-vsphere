@@ -11,7 +11,7 @@ function apiCore() {
 	this.getObjectType = getObjectType; // temp have for folder subtypes
 	this.getObjects = getObjects;
 	this.getTaskInfo = getTaskInfo;
-	this.getView = getView;
+	this.getConfig = getConfig;
 	this.waitForTask = waitForTask;
 	this.buildSpec = buildSpec;
 }
@@ -113,7 +113,7 @@ function getObjects(service, propertySpec) {
 }
 
 // getView
-function getView(service, entityList, propertySpec) {
+function getConfig(service, entityList, propertySpec) {
 	let propertyCollector = service.serviceContent.propertyCollector;
         let viewManager = service.serviceContent.viewManager;
         let vimPort = service.vimPort;

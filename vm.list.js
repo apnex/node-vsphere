@@ -30,15 +30,11 @@ function main(id) {
 			type: 'VirtualMachine',
 			pathSet: ['name']
 		}).then((result) => {
-			if(result) {
+			if(typeof(result) !== 'undefined') {
 				result.objects.forEach((item) => {
 					console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
 				});
 			}
-		});
-		let vm = root.get('vm-217');
-		vm.property('configStatus').then((value) => {
-			console.log('name: ' + value);
 		});
 	});
 }

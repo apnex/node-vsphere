@@ -19,15 +19,15 @@ const blue = chalk.blueBright;
 // called from shell
 const args = process.argv;
 if(args[1].match(/vm/g)) {
-	if(args[2] && args[3]) {
-		main(args[2], args[3]);
+	if(args[2]) {
+		main(args[2]);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.nic.add <vm.id> <portgroup.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.nic.add <vm.id> [ <mac.address> ]'));
 	}
 }
 
 // main
-function main(id, pgid) {
+function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let vm = root.get(id);

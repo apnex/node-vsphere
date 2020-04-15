@@ -1,0 +1,15 @@
+vm.nic.create
+vm.nic.delete
+vm.nic.modify
+vm.nic.attach
+vm.nic.detach
+vm.nic.list
+vm.nic.show {state}
+
+portgroup.create
+portgroup.delete
+portgroup.modify
+portgroup.attach
+portgroup.detach
+portgroup.list
+portgroup.show {state}
