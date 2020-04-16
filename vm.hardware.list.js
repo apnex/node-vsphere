@@ -17,27 +17,23 @@ const green = chalk.green;
 const blue = chalk.blueBright;
 
 // called from shell
-const args = process.argv;
-if(args[1].match(/vm/g)) {
-	if(args[2]) {
-		main(args[2]);
+const args = process.argv.splice(2);
+if(process.argv[1].match(/vm/g)) {
+	if(args.length == 1) {
+		main(...args);
 	} else {
 		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.hardware.list <vm.id>'));
 	}
 }
 
 // main
-function main(id, pgid) {
+function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let vm = root.get(id);
-		//vm.getHardware('VirtualEthernetCard').then((nics) => {
 		vm.getHardware().then((hardware) => {
-			let nics = hardware.device.filter((item) => {
-				return (item.macAddress);
-			});
-			//console.log(JSON.stringify(myList, null, "\t"));
-			nics.forEach((nic) => {
+			let devices = hardware.device;
+			devices.forEach((nic) => {
 				console.log('key: ' + nic.key + ' label: ' + nic.deviceInfo.label + ' unitNumber: ' + nic.unitNumber + ' macAddress: ' + nic.macAddress);
 			});
 		});

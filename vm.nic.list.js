@@ -17,24 +17,27 @@ const green = chalk.green;
 const blue = chalk.blueBright;
 
 // called from shell
-const args = process.argv;
-if(args[1].match(/vm/g)) {
-	if(args[2] && args[3]) {
-		main(args[2], args[3]);
+const args = process.argv.splice(2);
+if(process.argv[1].match(/vm/g)) {
+	if(args.length == 1) {
+		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.create <resource-pool.id> <vm.name>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.hardware.list <vm.id>'));
 	}
 }
 
 // main
-function main(id, vmName) {
+function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let entity = root.get(id);
-		var spec = require('./spec/blank.VirtualMachineConfigSpec.json');
-		spec.name = vmName;
-		entity.createChildVM(spec).then((vm) => {
-			console.log(JSON.stringify(vm.entity, null, "\t"));
+		let vm = root.get(id);
+		vm.getHardware().then((hardware) => {
+			let nics = hardware.device.filter((item) => {
+				return (item.macAddress); // is a vnic
+			});
+			nics.forEach((nic) => {
+				console.log('key: ' + nic.key + ' label: ' + nic.deviceInfo.label + ' unitNumber: ' + nic.unitNumber + ' macAddress: ' + nic.macAddress);
+			});
 		});
 	});
 }

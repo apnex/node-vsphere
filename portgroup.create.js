@@ -35,7 +35,7 @@ function main(id, pgName) {
 		pgSpec.name = pgName;
 		//console.log(JSON.stringify(pgSpec, null, "\t"));
 		vswitch.createPortgroup(pgSpec).then((pg) => {
-			console.log('finished...');
+			console.log(JSON.stringify(pg.entity, null, "\t"));
 		});
 	});
 }
