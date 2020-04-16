@@ -11,6 +11,18 @@ module.exports = class HostSystem extends ManagedEntity {
 			resolve(this.getProperty('config'));
 		});
 	}
+	network() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('network'));
+		});
+	}
+	getNetworkList() {
+		return this.network().then(async(networks) => {
+			return Promise.all(networks.map((net) => {
+				return this.getObject(net.value);
+			}));
+		});
+	}
 	getDvsList() {
 		return this.config().then(async(config) => {
 			let switches = config.network.proxySwitch;
@@ -24,7 +36,7 @@ module.exports = class HostSystem extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			service.vimPort.exitMaintenanceModeTask(entity, timeout).then((task) => {
-				resolve(super.waitForTask(task));
+				resolve(this.waitForTask(task));
 			});
 		});
 	}
@@ -33,7 +45,7 @@ module.exports = class HostSystem extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			service.vimPort.enterMaintenanceModeTask(entity, timeout).then((task) => {
-				resolve(super.waitForTask(task));
+				resolve(this.waitForTask(task));
 			});
 		});
 	}

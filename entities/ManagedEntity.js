@@ -12,19 +12,6 @@ module.exports = class ManagedEntity {
 			value: id
 		});
 	}
-	/*getProperty(name) { // too inefficient - work out how to target specific MOB object
-		return new Promise((resolve, reject) => {
-			this.getObjects({
-				type: this.entity.type,
-				pathSet: [name]
-			}).then((result) => {
-				let myItem = result.objects.filter((item) => {
-					return (item.obj.value == this.id);
-				})[0];
-				resolve(myItem.propSet[0].val);
-			});
-		});
-	}*/
 	getProperty(name) {
 		return new Promise((resolve, reject) => {
 			this.getConfig({

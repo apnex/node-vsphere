@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
-const ManagedEntity = require('./ManagedEntity');
+const Network = require('./Network');
 
-module.exports = class DistributedVirtualPortgroup extends ManagedEntity {
+module.exports = class DistributedVirtualPortgroup extends Network {
 	constructor(service, id) {
 		super(service, id);
 	}

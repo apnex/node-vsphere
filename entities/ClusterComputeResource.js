@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
-const ManagedEntity = require('./ManagedEntity');
+const ComputeResource = require('./ComputeResource');
 
-module.exports = class ClusterComputeResource extends ManagedEntity {
+module.exports = class ClusterComputeResource extends ComputeResource {
 	constructor(service, id) {
 		super(service, id);
 	}

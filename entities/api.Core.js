@@ -147,6 +147,7 @@ function getObject(service, id) {
 		'VirtualMachine',
 		'VmwareDistributedVirtualSwitch',
 		'DistributedVirtualPortgroup',
+		'Network',
 		'DatacenterFolder',
 		'VmFolder',
 		'HostFolder',
@@ -187,6 +188,9 @@ function getObjectType(id) {
 		break;
 		case /^dvportgroup-/.test(id):
 			return('DistributedVirtualPortgroup');
+		break;
+		case /^network-/.test(id):
+			return('Network');
 		break;
 		case /^group-d/.test(id):
 			return('DatacenterFolder');
@@ -252,6 +256,9 @@ function getEntityType(id) {
 		break;
 		case /^dvportgroup-/.test(id):
 			return('DistributedVirtualPortgroup');
+		break;
+		case /^network-/.test(id):
+			return('Network');
 		break;
 		case /^group-/.test(id):
 			return('Folder');

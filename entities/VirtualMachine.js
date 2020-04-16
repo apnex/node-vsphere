@@ -11,10 +11,22 @@ module.exports = class VirtualMachine extends ManagedEntity {
 			resolve(this.getProperty('config'));
 		});
 	}
+	runtime() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('runtime'));
+		});
+	}
 	getHardware() {
 		return new Promise((resolve, reject) => {
 			this.config().then((config) => {
 				resolve(config.hardware);
+			});
+		});
+	}
+	getHost() {
+		return new Promise((resolve, reject) => {
+			this.runtime().then((state) => {
+				resolve(this.getObject(state.host.value));
 			});
 		});
 	}
