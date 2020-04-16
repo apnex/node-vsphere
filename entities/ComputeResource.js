@@ -8,10 +8,26 @@ module.exports = class ComputeResource extends ManagedEntity {
 	}
 	network() {
 		return new Promise((resolve, reject) => {
-			//resolve(this.getProperty('network'));
-			this.getProperty('network').then((networks) => {
-				console.log(JSON.stringify(networks, null, "\t"));
-			});
+			resolve(this.getProperty('network'));
+		});
+	}
+	datastore() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('datastore'));
+		});
+	}
+	getNetworkList() {
+		return this['network']().then(async(items) => {
+			return Promise.all(items.map((entity) => {
+				return this.getObject(entity.value);
+			}));
+		});
+	}
+	getDatastoreList() {
+		return this['datastore']().then(async(items) => {
+			return Promise.all(items.map((entity) => {
+				return this.getObject(entity.value);
+			}));
 		});
 	}
 };
