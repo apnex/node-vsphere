@@ -54,15 +54,29 @@ function main(id, nicId, pgId) {
 	});
 }
 
-function makeBacking(portgroup) {
-	return portgroup.getDvs().then(async(dvs) => {
-		return {
-			"discriminator": "VirtualEthernetCardDistributedVirtualPortBackingInfo",
-			"port": {
-				"discriminator": "DistributedVirtualSwitchPortConnection",
-				"switchUuid": await dvs.uuid(),
-				"portgroupKey": portgroup.entity.value
-			}
-		};
-	});
+function makeBacking(network) {
+	if(network.entity.type == "DistributedVirtualPortgroup") {
+		return network.getDvs().then(async(dvs) => {
+			return {
+				"discriminator": "VirtualEthernetCardDistributedVirtualPortBackingInfo",
+				"port": {
+					"discriminator": "DistributedVirtualSwitchPortConnection",
+					"switchUuid": await dvs.uuid(),
+					"portgroupKey": portgroup.entity.value
+				}
+			};
+		});
+	} else {
+		return network.name().then((name) => {
+			return {
+				"discriminator": "VirtualEthernetCardNetworkBackingInfo",
+				"deviceName": name,
+				"network": {
+						"discriminator": "ManagedObjectReference",
+						"type": network.entity.type,
+						"value": network.entity.value
+				}
+			};
+		});
+	}
 }

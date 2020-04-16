@@ -35,12 +35,17 @@ function main(id) {
 			console.log(JSON.stringify(host.entity, null, "\t"));
 			host.getNetworkList().then((networks) => {
 				networks.forEach(async(item) => {
+					let swt = "";
+					if(item.entity.type == "DistributedVirtualPortgroup") {
+						swt = (await item.config()).distributedVirtualSwitch.value;
+					}
 					let net = {
 						"name": await item.name(),
 						"type": item.entity.type,
-						"value": item.entity.value
+						"value": item.entity.value,
+						"switch": swt
 					};
-					console.log(net.value.padEnd(18, ' ') + net.type.padEnd(30, ' ') + net.name);
+					console.log(net.value.padEnd(18, ' ') + net.type.padEnd(30, ' ') + net.name.padEnd(25, ' ') + net.switch);
 				});
 			});
 		});
