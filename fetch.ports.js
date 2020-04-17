@@ -31,6 +31,12 @@ function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let vm = root.get(id);
+
+		//FetchDVPorts
+		// fetchDVPorts
+		// DistributedVirtualSwitchPortCriteria
+		// -- connected, present in this host, in this portgroup
+
 		vm.getHost().then((host) => {
 			console.log(JSON.stringify(host.entity, null, "\t"));
 			host.getNetworkList().then((networks) => {

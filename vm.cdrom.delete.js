@@ -22,23 +22,29 @@ if(process.argv[1].match(/vm/g)) {
 	if(args.length >= 2) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.create <resource-pool.id> <vm.name> [ <datastore.name> ]'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.cdrom.delete <vm.id> <device.id>'));
 	}
 }
 
 // main
-function main(id, vmName, dsName) {
+function main(id, deviceId) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let entity = root.get(id);
-		let spec = require('./spec/blank.VirtualMachineConfigSpec.json');
-		spec.name = vmName;
-		if(dsName) {
-			spec.files.vmPathName = "[" + dsName + "]";
-			spec.deviceChange[1].device.backing.fileName = "[" + dsName + "]";
+		let vm = root.get(id);
+		let spec = {
+			"discriminator": "VirtualMachineConfigSpec",
+			"deviceChange": [
+				{
+					"discriminator": "VirtualDeviceConfigSpec",
+					"operation": "remove",
+					"device": {
+						"discriminator": "VirtualCdrom",
+						"key": deviceId
+					}
+				}
+			]
 		}
-		//console.log(JSON.stringify(spec, null, "\t"));
-		entity.createChildVM(spec).then((vm) => {
+		vm.reconfigure(spec).then((vm) => {
 			console.log(JSON.stringify(vm.entity, null, "\t"));
 		});
 	});

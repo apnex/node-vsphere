@@ -34,7 +34,7 @@ function main(id) {
 		vm.getHardware().then((hardware) => {
 			let devices = hardware.device;
 			devices.forEach((nic) => {
-				console.log('key: ' + nic.key + ' label: ' + nic.deviceInfo.label + ' unitNumber: ' + nic.unitNumber + ' macAddress: ' + nic.macAddress);
+				console.log('key: ' + nic.key + "\t" + ' label: ' + nic.deviceInfo.label.padEnd(20, ' ') + "\tunitNumber: " + nic.unitNumber + "\tmacAddress: " + nic.macAddress);
 			});
 		});
 	});

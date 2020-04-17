@@ -1,0 +1,2 @@
+/// API examples
+https://github.com/terraform-providers/terraform-provider-vsphere/blob/master/vendor/github.com/vmware/govmomi/object/virtual_device_list.go

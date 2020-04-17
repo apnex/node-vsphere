@@ -17,9 +17,9 @@ module.exports = class HostSystem extends ManagedEntity {
 		});
 	}
 	getNetworkList() {
-		return this.network().then(async(networks) => {
-			return Promise.all(networks.map((net) => {
-				return this.getObject(net.value);
+		return this.network().then((items) => {
+			return Promise.all(items.map((entity) => {
+				return this.getObject(entity.value);
 			}));
 		});
 	}
