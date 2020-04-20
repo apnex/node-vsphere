@@ -24,7 +24,7 @@ function vspLogin(hostname, username, password) {
 		vsphere.vimService(hostname).then((service) => {
 			let sessionManager = service.serviceContent.sessionManager;
 			let vimPort = service.vimPort;
-			vimPort.login(sessionManager, username, password).then(() => {
+			vimPort.login(sessionManager, username, password).then((session) => {
 				this.service = service;
 				let rootFolder = require('./entities/DatacenterFolder');
 				resolve(new rootFolder(service, service.serviceContent.rootFolder.value));
