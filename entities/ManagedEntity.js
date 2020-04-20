@@ -22,6 +22,11 @@ module.exports = class ManagedEntity {
 			});
 		});
 	}
+	name() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('name'));
+		});
+	}
 	parent() {
 		return new Promise((resolve, reject) => {
 			this.getProperty('parent').then((entity) => {

@@ -16,6 +16,11 @@ module.exports = class HostSystem extends ManagedEntity {
 			resolve(this.getProperty('network'));
 		});
 	}
+	datastore() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('datastore'));
+		});
+	}
 	getNetworkList() {
 		return this.network().then((items) => {
 			return Promise.all(items.map((entity) => {
@@ -23,10 +28,16 @@ module.exports = class HostSystem extends ManagedEntity {
 			}));
 		});
 	}
+	getDatastoreList() {
+		return this.datastore().then((items) => {
+			return Promise.all(items.map((entity) => {
+				return this.getObject(entity.value);
+			}));
+		});
+	}
 	getDvsList() {
-		return this.config().then(async(config) => {
-			let switches = config.network.proxySwitch;
-			return Promise.all(switches.map((dvs) => {
+		return this.config().then((config) => {
+			return Promise.all(config.network.proxySwitch.map((dvs) => {
 				return this.getDvsByUuid(dvs.dvsUuid);
 			}));
 		});

@@ -30,11 +30,18 @@ if(process.argv[1].match(/vm/g)) {
 function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
+		/*TEST
+		let ds = root.get('datastore-230');
+		ds.makeDirectory('/mottu/blublu').then((path) => {
+			console.log('Completed: ' + path);
+		});
+		TEST*/
+
 		let vm = root.get(id);
 		vm.getHost().then((host) => {
 			console.log(JSON.stringify(host.entity, null, "\t"));
-			host.getNetworkList().then((networks) => {
-				return Promise.all(networks.map(async(item) => {
+			host.getNetworkList().then((list) => {
+				return Promise.all(list.map(async(item) => {
 					let dvs = "";
 					if(item.entity.type == "DistributedVirtualPortgroup") {
 						dvs = (await item.config()).distributedVirtualSwitch.value;
@@ -46,11 +53,28 @@ function main(id) {
 						"switch": dvs
 					};
 				}));
-			}).then((netlist) => {
-				netlist.sort((a, b) => {
+			}).then((list) => {
+				console.log('[Available Networks]');
+				list.sort((a, b) => {
 					return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
-				}).forEach((net) => {
-					console.log(net.value.padEnd(18, ' ') + net.type.padEnd(30, ' ') + net.name.padEnd(25, ' ') + net.switch);
+				}).forEach((item) => {
+					console.log(item.value.padEnd(18, ' ') + item.type.padEnd(30, ' ') + item.name.padEnd(25, ' ') + item.switch);
+				});
+			});
+			host.getDatastoreList().then((list) => {
+				return Promise.all(list.map(async(item) => {
+					return {
+						"name": await item.name(),
+						"type": item.entity.type,
+						"value": item.entity.value
+					};
+				}));
+			}).then((list) => {
+				console.log('[Available Datastores]');
+				list.sort((a, b) => {
+					return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+				}).forEach((item) => {
+					console.log(item.value.padEnd(18, ' ') + item.type.padEnd(30, ' ') + item.name.padEnd(25, ' '));
 				});
 			});
 		});

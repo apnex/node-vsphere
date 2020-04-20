@@ -140,6 +140,7 @@ function getObject(service, id) {
 	let match = this.getObjectType(id);
 	let type = [
 		'Datacenter',
+		'Datastore',
 		'ClusterComputeResource',
 		'HostSystem',
 		'ResourcePool',
@@ -167,6 +168,9 @@ function getObjectType(id) {
 	switch(true) {
 		case /^datacenter-/.test(id):
 			return('Datacenter');
+		break;
+		case /^datastore-/.test(id):
+			return('Datastore');
 		break;
 		case /^domain-c/.test(id):
 			return('ClusterComputeResource');
@@ -217,6 +221,7 @@ function getObjectType(id) {
 function getEntity(service, id) {
 	let type = [
 		'Datacenter',
+		'Datastore',
 		'ClusterComputeResource',
 		'HostSystem',
 		'ResourcePool',
@@ -238,6 +243,9 @@ function getEntityType(id) {
 	switch(true) {
 		case /^datacenter-/.test(id):
 			return('Datacenter');
+		break;
+		case /^datastore-/.test(id):
+			return('Datastore');
 		break;
 		case /^domain-c/.test(id):
 			return('ClusterComputeResource');
