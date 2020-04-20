@@ -1,2 +1,0 @@
-https://www.virtuallyghetto.com/2014/06/how-to-efficiently-transfer-files-to-datastore-in-vcenter-using-the-vsphere-api.html
-https://code.vmware.com/apis/197/vsphere/doc/vim.SessionManager.html#acquireGenericServiceTicket
