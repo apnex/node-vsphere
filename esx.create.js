@@ -18,11 +18,11 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv.splice(2);
-if(process.argv[1].match(/router/g)) {
+if(process.argv[1].match(/esx/g)) {
 	if(args.length >= 4) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('router.create <vm.name> <resourve-pool.id> <datastore.id> <portgroup.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('esx.create <vm.name> <resourve-pool.id> <datastore.id> <portgroup.id>'));
 	}
 }
 
@@ -32,13 +32,15 @@ function main(vmName, resId, dsId, pgId) {
 	client.vspLogin(hostname, username, password).then(async(root) => {
 		// upload centos.iso
 		let ds = root.get(dsId);
-		let srcFile = './centos.iso';
-		let dsFile = '/iso/centos.iso';
+		let srcFile = './esx.iso';
+		let dsFile = '/iso/esx.iso';
 		let dsName = await ds.name();
 		ds.uploadFile(srcFile, dsFile).then((path) => {
 			// create vm
 			let spec = require('./spec/blank.VirtualMachineConfigSpec.json');
 			spec.name = vmName;
+			spec.guestId = 'vmkernel65Guest';
+			spec.memoryMB = 8192;
 			spec.files.vmPathName = "[" + dsName + "]";
 			spec.deviceChange[1].device.backing.fileName = "[" + dsName + "]";
 			let resource = root.get(resId);
@@ -49,13 +51,15 @@ function main(vmName, resId, dsId, pgId) {
 
 			// configure nic and cdrom
 			await createNic(vm);
+			await createNic(vm);
 			await attachNic(vm, 4000, pg);
+			await attachNic(vm, 4001, pg);
 			await createCdrom(vm);
 			await attachCdrom(vm, 16001, dsName, dsFile);
 
 			// power on
-			await vm.powerOn();
-			console.log('vm powered on');
+			//await vm.powerOn();
+			//console.log('vm powered on');
 		});
 	});
 }
