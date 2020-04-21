@@ -62,7 +62,7 @@ function makeBacking(network) {
 				"port": {
 					"discriminator": "DistributedVirtualSwitchPortConnection",
 					"switchUuid": await dvs.uuid(),
-					"portgroupKey": portgroup.entity.value
+					"portgroupKey": network.entity.value
 				}
 			};
 		});

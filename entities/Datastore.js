@@ -28,6 +28,8 @@ module.exports = class Folder extends ManagedEntity {
 			'username': process.env.VMWJS_USER,
 			'password': process.env.VMWJS_PASS
 		};
-		return this.uploadDsFile(dsName, dcName, srcFile, dsFile, options);
+		let result = await this.uploadDsFile(dsName, dcName, srcFile, dsFile, options);
+		let name = '[' + dsName + ']' + dsFile;
+		return name;
 	}
 };

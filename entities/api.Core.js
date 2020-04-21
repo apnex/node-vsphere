@@ -310,7 +310,7 @@ function buildSpec(service, type, spec) {
 	return service.vim[type](body);
 }
 
-async function uploadFile(url, srcFile, options = {}) {
+function uploadFile(url, srcFile, options = {}) {
 	const stream = require('stream');
 	const {promisify} = require('util');
 	const fs = require('fs');
@@ -327,20 +327,27 @@ async function uploadFile(url, srcFile, options = {}) {
 	} else {
 		options.headers["Content-Length"] = fileSize
 	}
-	return pipeline(
-		fs.createReadStream(srcFile),
-		got.stream.put(url, options).on('uploadProgress', progress => {
-			if(progress.percent == 1) {
-				spinner.text = "% 100" + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]";
-				spinner.succeed();
-				return;
-			} else {
-				if(!spinner.isSpinning) {
-					spinner.start("% " + progress.percent + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]");
+	return new Promise((resolve, reject) => {
+		pipeline(
+			fs.createReadStream(srcFile),
+			got.stream.put(url, options).on('uploadProgress', progress => {
+				if(progress.percent == 1) {
+					spinner.text = "% 100" + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]";
+					spinner.succeed();
 				} else {
-					spinner.text = "% " + progress.percent + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]";
+					if(!spinner.isSpinning) {
+						spinner.start("% " + progress.percent + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]");
+					} else {
+						spinner.text = "% " + progress.percent + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]";
+					}
 				}
-			}
-		})
-	);
+			})
+		).then((result) => {
+			setTimeout(() => {
+				resolve(srcFile);
+			}, 1000);
+		}).catch((error) => {
+			reject(error);
+		});
+	});
 }

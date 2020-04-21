@@ -18,11 +18,11 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv.splice(2);
-if(process.argv[1].match(/vm/g)) {
+if(process.argv[1].match(/datastore/g)) {
 	if(args.length == 1) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.upload <vm.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('datastore.upload <datastore.id>'));
 	}
 }
 
@@ -30,11 +30,11 @@ if(process.argv[1].match(/vm/g)) {
 function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let ds = root.get('datastore-230');
-		var srcFile = './newticle.iso';
-		var dsFile = '/iso/newticle.iso';
+		let ds = root.get(id);
+		var srcFile = './centos.iso';
+		var dsFile = '/iso/centos.iso';
 		ds.uploadFile(srcFile, dsFile).then((path) => {
-			console.log('Completed: ' + dsFile);
+			console.log('Completed: ' + path);
 		});
 		//TEST
 	});
