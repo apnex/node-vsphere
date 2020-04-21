@@ -4,6 +4,7 @@ const ora = require('ora');
 
 // constructor
 function apiCore() {
+	this.uploadFile = uploadFile;
 	this.getDvsByUuid = getDvsByUuid;
 	this.getEntity = getEntity;
 	this.getEntityType = getEntityType;
@@ -307,4 +308,39 @@ function buildSpec(service, type, spec) {
 		}
 	});
 	return service.vim[type](body);
+}
+
+async function uploadFile(url, srcFile, options = {}) {
+	const stream = require('stream');
+	const {promisify} = require('util');
+	const fs = require('fs');
+	const got = require('got');
+	const ora = require('ora');
+	const pipeline = promisify(stream.pipeline);
+	const spinner = ora({spinner: 'bouncingBall'});
+
+	let fileSize = fs.statSync(srcFile).size;
+	if(typeof(options.headers) == 'undefined') {
+		options.headers = {
+			"Content-Length": fileSize
+		}
+	} else {
+		options.headers["Content-Length"] = fileSize
+	}
+	return pipeline(
+		fs.createReadStream(srcFile),
+		got.stream.put(url, options).on('uploadProgress', progress => {
+			if(progress.percent == 1) {
+				spinner.text = "% 100" + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]";
+				spinner.succeed();
+				return;
+			} else {
+				if(!spinner.isSpinning) {
+					spinner.start("% " + progress.percent + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]");
+				} else {
+					spinner.text = "% " + progress.percent + "\t" + progress.transferred + "\t" + progress.total + " [" + srcFile + "]";
+				}
+			}
+		})
+	);
 }

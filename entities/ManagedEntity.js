@@ -43,6 +43,16 @@ module.exports = class ManagedEntity {
 			});
 		});
 	}
+	uploadDsFile(dsName, dcPath, srcFile, dsFile, options) {
+		let url = 'https://' + options.hostname + '/folder' + dsFile + '?dcPath=' + dcPath + '&dsName=' + dsName;
+		let authHeader = "Basic " + Buffer.from(options.username + ":" + options.password).toString("base64");
+		let opts = {
+			"headers": {
+				"Authorization": authHeader
+			}
+		};
+		return core.uploadFile(url, srcFile, opts);
+	}
 	getDvsByUuid(uuid) {
 		return core.getDvsByUuid(this.service, uuid);
 	}

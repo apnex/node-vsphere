@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const apiClient = require('./api.Client');
+//const {client} = require('./api.Client');
 const params = require('./params.json');
 
 // ignore self-signed certificate
@@ -18,24 +19,23 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv.splice(2);
-if(process.argv[1].match(/vm/g)) {
-	if(args.length == 1) {
-		main(...args);
-	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.upload <vm.id>'));
-	}
+if(process.argv[1].match(/datastore/g)) {
+	main();
 }
 
 // main
 function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let ds = root.get('datastore-230');
-		var srcFile = './newticle.iso';
-		var dsFile = '/iso/newticle.iso';
-		ds.uploadFile(srcFile, dsFile).then((path) => {
-			console.log('Completed: ' + dsFile);
+		root.getObjects({
+			type: 'Datastore',
+			pathSet: ['name']
+		}).then((result) => {
+			if(typeof(result) !== 'undefined') {
+				result.objects.forEach((item) => {
+					console.log(item.obj.value + ' : ' + item.obj.type + ' : ' + item.propSet[0].val);
+				});
+			}
 		});
-		//TEST
 	});
 }

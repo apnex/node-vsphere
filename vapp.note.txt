@@ -1,3 +1,0 @@
-vapp.owner // domain-c7
-
-
