@@ -1,0 +1,65 @@
+{
+	"discriminator": "VirtualMachineConfigSpec",
+	"name": "esx",
+	"memoryMB": 2048,
+	"firmware": "bios",
+	"guestId": "vmkernel65Guest",
+	"numCPUs": 2,
+	"numCoresPerSocket": 2,
+	"nestedHVEnabled": true,
+	"flags" : {
+		"discriminator": "VirtualMachineFlagInfo",
+		"vvtdEnabled": true
+	},
+	"files": {
+		"discriminator": "VirtualMachineFileInfo",
+		"vmPathName": "[ds-local]"
+	},
+	"deviceChange": [
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"operation": "add",
+			"device": {
+				"discriminator": "VirtualAHCIController",
+				"key": -101,
+				"busNumber": 0
+			}
+		},
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"operation": "add",
+			"device": {
+				"discriminator": "VirtualDisk",
+				"key": -102,
+				"unitNumber": 0,
+				"controllerKey": -101,
+				"capacityInKB": 4194304,
+				"backing": {
+					"discriminator": "VirtualDiskFlatVer2BackingInfo",
+					"fileName": "[ds-local]",
+					"thinProvisioned": true,
+					"diskMode": "persistent"
+				}
+			},
+			"fileOperation": "create"
+		},
+		{
+			"discriminator": "VirtualDeviceConfigSpec",
+			"operation": "add",
+			"device": {
+				"discriminator": "VirtualDisk",
+				"key": -103,
+				"unitNumber": 1,
+				"controllerKey": -101,
+				"capacityInKB": 16777216,
+				"backing": {
+					"discriminator": "VirtualDiskFlatVer2BackingInfo",
+					"fileName": "[ds-local]",
+					"thinProvisioned": true,
+					"diskMode": "persistent"
+				}
+			},
+			"fileOperation": "create"
+		}
+	]
+}

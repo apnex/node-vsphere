@@ -19,10 +19,10 @@ const blue = chalk.blueBright;
 // called from shell
 const args = process.argv.splice(2);
 if(process.argv[1].match(/vm/g)) {
-	if(args.length == 1) {
+	if(args.length >= 1) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('vm.hardware.list <vm.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.vmk.create <host.id> [ <mac.address> ]'));
 	}
 }
 
@@ -30,12 +30,19 @@ if(process.argv[1].match(/vm/g)) {
 function main(id) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
-		let vm = root.get(id);
-		vm.getHardware().then((hardware) => {
-			let devices = hardware.device;
-			devices.forEach((device) => {
-				console.log(JSON.stringify(device, null, "\t"));
-				//console.log('key: ' + device.key + "\t" + ' label: ' + nic.deviceInfo.label.padEnd(20, ' ') + "\tunitNumber: " + nic.unitNumber + "\tmacAddress: " + nic.macAddress);
+		let host = root.get(id);
+		let spec = {
+			"discriminator": "HostVirtualNicSpec",
+			"ip": {
+				"discriminator": "HostIpConfig",
+				"dhcp": false,
+				"ipAddress": "192.168.11.108",
+				"subnetMask": "255.255.255.0"
+			}
+		};
+		host.getNetworkSystem().then((netsys) => {
+			netsys.addVirtualNic(spec).then((info) => {
+				console.log(JSON.stringify(info, null, "\t"));
 			});
 		});
 	});

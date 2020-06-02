@@ -17,23 +17,23 @@ const green = chalk.green;
 const blue = chalk.blueBright;
 
 // called from shell
-const args = process.argv;
-if(args[1].match(/host/g)) {
-	if(args[2]) {
-		main(args[2]);
+const args = process.argv.splice(2);
+if(process.argv[1].match(/vm/g)) {
+	if(args.length >= 2) {
+		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('host.create <cluster.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.create <cluster.id> <ip.address>'));
 	}
 }
 
 // main
-function main(id) {
+function main(id, ipAddress) {
 	let client = new apiClient(); // add auth?
 	client.vspLogin(hostname, username, password).then((service) => {
 		let cluster = client.get(id);
 		cluster.addHost({
 			force: 1,
-			hostName: '172.16.10.30',
+			hostName: ipAddress,
 			userName: 'root',
 			password: 'VMware1!',
 			port: 443

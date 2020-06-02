@@ -6,6 +6,16 @@ module.exports = class HostSystem extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
+	getNetworkSystem() {
+		return this.configManager().then((entity) => {
+			return this.getObject(entity['networkSystem'].value);
+		});
+	}
+	configManager() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('configManager'));
+		});
+	}
 	config() {
 		return new Promise((resolve, reject) => {
 			resolve(this.getProperty('config'));

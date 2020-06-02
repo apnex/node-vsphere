@@ -22,27 +22,31 @@ if(process.argv[1].match(/esx/g)) {
 	if(args.length >= 4) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('esx.create <vm.name> <resourve-pool.id> <datastore.id> <portgroup.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('esx.create <vm.name> <resource-pool.id> <datastore.id> <portgroup.id>'));
 	}
 }
 
 // main
-function main(vmName, resId, dsId, pgId) {
+function main(node, resId, dsId, pgId) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then(async(root) => {
-		// upload centos.iso
+		// upload iso
 		let ds = root.get(dsId);
-		let srcFile = './esx.iso';
-		let dsFile = '/iso/esx.iso';
+		//let srcFile = './esx67.iso';
+		//let dsFile = '/iso/esx67.iso';
+		let srcFile = './esx70.iso';
+		let dsFile = '/iso/esx70.iso';
 		let dsName = await ds.name();
 		ds.uploadFile(srcFile, dsFile).then((path) => {
 			// create vm
-			let spec = require('./spec/blank.VirtualMachineConfigSpec.json');
-			spec.name = vmName;
+			let spec = require('./spec/esx.VirtualMachineConfigSpec.json');
+			spec.name = 'esx0' + node;
 			spec.guestId = 'vmkernel65Guest';
 			spec.memoryMB = 8192;
 			spec.files.vmPathName = "[" + dsName + "]";
 			spec.deviceChange[1].device.backing.fileName = "[" + dsName + "]";
+			spec.deviceChange[2].device.backing.fileName = "[" + dsName + "]";
+			//console.log(JSON.stringify(spec, null, "\t"));
 			let resource = root.get(resId);
 			return resource.createChildVM(spec);
 		}).then(async(vm) => {
@@ -50,12 +54,15 @@ function main(vmName, resId, dsId, pgId) {
 			let pg = root.get(pgId);
 
 			// configure nic and cdrom
-			await createNic(vm);
-			await createNic(vm);
+			let mac1 = '00:de:ad:be:ef:' + node + '1';
+			let mac2 = '00:de:ad:be:ef:' + node + '2';
+			await createNic(vm, mac1);
 			await attachNic(vm, 4000, pg);
+			await createNic(vm, mac2);
 			await attachNic(vm, 4001, pg);
-			await createCdrom(vm);
-			await attachCdrom(vm, 16001, dsName, dsFile);
+			await createCdrom(vm); // return key!
+			await attachCdrom(vm, 16002, dsName, dsFile);
+			console.log('vm configured');
 
 			// power on
 			//await vm.powerOn();
@@ -118,7 +125,7 @@ function makeCdromBacking(dsName, dsPath) { // create a switch for VirtualDevice
 	}
 }
 
-function createNic(vm) {
+function createNic(vm, mac) {
 	let macAddress = "";
 	let addressType = "generated";
 	if(typeof(mac) !== 'undefined') {
@@ -155,7 +162,11 @@ function createNic(vm) {
 }
 
 function attachNic(vm, nicId, pg) {
-	return makeBacking(pg).then((backing) => {
+	return makeBacking(pg).then(async(backing) => {
+		let hardware = await vm.getHardware();
+		let device = hardware.device.filter((device) => {
+			return (nicId == device.key);
+		})[0];
 		let spec = {
 			"discriminator": "VirtualMachineConfigSpec",
 			"deviceChange": [
@@ -165,11 +176,14 @@ function attachNic(vm, nicId, pg) {
 					"device": {
 						"discriminator": "VirtualVmxnet3",
 						"key": nicId,
+						"addressType": device.addressType,
+						"macAddress": device.macAddress,
 						"backing": backing
 					}
 				}
 			]
 		}
+		//console.log(JSON.stringify(spec, null, "\t"));
 		return vm.reconfigure(spec);
 	});
 }

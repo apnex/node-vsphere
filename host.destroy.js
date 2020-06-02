@@ -36,6 +36,7 @@ function main(id) {
 				return host.destroy();
 			});
 		}).catch((fail) => {
+			// migrate VMK to vSwitch0 ??
 			removeSwitches(host).then((info) => {
 				return host.destroy();
 			}).then(()=>{}).catch(()=>{});

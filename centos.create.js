@@ -18,11 +18,12 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv.splice(2);
-if(process.argv[1].match(/router/g)) {
+if(process.argv[1].match(/centos/g)) {
+	// check if centos.iso islocal, if not, attempt download first
 	if(args.length >= 4) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('router.create <vm.name> <resourve-pool.id> <datastore.id> <portgroup.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('centos.create <vm.name> <resource-pool.id> <datastore.id> <portgroup.id>'));
 	}
 }
 

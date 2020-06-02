@@ -144,6 +144,7 @@ function getObject(service, id) {
 		'Datastore',
 		'ClusterComputeResource',
 		'HostSystem',
+		'HostNetworkSystem',
 		'ResourcePool',
 		'VirtualApp',
 		'VirtualMachine',
@@ -178,6 +179,9 @@ function getObjectType(id) {
 		break;
 		case /^host-/.test(id):
 			return('HostSystem');
+		break;
+		case /^networkSystem-/.test(id):
+			return('HostNetworkSystem');
 		break;
 		case /^resgroup-v/.test(id):
 			return('VirtualApp');
@@ -225,6 +229,7 @@ function getEntity(service, id) {
 		'Datastore',
 		'ClusterComputeResource',
 		'HostSystem',
+		'HostNetworkSystem',
 		'ResourcePool',
 		'VmwareDistributedVirtualSwitch',
 		'DistributedVirtualPortgroup',
@@ -253,6 +258,9 @@ function getEntityType(id) {
 		break;
 		case /^host-/.test(id):
 			return('HostSystem');
+		break;
+		case /^networkSystem-/.test(id):
+			return('HostNetworkSystem');
 		break;
 		case /^resgroup-/.test(id):
 			return('ResourcePool');
