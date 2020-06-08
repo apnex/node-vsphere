@@ -27,4 +27,13 @@ module.exports = class DistributedVirtualSwitch extends ManagedEntity {
 			});
                 });
         }
+	reconfigure(spec) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let cSpec = super.buildSpec('DVSConfigSpec', spec);
+			service.vimPort.reconfigureDvsTask(this.entity, cSpec).then((task) => {
+				resolve(super.waitForTask(task));
+			});
+                });
+        }
 };

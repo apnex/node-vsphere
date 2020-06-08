@@ -1,0 +1,35 @@
+#----------------- Start of code capture -----------------
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.uplinkPort = true;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-22
+
+// ----------queryNetworkHint----------
+managedObject.queryNetworkHint(null);   // HostNetworkSystem-networkSystem-1019
+
+// ----------updateNetworkConfig----------
+var config = new VcHostNetworkConfig();
+var proxySwitch = new Array();
+proxySwitch[0] = new VcHostProxySwitchConfig();
+proxySwitch[0].uuid = '50 03 36 cb c0 78 d5 a4-e6 a1 40 8e 23 c8 22 ea';
+proxySwitch[0].changeOperation = 'edit';
+proxySwitch[0].spec = new VcHostProxySwitchSpec();
+proxySwitch[0].spec.backing = new VcDistributedVirtualSwitchHostMemberPnicBacking();
+var pnicSpec = new Array();
+pnicSpec[0] = new VcDistributedVirtualSwitchHostMemberPnicSpec();
+pnicSpec[0].pnicDevice = 'vmnic1';
+pnicSpec[0].uplinkPortKey = '870';
+pnicSpec[0].uplinkPortgroupKey = 'dvportgroup-23';
+proxySwitch[0].spec.backing.pnicSpec = pnicSpec;
+config.proxySwitch = proxySwitch;
+var changeMode = 'modify';
+managedObject.updateNetworkConfig(config, changeMode);   // HostNetworkSystem-networkSystem-1019
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.uplinkPort = true;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-22
+
+
+#----------------- End of code capture -----------------

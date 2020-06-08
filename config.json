@@ -1,0 +1,360 @@
+{
+	"vswitch": [
+		{
+			"name": "vSwitch0",
+			"spec": {
+				"numPorts": 128,
+				"bridge": {
+					"nicDevice": [
+						"vmnic0"
+					],
+					"beacon": {
+						"interval": 1
+					},
+					"linkDiscoveryProtocolConfig": {
+						"protocol": "cdp",
+						"operation": "listen"
+					}
+				},
+				"policy": {
+					"security": {
+						"allowPromiscuous": false,
+						"macChanges": false,
+						"forgedTransmits": false
+					},
+					"nicTeaming": {
+						"policy": "loadbalance_srcid",
+						"reversePolicy": true,
+						"notifySwitches": true,
+						"rollingOrder": false,
+						"failureCriteria": {
+							"checkSpeed": "minimum",
+							"speed": 10,
+							"checkDuplex": false,
+							"fullDuplex": false,
+							"checkErrorPercent": false,
+							"percentage": 0,
+							"checkBeacon": false
+						},
+						"nicOrder": {
+							"activeNic": [
+								"vmnic0"
+							],
+							"standbyNic": []
+						}
+					},
+					"offloadPolicy": {
+						"csumOffload": true,
+						"tcpSegmentation": true,
+						"zeroCopyXmit": true
+					},
+					"shapingPolicy": {
+						"enabled": false
+					}
+				}
+			}
+		}
+	],
+	"proxySwitch": [
+		{
+			"uuid": "50 03 36 cb c0 78 d5 a4-e6 a1 40 8e 23 c8 22 ea",
+			"spec": {
+				"backing": {
+					"pnicSpec": [
+						{
+							"pnicDevice": "vmnic1",
+							"uplinkPortKey": "870",
+							"uplinkPortgroupKey": "dvportgroup-23",
+							"connectionCookie": 1519872837
+						}
+					]
+				}
+			}
+		}
+	],
+	"portgroup": [
+		{
+			"spec": {
+				"name": "vss-vmnet",
+				"vlanId": 0,
+				"vswitchName": "vSwitch0",
+				"policy": {
+					"security": {},
+					"nicTeaming": {
+						"failureCriteria": {}
+					},
+					"offloadPolicy": {},
+					"shapingPolicy": {}
+				}
+			}
+		},
+		{
+			"spec": {
+				"name": "vss-mgmt",
+				"vlanId": 0,
+				"vswitchName": "vSwitch0",
+				"policy": {
+					"security": {},
+					"nicTeaming": {
+						"failureCriteria": {}
+					},
+					"offloadPolicy": {},
+					"shapingPolicy": {}
+				}
+			}
+		}
+	],
+	"pnic": [
+		{
+			"device": "vmnic0",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "",
+					"subnetMask": ""
+				},
+				"linkSpeed": {
+					"speedMb": 10000,
+					"duplex": true
+				},
+				"enableEnhancedNetworkingStack": false,
+				"ensInterruptEnabled": false
+			}
+		},
+		{
+			"device": "vmnic1",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "",
+					"subnetMask": ""
+				},
+				"linkSpeed": {
+					"speedMb": 10000,
+					"duplex": true
+				},
+				"enableEnhancedNetworkingStack": false,
+				"ensInterruptEnabled": false
+			}
+		}
+	],
+	"vnic": [
+		{
+			"device": "vmk0",
+			"portgroup": "vss-mgmt",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "172.16.10.105",
+					"subnetMask": "255.255.255.0"
+				},
+				"mac": "00:50:56:68:5e:ae",
+				"portgroup": "vss-mgmt",
+				"mtu": 1500,
+				"tsoEnabled": true,
+				"netStackInstanceKey": "defaultTcpipStack"
+			}
+		},
+		{
+			"device": "vmk10",
+			"portgroup": "",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "192.168.12.3",
+					"subnetMask": "255.255.255.0"
+				},
+				"mac": "00:50:56:6e:f5:6a",
+				"distributedVirtualPort": {
+					"switchUuid": "50 03 36 cb c0 78 d5 a4-e6 a1 40 8e 23 c8 22 ea",
+					"portKey": "019be97f-47d4-4523-ba85-7bb27e7752c6",
+					"connectionCookie": 1591497462
+				},
+				"mtu": 9000,
+				"tsoEnabled": true,
+				"netStackInstanceKey": "vxlan",
+				"systemOwned": true
+			}
+		},
+		{
+			"device": "vmk50",
+			"portgroup": "",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "169.254.1.1",
+					"subnetMask": "255.255.0.0"
+				},
+				"mac": "00:50:56:6c:c1:b8",
+				"distributedVirtualPort": {
+					"switchUuid": "50 03 36 cb c0 78 d5 a4-e6 a1 40 8e 23 c8 22 ea",
+					"portKey": "70b218d3-5168-490f-b57b-f935e987bd87",
+					"connectionCookie": 1591497463
+				},
+				"mtu": 9000,
+				"tsoEnabled": true,
+				"netStackInstanceKey": "hyperbus",
+				"systemOwned": true
+			}
+		}
+	],
+	"consoleVnic": [],
+	"dnsConfig": {
+		"dhcp": false,
+		"hostName": "esx05",
+		"domainName": "lab",
+		"address": [
+			"172.16.10.1"
+		],
+		"searchDomain": [
+			"lab"
+		]
+	},
+	"ipRouteConfig": {
+		"defaultGateway": "172.16.10.1"
+	},
+	"dhcp": [],
+	"nat": [],
+	"netStackSpec": [
+		{
+			"netStackInstance": {
+				"key": "vSphereProvisioning",
+				"dnsConfig": {
+					"dhcp": false,
+					"hostName": "",
+					"domainName": "",
+					"address": [],
+					"searchDomain": []
+				},
+				"ipRouteConfig": {},
+				"requestedMaxNumberOfConnections": 11000,
+				"congestionControlAlgorithm": "newreno",
+				"ipV6Enabled": true
+			}
+		},
+		{
+			"netStackInstance": {
+				"key": "vmotion",
+				"dnsConfig": {
+					"dhcp": false,
+					"hostName": "",
+					"domainName": "",
+					"address": [],
+					"searchDomain": []
+				},
+				"ipRouteConfig": {},
+				"requestedMaxNumberOfConnections": 11000,
+				"congestionControlAlgorithm": "newreno",
+				"ipV6Enabled": true
+			}
+		},
+		{
+			"netStackInstance": {
+				"key": "hyperbus",
+				"name": "hyperbus",
+				"dnsConfig": {
+					"dhcp": false,
+					"hostName": "",
+					"domainName": "",
+					"address": [],
+					"searchDomain": []
+				},
+				"ipRouteConfig": {},
+				"requestedMaxNumberOfConnections": 11000,
+				"congestionControlAlgorithm": "newreno",
+				"ipV6Enabled": true,
+				"routeTableConfig": {
+					"ipRoute": [
+						{
+							"changeOperation": "ignore",
+							"route": {
+								"network": "169.254.0.0",
+								"prefixLength": 16,
+								"gateway": "0.0.0.0",
+								"deviceName": "vmk50"
+							}
+						}
+					],
+					"ipv6Route": []
+				}
+			}
+		},
+		{
+			"netStackInstance": {
+				"key": "vxlan",
+				"name": "vxlan",
+				"dnsConfig": {
+					"dhcp": false,
+					"hostName": "",
+					"domainName": "",
+					"address": [],
+					"searchDomain": []
+				},
+				"ipRouteConfig": {},
+				"requestedMaxNumberOfConnections": 11000,
+				"congestionControlAlgorithm": "newreno",
+				"ipV6Enabled": true,
+				"routeTableConfig": {
+					"ipRoute": [
+						{
+							"changeOperation": "ignore",
+							"route": {
+								"network": "192.168.12.0",
+								"prefixLength": 24,
+								"gateway": "0.0.0.0",
+								"deviceName": "vmk10"
+							}
+						}
+					],
+					"ipv6Route": []
+				}
+			}
+		},
+		{
+			"netStackInstance": {
+				"key": "defaultTcpipStack",
+				"name": "defaultTcpipStack",
+				"dnsConfig": {
+					"dhcp": false,
+					"hostName": "esx05",
+					"domainName": "lab",
+					"address": [
+						"172.16.10.1"
+					],
+					"searchDomain": [
+						"lab"
+					]
+				},
+				"ipRouteConfig": {
+					"defaultGateway": "172.16.10.1"
+				},
+				"requestedMaxNumberOfConnections": 11000,
+				"congestionControlAlgorithm": "newreno",
+				"ipV6Enabled": true,
+				"routeTableConfig": {
+					"ipRoute": [
+						{
+							"changeOperation": "ignore",
+							"route": {
+								"network": "0.0.0.0",
+								"prefixLength": 0,
+								"gateway": "172.16.10.1",
+								"deviceName": "vmk0"
+							}
+						},
+						{
+							"changeOperation": "ignore",
+							"route": {
+								"network": "172.16.10.0",
+								"prefixLength": 24,
+								"gateway": "0.0.0.0",
+								"deviceName": "vmk0"
+							}
+						}
+					],
+					"ipv6Route": []
+				}
+			}
+		}
+	]
+}

@@ -6,6 +6,16 @@ module.exports = class HostNetworkSystem extends ManagedEntity {
 	constructor(service, id) {
 		super(service, id);
 	}
+	getNetworkInfo() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('networkInfo'));
+		});
+	}
+	getNetworkConfig() {
+		return new Promise((resolve, reject) => {
+			resolve(this.getProperty('networkConfig'));
+		});
+	}
 	addVirtualNic(spec) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
@@ -28,6 +38,14 @@ module.exports = class HostNetworkSystem extends ManagedEntity {
 			let service = this.service;
 			let entity = this.entity;
 			resolve(service.vimPort.removeVirtualNic(entity, device));
+		});
+	}
+	updateNetworkConfig(config, changeMode = 'modify') {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			let cSpec = super.buildSpec('HostNetworkConfig', config);
+			resolve(service.vimPort.updateNetworkConfig(entity, cSpec, changeMode));
 		});
 	}
 };
