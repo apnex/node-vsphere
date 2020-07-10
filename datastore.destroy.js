@@ -18,28 +18,20 @@ const blue = chalk.blueBright;
 
 // called from shell
 const args = process.argv.splice(2);
-if(process.argv[1].match(/vm/g)) {
-	if(args.length >= 2) {
+if(process.argv[1].match(/datastore/g)) {
+	if(args.length >= 1) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('host.vmk.create <host.id> <vmk.name>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('datastore.destroy <datastore.id>'));
 	}
 }
 
 // main
-function main(id, device) {
-	let client = new apiClient();
+function main(id) {
+	let client = new apiClient(); // add auth?
 	client.vspLogin(hostname, username, password).then((root) => {
-		let host = root.get(id);
-		// add logic, if dest pg does not exist, create it
-		let spec = {
-			"discriminator": "HostVirtualNicSpec",
-			"portgroup": "vss-vmnet" //vss portgroup name
-		};
-		host.getNetworkSystem().then((netsys) => {
-			netsys.updateVirtualNic(device, spec).then((info) => {
-				console.log(JSON.stringify(info, null, "\t"));
-			});
-		});
+		let item = root.get(id);
+		//console.log(JSON.stringify(item, null, "\t"));
+		return item.destroy();
 	});
 }

@@ -38,6 +38,8 @@ module.exports = class ManagedEntity {
 		return new Promise((resolve, reject) => {
 			let service = this.service;
 			let entity = this.entity;
+			console.log('MOOO');
+			console.log(JSON.stringify(entity, null, "\t"));
 			service.vimPort.destroyTask(entity).then((task) => {
 				resolve(core.waitForTask(service, task));
 			});
