@@ -32,10 +32,8 @@ function main(id) {
 	client.vspLogin(hostname, username, password).then((root) => {
 		let vm = root.get(id);
 		vm.getHardware().then((hardware) => {
-			let devices = hardware.device;
-			devices.forEach((device) => {
-				console.log(JSON.stringify(device, null, "\t"));
-				//console.log('key: ' + device.key + "\t" + ' label: ' + nic.deviceInfo.label.padEnd(20, ' ') + "\tunitNumber: " + nic.unitNumber + "\tmacAddress: " + nic.macAddress);
+			hardware.device.forEach((device) => {
+				console.log("key: " + device.key + "\ttype: " + device.discriminator + "\tlabel: " + device.deviceInfo.label + "\tsummary: " + device.deviceInfo.summary);
 			});
 		});
 	});
