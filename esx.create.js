@@ -60,8 +60,9 @@ function main(node, resId, dsId, pgId) {
 			await attachNic(vm, 4000, pg);
 			await createNic(vm, mac2);
 			await attachNic(vm, 4001, pg);
+			// getVirtualNic list?
 
-			let cdroms = await createCdrom(vm); // return device list!
+			let cdroms = await createCdrom(vm); // return CDROM list!
 			// if wrong key - causes physical esx host to disconnect from VC
 			await attachCdrom(vm, cdroms[0].key, dsName, dsFile);
 			await vm.powerOn();
@@ -79,18 +80,9 @@ async function createCdrom(vm) {
 	spec.deviceChange.push(cdSpec);
 	return vm.reconfigure(spec).then((item) => {
 		return vm.getHardware().then((hardware) => {
-			let devices = hardware.device;
-			let deviceList = [];
-			devices.forEach((device) => {
-				if(typeof(device.backing) != 'undefined') {
-					if(device.key.toString().match(/^16/)) {
-						if(typeof(device.backing.deviceName) !== 'undefined' && typeof(device.backing.useAutoDetect) !== 'undefined') {
-							deviceList.push(device);
-						}
-					}
-				}
+       			return hardware.device.filter((device) => {
+				return (device.discriminator == 'VirtualCdrom');
 			});
-			return deviceList;
 		});
 	});
 }
