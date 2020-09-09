@@ -1,0 +1,55 @@
+{
+	"discriminator": "HostVirtualSwitchSpec",
+	"numPorts": 128,
+	"bridge": {
+		"discriminator": "HostVirtualSwitchBondBridge",
+		"nicDevice": [
+			"vmnic0",
+			"vmnic1"
+		]
+	},
+	"policy": {
+		"discriminator": "HostNetworkPolicy",
+		"security": {
+			"discriminator": "HostNetworkSecurityPolicy",
+			"allowPromiscuous": false,
+			"forgedTransmits": false,
+			"macChanges": false
+		},
+		"offloadPolicy": {
+			"discriminator": "HostNetOffloadCapabilities",
+			"tcpSegmentation": true,
+			"zeroCopyXmit": true,
+			"csumOffload": true
+		},
+		"shapingPolicy": {
+			"discriminator": "HostNetworkTrafficShapingPolicy",
+			"enabled": false
+		},
+		"nicTeaming": {
+			"discriminator": "HostNicTeamingPolicy",
+			"notifySwitches": true,
+			"rollingOrder": false,
+			"failureCriteria": {
+				"discriminator": "HostNicFailureCriteria",
+				"fullDuplex": false,
+				"percentage": 0,
+				"checkErrorPercent": false,
+				"checkDuplex": false,
+				"checkBeacon": false,
+				"speed": 10,
+				"checkSpeed": "minimum"
+			},
+			"reversePolicy": true,
+			"policy": "loadbalance_srcid",
+			"nicOrder": {
+				"discriminator": "HostNicOrderPolicy",
+				"activeNic": [
+					"vmnic0",
+					"vmnic1"
+				],
+				"standbyNic": []
+			}
+		}
+	}
+}

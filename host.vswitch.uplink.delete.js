@@ -22,7 +22,7 @@ if(process.argv[1].match(/vm/g)) {
 	if(args.length >= 3) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('host.vmk.create <host.id> <vds.id> <pnic>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.vswitch.uplink.delete <host.id> <vds.id> <pnic>'));
 	}
 }
 

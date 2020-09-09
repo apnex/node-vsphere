@@ -1,0 +1,9 @@
+{
+	"discriminator": "HostPortGroupSpec",
+	"vswitchName": "vSwitch0",
+	"name": "new-vss-mgmt123",
+	"vlanId": 0,
+	"policy": {
+		"discriminator": "HostNetworkPolicy"
+	}
+}

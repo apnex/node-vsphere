@@ -16,6 +16,36 @@ module.exports = class HostNetworkSystem extends ManagedEntity {
 			resolve(this.getProperty('networkConfig'));
 		});
 	}
+	addPortGroup(spec) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			let cSpec = super.buildSpec('HostPortGroupSpec', spec);
+			resolve(service.vimPort.addPortGroup(entity, cSpec));
+		});
+	}
+	removePortGroup(pgName) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			resolve(service.vimPort.removePortGroup(entity, pgName));
+		});
+	}
+	updateVirtualSwitch(vswitchName, spec) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			let cSpec = super.buildSpec('HostVirtualSwitchSpec', spec);
+			resolve(service.vimPort.updateVirtualSwitch(entity, vswitchName, cSpec));
+		});
+	}
+	removeVirtualSwitch(vswitchName) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			resolve(service.vimPort.removeVirtualSwitch(entity, vswitchName));
+		});
+	}
 	addVirtualNic(spec) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;

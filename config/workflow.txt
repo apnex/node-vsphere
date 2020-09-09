@@ -1,0 +1,13 @@
+## add switch to host
+./vswitch.host.add.js dvs-20 host-18
+
+## add vmnic1 and vmk0 to vds
+./host.network.config.modify.js host-18 config/01-vds-vmnic1.json
+
+## remove vmnic0 from vss
+./host.network.vss.update.js host-18 vSwitch0 config/08-vss-none.json
+
+## add vmnic0 to vds
+./host.network.config.modify.js host-18 config/03-vds-all.json
+
+## delete vss

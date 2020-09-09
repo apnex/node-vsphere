@@ -1,0 +1,18 @@
+{
+	"discriminator": "HostNetworkConfig",
+	"portgroup": [
+		{
+			"discriminator": "HostPortGroupConfig",
+			"changeOperation": "remove",
+			"spec": {
+				"discriminator": "HostPortGroupSpec",
+				"vswitchName": "",
+				"vlanId": -1,
+				"name": "vss-vmnet",
+				"policy": {
+					"discriminator": "HostNetworkPolicy"
+				}
+			}
+		}
+	]
+}

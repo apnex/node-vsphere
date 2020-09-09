@@ -1,0 +1,38 @@
+{
+	"discriminator": "HostNetworkConfig",
+	"vnic": [
+		{
+			"discriminator": "HostVirtualNicConfig",
+			"changeOperation": "edit",
+			"device": "vmk0",
+			"portgroup": "",
+			"spec": {
+				"discriminator": "HostVirtualNicSpec",
+				"distributedVirtualPort": {
+					"discriminator": "DistributedVirtualSwitchPortConnection",
+					"switchUuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+					"portgroupKey": "dvportgroup-23"
+				}
+			}
+		}
+	],
+	"proxySwitch": [
+		{
+			"discriminator": "HostProxySwitchConfig",
+			"uuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+			"changeOperation": "edit",
+			"spec": {
+				"discriminator": "HostProxySwitchSpec",
+				"backing": {
+					"discriminator": "DistributedVirtualSwitchHostMemberPnicBacking",
+					"pnicSpec": [
+						{
+							"discriminator": "DistributedVirtualSwitchHostMemberPnicSpec",
+							"pnicDevice": "vmnic1"
+						}
+					]
+				}
+			}
+		}
+	]
+}

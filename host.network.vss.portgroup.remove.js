@@ -19,21 +19,23 @@ const blue = chalk.blueBright;
 // called from shell
 const args = process.argv.splice(2);
 if(process.argv[1].match(/vm/g)) {
-	if(args.length >= 1) {
+	if(args.length >= 2) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('host.vmk.create <host.id>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.network.portgroup.add.js <host.id> <portgroup.name>'));
 	}
 }
 
 // main
-function main(id) {
+function main(id, pgName) {
 	let client = new apiClient();
 	client.vspLogin(hostname, username, password).then((root) => {
 		let host = root.get(id);
 		host.getNetworkSystem().then((netsys) => {
-			netsys.getNetworkConfig().then((info) => {
-				console.log(JSON.stringify(info, null, "\t"));
+			netsys.removePortGroup(pgName).then((info) => {
+				console.log('[ ' + pgName + ' ] removed');
+			}).catch((err) => {
+				console.log(JSON.stringify(err, null, "\t"));
 			});
 		});
 	});

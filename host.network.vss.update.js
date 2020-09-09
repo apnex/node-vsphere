@@ -19,28 +19,25 @@ const blue = chalk.blueBright;
 // called from shell
 const args = process.argv.splice(2);
 if(process.argv[1].match(/vm/g)) {
-	if(args.length >= 4) {
+	if(args.length >= 3) {
 		main(...args);
 	} else {
-		console.log('[' + red('ERROR') + ']: usage ' + blue('host.create <cluster.id> <ip.address> <username> <password>'));
+		console.log('[' + red('ERROR') + ']: usage ' + blue('host.network.vss.update <host.id> <vss.name> <spec>'));
 	}
 }
 
 // main
-function main(id, ipAddress, user, pass) {
-	let client = new apiClient(); // add auth?
-	client.vspLogin(hostname, username, password).then((service) => {
-		let cluster = client.get(id);
-		cluster.addHost({
-			force: 1,
-			hostName: ipAddress,
-			userName: user,
-			password: pass,
-			port: 443
-		}).then((host) => {
-			host.exitMaintenanceMode().then((info) => {
-				console.log(JSON.stringify(host.entity, null, "\t"));
-			}).catch(()=>{});
+function main(id, vswitchName, specName) {
+	let client = new apiClient();
+	client.vspLogin(hostname, username, password).then((root) => {
+		let host = root.get(id);
+		let spec = require('./' + specName);
+		host.getNetworkSystem().then((netsys) => {
+			netsys.updateVirtualSwitch(vswitchName, spec).then((info) => {
+				console.log('[ ' + vswitchName + ' ] updated');
+			}).catch((err) => {
+				console.log(JSON.stringify(err, null, "\t"));
+			});
 		});
 	});
 }
