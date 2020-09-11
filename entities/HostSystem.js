@@ -11,6 +11,11 @@ module.exports = class HostSystem extends ManagedEntity {
 			return this.getObject(entity['networkSystem'].value);
 		});
 	}
+	getVirtualNicManager() {
+		return this.configManager().then((entity) => {
+			return this.getObject(entity['virtualNicManager'].value);
+		});
+	}
 	configManager() {
 		return new Promise((resolve, reject) => {
 			resolve(this.getProperty('configManager'));

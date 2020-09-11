@@ -24,6 +24,13 @@ module.exports = class HostNetworkSystem extends ManagedEntity {
 			resolve(service.vimPort.addPortGroup(entity, cSpec));
 		});
 	}
+	queryNetworkHint(device) {
+		return new Promise((resolve, reject) => {
+			let service = this.service;
+			let entity = this.entity;
+			resolve(service.vimPort.queryNetworkHint(entity, device));
+		});
+	}
 	removePortGroup(pgName) {
 		return new Promise((resolve, reject) => {
 			let service = this.service;

@@ -1,0 +1,47 @@
+#!/bin/bash
+if [[ $(realpath $0) =~ ^(.*)/([^/]+)$ ]]; then
+	WORKDIR="${BASH_REMATCH[1]}"
+	FILE="${BASH_REMATCH[2]}"
+fi
+
+# colours
+NC='\e[0;00m' # no colour
+ORANGE='\e[0;33m' # orange
+GREEN='\e[0;32m' # orange
+CYAN='\e[0;36m' # cyan
+function corange {
+	local STRING=${1}
+	printf "${ORANGE}${STRING}${NC}"
+}
+function cgreen {
+	local STRING=${1}
+	printf "${GREEN}${STRING}${NC}"
+}
+function ccyan {
+	local STRING=${1}
+	printf "${CYAN}${STRING}${NC}"
+}
+
+# table
+function buildTable {
+	local INPUT="${1}"
+	read -r -d '' JQTABLE <<-CONFIG
+		if (.[0]?) then
+			[(
+				[.[0] | to_entries[] | .key | ascii_upcase] # ucase header values
+			),(
+				.[] | [to_entries[] | .value]
+			)]
+		else empty end
+	CONFIG
+	local HEADER="1"
+	echo "$INPUT" | jq -r "$JQTABLE | .[] | @tsv" | column -t -s $'\t' | while read -r LINE; do
+		if [[ -n ${HEADER} ]]; then # change first entry to color, separate from data body
+			printf "${CYAN}${LINE}${NC}\n"
+			HEADER=""
+		else
+			printf "$LINE\n";
+		fi
+	done
+}
+

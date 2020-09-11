@@ -1,0 +1,58 @@
+#----------------- Start of code capture -----------------
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.uplinkPort = true;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-20
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.connected = true;
+var portKey = new Array();
+portKey[0] = '15';
+criteria.portKey = portKey;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-20
+
+// ----------queryNetworkHint----------
+managedObject.queryNetworkHint(null);   // HostNetworkSystem-networkSystem-15
+
+// ----------queryNetworkHint----------
+managedObject.queryNetworkHint(null);   // HostNetworkSystem-networkSystem-17
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.uplinkPort = true;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-20
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.connected = true;
+var portKey = new Array();
+portKey[0] = '24';
+portKey[1] = '14';
+portKey[2] = '16';
+criteria.portKey = portKey;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-20
+
+// ----------queryNetworkHint----------
+managedObject.queryNetworkHint(null);   // HostNetworkSystem-networkSystem-17
+
+// ----------queryNetworkHint----------
+managedObject.queryNetworkHint(null);   // HostNetworkSystem-networkSystem-18
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.uplinkPort = true;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-20
+
+// ----------fetchDVPorts----------
+var criteria = new VcDistributedVirtualSwitchPortCriteria();
+criteria.connected = true;
+var portKey = new Array();
+portKey[0] = '8';
+portKey[1] = '9';
+criteria.portKey = portKey;
+managedObject.fetchDVPorts(criteria);   // VmwareDistributedVirtualSwitch-dvs-20
+
+
+#----------------- End of code capture -----------------

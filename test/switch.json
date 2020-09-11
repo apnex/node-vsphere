@@ -1,0 +1,54 @@
+{
+	"proxySwitch": [
+		{
+			"dvsUuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+			"dvsName": "fabric",
+			"key": "DvsPortset-0",
+			"numPorts": 3246,
+			"configNumPorts": 512,
+			"numPortsAvailable": 3239,
+			"uplinkPort": [
+				{
+					"key": "36",
+					"value": "Uplink 1"
+				},
+				{
+					"key": "37",
+					"value": "Uplink 2"
+				},
+				{
+					"key": "38",
+					"value": "Uplink 3"
+				},
+				{
+					"key": "39",
+					"value": "Uplink 4"
+				}
+			],
+			"mtu": 9000,
+			"pnic": [
+				"key-vim.host.PhysicalNic-vmnic1"
+			],
+			"spec": {
+				"backing": {
+					"pnicSpec": [
+						{
+							"pnicDevice": "vmnic1",
+							"uplinkPortKey": "36",
+							"uplinkPortgroupKey": "dvportgroup-21",
+							"connectionCookie": 1706791143
+						}
+					]
+				}
+			},
+			"hostLag": [],
+			"nsxtEnabled": false,
+			"ensEnabled": false,
+			"ensInterruptEnabled": false,
+			"transportZones": [],
+			"nsxUsedUplinkPort": [],
+			"nsxtStatus": "",
+			"nsxtStatusDetail": ""
+		}
+	]
+}

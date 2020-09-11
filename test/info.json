@@ -1,0 +1,404 @@
+{
+	"vswitch": [
+		{
+			"name": "vSwitch0",
+			"key": "key-vim.host.VirtualSwitch-vSwitch0",
+			"numPorts": 3246,
+			"numPortsAvailable": 3239,
+			"mtu": 1500,
+			"portgroup": [
+				"key-vim.host.PortGroup-vss-vmnet"
+			],
+			"pnic": [],
+			"spec": {
+				"numPorts": 128,
+				"policy": {
+					"security": {
+						"allowPromiscuous": false,
+						"macChanges": false,
+						"forgedTransmits": false
+					},
+					"nicTeaming": {
+						"policy": "loadbalance_srcid",
+						"reversePolicy": true,
+						"notifySwitches": true,
+						"rollingOrder": false,
+						"failureCriteria": {
+							"checkSpeed": "minimum",
+							"speed": 10,
+							"checkDuplex": false,
+							"fullDuplex": false,
+							"checkErrorPercent": false,
+							"percentage": 0,
+							"checkBeacon": false
+						},
+						"nicOrder": {
+							"activeNic": [],
+							"standbyNic": []
+						}
+					},
+					"offloadPolicy": {
+						"csumOffload": true,
+						"tcpSegmentation": true,
+						"zeroCopyXmit": true
+					},
+					"shapingPolicy": {
+						"enabled": false
+					}
+				}
+			}
+		}
+	],
+	"proxySwitch": [
+		{
+			"dvsUuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+			"dvsName": "fabric",
+			"key": "DvsPortset-0",
+			"numPorts": 3246,
+			"configNumPorts": 512,
+			"numPortsAvailable": 3239,
+			"uplinkPort": [
+				{
+					"key": "36",
+					"value": "Uplink 1"
+				},
+				{
+					"key": "37",
+					"value": "Uplink 2"
+				},
+				{
+					"key": "38",
+					"value": "Uplink 3"
+				},
+				{
+					"key": "39",
+					"value": "Uplink 4"
+				}
+			],
+			"mtu": 9000,
+			"pnic": [
+				"key-vim.host.PhysicalNic-vmnic1"
+			],
+			"spec": {
+				"backing": {
+					"pnicSpec": [
+						{
+							"pnicDevice": "vmnic1",
+							"uplinkPortKey": "36",
+							"uplinkPortgroupKey": "dvportgroup-21",
+							"connectionCookie": 1706791143
+						}
+					]
+				}
+			},
+			"hostLag": [],
+			"nsxtEnabled": false,
+			"ensEnabled": false,
+			"ensInterruptEnabled": false,
+			"transportZones": [],
+			"nsxUsedUplinkPort": [],
+			"nsxtStatus": "",
+			"nsxtStatusDetail": ""
+		}
+	],
+	"portgroup": [
+		{
+			"key": "key-vim.host.PortGroup-vss-vmnet",
+			"port": [],
+			"vswitch": "key-vim.host.VirtualSwitch-vSwitch0",
+			"computedPolicy": {
+				"security": {
+					"allowPromiscuous": false,
+					"macChanges": false,
+					"forgedTransmits": false
+				},
+				"nicTeaming": {
+					"policy": "loadbalance_srcid",
+					"reversePolicy": true,
+					"notifySwitches": true,
+					"rollingOrder": false,
+					"failureCriteria": {
+						"checkSpeed": "minimum",
+						"speed": 10,
+						"checkDuplex": false,
+						"fullDuplex": false,
+						"checkErrorPercent": false,
+						"percentage": 0,
+						"checkBeacon": false
+					},
+					"nicOrder": {
+						"activeNic": [],
+						"standbyNic": []
+					}
+				},
+				"offloadPolicy": {
+					"csumOffload": true,
+					"tcpSegmentation": true,
+					"zeroCopyXmit": true
+				},
+				"shapingPolicy": {
+					"enabled": false
+				}
+			},
+			"spec": {
+				"name": "vss-vmnet",
+				"vlanId": 0,
+				"vswitchName": "vSwitch0",
+				"policy": {
+					"security": {},
+					"nicTeaming": {
+						"failureCriteria": {}
+					},
+					"offloadPolicy": {},
+					"shapingPolicy": {}
+				}
+			}
+		}
+	],
+	"pnic": [
+		{
+			"key": "key-vim.host.PhysicalNic-vmnic0",
+			"device": "vmnic0",
+			"pci": "0000:03:00.0",
+			"driver": "nvmxnet3",
+			"linkSpeed": {
+				"speedMb": 10000,
+				"duplex": true
+			},
+			"validLinkSpecification": [
+				{
+					"speedMb": 10000,
+					"duplex": true
+				}
+			],
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "",
+					"subnetMask": ""
+				},
+				"linkSpeed": {
+					"speedMb": 10000,
+					"duplex": true
+				},
+				"enableEnhancedNetworkingStack": false,
+				"ensInterruptEnabled": false
+			},
+			"wakeOnLanSupported": false,
+			"mac": "00:de:ad:be:32:01",
+			"fcoeConfiguration": {
+				"priorityClass": 3,
+				"sourceMac": "00:de:ad:be:32:01",
+				"vlanRange": [
+					{
+						"vlanLow": 0,
+						"vlanHigh": 0
+					}
+				],
+				"capabilities": {
+					"priorityClass": false,
+					"sourceMacAddress": false,
+					"vlanRange": true
+				},
+				"fcoeActive": false
+			},
+			"vmDirectPathGen2Supported": false,
+			"resourcePoolSchedulerAllowed": true,
+			"resourcePoolSchedulerDisallowedReason": [],
+			"autoNegotiateSupported": false,
+			"enhancedNetworkingStackSupported": true,
+			"ensInterruptSupported": true
+		},
+		{
+			"key": "key-vim.host.PhysicalNic-vmnic1",
+			"device": "vmnic1",
+			"pci": "0000:0b:00.0",
+			"driver": "nvmxnet3",
+			"linkSpeed": {
+				"speedMb": 10000,
+				"duplex": true
+			},
+			"validLinkSpecification": [
+				{
+					"speedMb": 10000,
+					"duplex": true
+				}
+			],
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "",
+					"subnetMask": ""
+				},
+				"linkSpeed": {
+					"speedMb": 10000,
+					"duplex": true
+				},
+				"enableEnhancedNetworkingStack": false,
+				"ensInterruptEnabled": false
+			},
+			"wakeOnLanSupported": false,
+			"mac": "00:de:ad:be:32:02",
+			"fcoeConfiguration": {
+				"priorityClass": 3,
+				"sourceMac": "00:de:ad:be:32:02",
+				"vlanRange": [
+					{
+						"vlanLow": 0,
+						"vlanHigh": 0
+					}
+				],
+				"capabilities": {
+					"priorityClass": false,
+					"sourceMacAddress": false,
+					"vlanRange": true
+				},
+				"fcoeActive": false
+			},
+			"vmDirectPathGen2Supported": false,
+			"resourcePoolSchedulerAllowed": true,
+			"resourcePoolSchedulerDisallowedReason": [],
+			"autoNegotiateSupported": false,
+			"enhancedNetworkingStackSupported": true,
+			"ensInterruptSupported": true
+		}
+	],
+	"rdmaDevice": [],
+	"vnic": [
+		{
+			"device": "vmk0",
+			"key": "key-vim.host.VirtualNic-vmk0",
+			"portgroup": "",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "10.30.0.132",
+					"subnetMask": "255.255.255.0"
+				},
+				"mac": "00:50:56:69:7e:bb",
+				"distributedVirtualPort": {
+					"switchUuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+					"portgroupKey": "dvportgroup-23",
+					"portKey": "14",
+					"connectionCookie": 1794931540
+				},
+				"mtu": 1500,
+				"tsoEnabled": true,
+				"netStackInstanceKey": "defaultTcpipStack"
+			}
+		}
+	],
+	"consoleVnic": [],
+	"dnsConfig": {
+		"dhcp": false,
+		"hostName": "esx32",
+		"domainName": "lab03",
+		"address": [
+			"10.30.0.30"
+		],
+		"searchDomain": [
+			"lab03"
+		]
+	},
+	"ipRouteConfig": {
+		"defaultGateway": "10.30.0.254"
+	},
+	"routeTableInfo": {
+		"ipRoute": [
+			{
+				"network": "0.0.0.0",
+				"prefixLength": 0,
+				"gateway": "10.30.0.254",
+				"deviceName": "vmk0"
+			},
+			{
+				"network": "10.30.0.0",
+				"prefixLength": 24,
+				"gateway": "0.0.0.0",
+				"deviceName": "vmk0"
+			}
+		],
+		"ipv6Route": []
+	},
+	"dhcp": [],
+	"nat": [],
+	"ipV6Enabled": false,
+	"atBootIpV6Enabled": false,
+	"netStackInstance": [
+		{
+			"key": "vSphereProvisioning",
+			"dnsConfig": {
+				"dhcp": false,
+				"hostName": "",
+				"domainName": "",
+				"address": [],
+				"searchDomain": []
+			},
+			"ipRouteConfig": {},
+			"requestedMaxNumberOfConnections": 11000,
+			"congestionControlAlgorithm": "newreno",
+			"ipV6Enabled": true
+		},
+		{
+			"key": "vmotion",
+			"dnsConfig": {
+				"dhcp": false,
+				"hostName": "",
+				"domainName": "",
+				"address": [],
+				"searchDomain": []
+			},
+			"ipRouteConfig": {},
+			"requestedMaxNumberOfConnections": 11000,
+			"congestionControlAlgorithm": "newreno",
+			"ipV6Enabled": true
+		},
+		{
+			"key": "defaultTcpipStack",
+			"name": "defaultTcpipStack",
+			"dnsConfig": {
+				"dhcp": false,
+				"hostName": "esx32",
+				"domainName": "lab03",
+				"address": [
+					"10.30.0.30"
+				],
+				"searchDomain": [
+					"lab03"
+				]
+			},
+			"ipRouteConfig": {
+				"defaultGateway": "10.30.0.254"
+			},
+			"requestedMaxNumberOfConnections": 11000,
+			"congestionControlAlgorithm": "newreno",
+			"ipV6Enabled": true,
+			"routeTableConfig": {
+				"ipRoute": [
+					{
+						"changeOperation": "ignore",
+						"route": {
+							"network": "0.0.0.0",
+							"prefixLength": 0,
+							"gateway": "10.30.0.254",
+							"deviceName": "vmk0"
+						}
+					},
+					{
+						"changeOperation": "ignore",
+						"route": {
+							"network": "10.30.0.0",
+							"prefixLength": 24,
+							"gateway": "0.0.0.0",
+							"deviceName": "vmk0"
+						}
+					}
+				],
+				"ipv6Route": []
+			}
+		}
+	],
+	"opaqueSwitch": [],
+	"opaqueNetwork": [],
+	"nsxTransportNodeId": ""
+}

@@ -1,0 +1,26 @@
+{
+	"vnic": [
+		{
+			"device": "vmk0",
+			"key": "key-vim.host.VirtualNic-vmk0",
+			"portgroup": "",
+			"spec": {
+				"ip": {
+					"dhcp": false,
+					"ipAddress": "10.30.0.132",
+					"subnetMask": "255.255.255.0"
+				},
+				"mac": "00:50:56:69:7e:bb",
+				"distributedVirtualPort": {
+					"switchUuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+					"portgroupKey": "dvportgroup-23",
+					"portKey": "14",
+					"connectionCookie": 1794931540
+				},
+				"mtu": 1500,
+				"tsoEnabled": true,
+				"netStackInstanceKey": "defaultTcpipStack"
+			}
+		}
+	]
+}

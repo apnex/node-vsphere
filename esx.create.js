@@ -40,7 +40,8 @@ function main(node, resId, dsId, pgId) {
 			//let spec = require('./spec/esx.nest.json');
 			let spec = require('./spec/esx.vsan.nest.json');
 			spec.name = 'esx' + node;
-			spec.guestId = 'vmkernel7Guest';
+			//spec.guestId = 'vmkernel7Guest';
+			spec.guestId = 'vmkernel65Guest';
 			spec.memoryMB = 32768;
 			spec.files.vmPathName = "[" + dsName + "]";
 			spec.deviceChange[1].device.backing.fileName = "[" + dsName + "]";

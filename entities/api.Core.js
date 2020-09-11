@@ -145,6 +145,7 @@ function getObject(service, id) {
 		'ClusterComputeResource',
 		'HostSystem',
 		'HostNetworkSystem',
+		'HostVirtualNicManager',
 		'ResourcePool',
 		'VirtualApp',
 		'VirtualMachine',
@@ -182,6 +183,9 @@ function getObjectType(id) {
 		break;
 		case /^networkSystem-/.test(id):
 			return('HostNetworkSystem');
+		break;
+		case /^virtualNicManager-/.test(id):
+			return('HostVirtualNicManager');
 		break;
 		case /^resgroup-v/.test(id):
 			return('VirtualApp');
@@ -230,6 +234,7 @@ function getEntity(service, id) {
 		'ClusterComputeResource',
 		'HostSystem',
 		'HostNetworkSystem',
+		'HostVirtualNicManager',
 		'ResourcePool',
 		'VmwareDistributedVirtualSwitch',
 		'DistributedVirtualPortgroup',
@@ -261,6 +266,9 @@ function getEntityType(id) {
 		break;
 		case /^networkSystem-/.test(id):
 			return('HostNetworkSystem');
+		break;
+		case /^virtualNicManager-/.test(id):
+			return('HostVirtualNicManager');
 		break;
 		case /^resgroup-/.test(id):
 			return('ResourcePool');
