@@ -1,0 +1,34 @@
+[
+	{
+		"device": "vmnic0",
+		"spec": {
+			"ip": {
+				"dhcp": false,
+				"ipAddress": "",
+				"subnetMask": ""
+			},
+			"linkSpeed": {
+				"speedMb": 10000,
+				"duplex": true
+			},
+			"enableEnhancedNetworkingStack": false,
+			"ensInterruptEnabled": false
+		}
+	},
+	{
+		"device": "vmnic1",
+		"spec": {
+			"ip": {
+				"dhcp": false,
+				"ipAddress": "",
+				"subnetMask": ""
+			},
+			"linkSpeed": {
+				"speedMb": 10000,
+				"duplex": true
+			},
+			"enableEnhancedNetworkingStack": false,
+			"ensInterruptEnabled": false
+		}
+	}
+]

@@ -1,0 +1,14 @@
+{
+	"HostNetworkConfig": {
+		"proxySwitch": "HostProxySwitchConfig"
+	},
+	"HostProxySwitchConfig": {
+		"spec": "HostProxySwitchSpec"
+	},
+	"HostProxySwitchSpec": {
+		"backing": "DistributedVirtualSwitchHostMemberPnicBacking"
+	},
+	"DistributedVirtualSwitchHostMemberPnicBacking": {
+		"pnicSpec": "DistributedVirtualSwitchHostMemberPnicSpec"
+	}
+}

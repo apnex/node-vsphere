@@ -1,0 +1,25 @@
+{
+	"proxySwitch": [
+		{
+			"uuid": "50 0c 26 b2 89 51 80 1d-fc ce eb 77 db 8f fa 43",
+			"spec": {
+				"backing": {
+					"pnicSpec": [
+						{
+							"pnicDevice": "vmnic0",
+							"uplinkPortKey": "32",
+							"uplinkPortgroupKey": "dvportgroup-21",
+							"connectionCookie": 819530449
+						},
+						{
+							"pnicDevice": "vmnic1",
+							"uplinkPortKey": "33",
+							"uplinkPortgroupKey": "dvportgroup-21",
+							"connectionCookie": 1697988441
+						}
+					]
+				}
+			}
+		}
+	]
+}

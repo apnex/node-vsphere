@@ -1,61 +1,46 @@
 #!/usr/bin/env node
-const apiClient = require('./api.Client');
-const params = require('./params.json');
-
-// ignore self-signed certificate
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-var hostname = params.hostname;
-var username = params.username;
-var password = params.password;
-
-// colours
-const chalk = require('chalk');
-const red = chalk.bold.red;
-const orange = chalk.keyword('orange');
-const green = chalk.green;
-const blue = chalk.blueBright;
+/*
+	This module takes a JSON body and recursively inserts discriminators based on defs
+	Required for parsing HostNetworkConfig to make changes
+*/
 
 // Linking
 var defs = {
-	VirtualMachineConfigSpec: {
-		files: 'VirtualMachineFileInfo',
-		deviceChange: 'VirtualDeviceConfigSpec'
+	HostNetworkConfig: {
+		proxySwitch: 'HostProxySwitchConfig'
 	},
-	VirtualDeviceConfigSpec: {
-		device: 'VirtualDisk'
+	HostProxySwitchConfig: {
+		spec: 'HostProxySwitchSpec'
 	},
-	ParaVirtualSCSIController: {
-		deviceInfo: 'Description'
+	HostProxySwitchSpec: {
+		backing: 'DistributedVirtualSwitchHostMemberPnicBacking'
 	},
-	VirtualDisk: {
-		backing: 'VirtualDiskFlatVer2BackingInfo',
-		deviceInfo: 'Description'
+	DistributedVirtualSwitchHostMemberPnicBacking: {
+		pnicSpec: 'DistributedVirtualSwitchHostMemberPnicSpec'
 	}
 }
 
 // called from shell
-let client = new apiClient(); // add auth?
-client.vspLogin(hostname, username, password).then((root) => {
-	var spec = require('./router.cdrom.json');
-	var vmSpec = main(root.service, 'VirtualMachineConfigSpec', spec);
-	console.log(JSON.stringify(vmSpec, null, "\t"));
-	var entity = root.get('resgroup-v2044');
-	entity.createChildVM(vmSpec).then((info) => {
-		console.log('end of operations');
-	});
-});
+var spec = require('./config/proxy.json');
+var netSpec = main(spec, 'HostNetworkConfig');
+console.log(JSON.stringify(netSpec, null, "\t"));
 
-function main(service, type, spec) {
+function main(spec, type) {
 	console.log(JSON.stringify(spec));
-	let result = isSpec(service, type, spec);
+	let result = isSpec(spec, type);
 	return result;
 }
 
-function isSpec(service, type, spec) {
+function isSpec(spec, type) {
 	let body = {};
-	if(typeof(spec.discriminator) !== 'undefined') { // override
+	if(typeof(spec.discriminator) !== 'undefined') { // override if present
 		type = spec.discriminator;
+	} else {
+		// insert discriminator if missing
+		body.discriminator = type;
 	}
+
+	// resolve body
 	Object.entries(spec).forEach((item) => {
 		if(item[0] != 'discriminator') {
 			if(typeof(item[1]) === 'object') {
@@ -66,17 +51,15 @@ function isSpec(service, type, spec) {
 				if(Array.isArray(item[1])) { // Array
 					body[item[0]] = [];
 					item[1].forEach((value) => { // forEach item in array
-						body[item[0]].push(isSpec(service, child, value));
+						body[item[0]].push(isSpec(value, child));
 					});
 				} else { // Object
-					body[item[0]] = isSpec(service, child, item[1]);
+					body[item[0]] = isSpec(item[1], child);
 				}
 			} else {
 				body[item[0]] = item[1];
 			}
 		}
 	});
-	//console.log('TYPE[' + type + ']');
-	//console.log(JSON.stringify(service.vim[type](body), null, "\t"));
-	return service.vim[type](body);
+	return body;
 }
