@@ -33,7 +33,7 @@ function main(node, resId, dsId, pgId) {
 		// upload iso
 		let ds = root.get(dsId);
 		let srcFile = './esx.local.iso';
-		let dsFile = '/iso/esx.local.iso';
+		let dsFile = '/iso/esx.iso';
 		let dsName = await ds.name();
 		ds.uploadFile(srcFile, dsFile).then((path) => {
 			// create vm
@@ -42,7 +42,7 @@ function main(node, resId, dsId, pgId) {
 			spec.name = 'esx' + node;
 			//spec.guestId = 'vmkernel7Guest';
 			spec.guestId = 'vmkernel65Guest';
-			spec.memoryMB = 32768;
+			spec.memoryMB = 16384;
 			spec.files.vmPathName = "[" + dsName + "]";
 			spec.deviceChange[1].device.backing.fileName = "[" + dsName + "]";
 			spec.deviceChange[2].device.backing.fileName = "[" + dsName + "]";

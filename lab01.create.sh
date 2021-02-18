@@ -1,12 +1,12 @@
 #!/bin/bash
 ## turn this into terraform
 
-LABID="4"
-LABVA="resgroup-v1087"
-LABDS="datastore-1021"
-LABPG="dvportgroup-1022"
+LABID="1"
+LABVA="resgroup-v27"
+LABDS="datastore-15"
+LABPG="dvportgroup-23"
 
-for ID in {7..7}; do
+for ID in {6..6}; do
 	echo ${LABID}${ID}
 	./esx.create.js ${LABID}${ID} ${LABVA} ${LABDS} ${LABPG}
 done
