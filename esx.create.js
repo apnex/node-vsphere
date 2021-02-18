@@ -32,7 +32,7 @@ function main(node, resId, dsId, pgId) {
 	client.vspLogin(hostname, username, password).then(async(root) => {
 		// upload iso
 		let ds = root.get(dsId);
-		let srcFile = './esx.local.iso';
+		let srcFile = './esx.iso';
 		let dsFile = '/iso/esx.iso';
 		let dsName = await ds.name();
 		ds.uploadFile(srcFile, dsFile).then((path) => {
